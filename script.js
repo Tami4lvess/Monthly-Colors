@@ -79,6 +79,8 @@ try {
   await renderer.init();
 }
 
+
+
 // Instant procedural environment — no external HDR fetch needed for initial load
 const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
@@ -2212,3 +2214,50 @@ if (randomizeBtn) {
     document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
   });
 }
+
+
+const title = document.getElementById("title");
+
+const colors = [
+  "#ff6b6b",
+  "#4ecdc4",
+  "#ffe66d",
+  "#1a535c",
+  "#ff9f1c",
+  "#8338ec",
+  "#3a86ff"
+];
+
+// separa letras
+function splitLetters() {
+  const text = title.textContent;
+
+  title.innerHTML = text
+    .split("")
+    .map(char => {
+      if (char === " ") return " ";
+      return `<span class="letter">${char}</span>`;
+    })
+    .join("");
+}
+
+splitLetters();
+
+// cor com duração
+document.querySelectorAll(".letter").forEach(letter => {
+  let timeout;
+
+  letter.addEventListener("mouseenter", () => {
+    clearTimeout(timeout);
+
+    const random = colors[Math.floor(Math.random() * colors.length)];
+    letter.style.color = random;
+  });
+
+  letter.addEventListener("mouseleave", () => {
+    timeout = setTimeout(() => {
+      letter.style.color = "";
+    }, 1400);
+  });
+});
+
