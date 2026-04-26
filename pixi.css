@@ -12,18 +12,19 @@ body {
 
 /* camada UI acima da animação */
 .ui {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  pointer-events: none; /* deixa o mouse passar */
+  padding: 20px 30px;
+
   z-index: 10;
+  pointer-events: none;
 }
 
 /* título */
 .title {
-  position: absolute;
+  position: fixed;
   top: 40%;
   left: 5%; /* 👈 melhor pra responsivo */
   font-weight: 800;
@@ -35,6 +36,8 @@ body {
 
   pointer-events: auto; /* permite hover nas letras */
 }
+
+
 
 /* letras */
 .letter {
@@ -61,17 +64,7 @@ body {
   100% { transform: translateX(0) rotate(0deg); }
 }
 
-canvas {
-  
-  top: 0;
-  left: 0;
 
-  width: 100%;
-  height: 100%;
-
-  display: block;
-  z-index: 0;
-}
 
 
 /* esconder elementos */
@@ -112,13 +105,16 @@ canvas {
 
 /* UI layer */
 .ui {
-  position: fixed;
+ position: absolute; /* 🔥 mudou de fixed fullscreen */
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: auto;
   pointer-events: none;
   z-index: 10;
+    display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 

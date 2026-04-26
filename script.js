@@ -79,8 +79,6 @@ try {
   await renderer.init();
 }
 
-
-
 // Instant procedural environment — no external HDR fetch needed for initial load
 const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
@@ -1639,6 +1637,7 @@ scene.add(accentLight);
 
 // Controls
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableZoom = false; // 🚫 desativa zoom com scroll
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.minDistance = 2;
@@ -2259,5 +2258,5 @@ document.querySelectorAll(".letter").forEach(letter => {
       letter.style.color = "";
     }, 1400);
   });
+  
 });
-
