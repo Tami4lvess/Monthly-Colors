@@ -128,14 +128,14 @@ body {
   justify-content: space-between;
 }
 
-
+/* botao de troca de tema */
 
 .theme-switch {
   position: absolute;
   top: 30px;
   left: 15px;
   z-index: 20;
-  --toggle-size: 30px;
+  --toggle-size: 20px;
   /* the size is adjusted using font-size,
      this is not transform scale,
      so you can choose any size */
@@ -336,3 +336,75 @@ body {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
+
+/*acabou botao de troca de tema */
+
+/* ícone de idioma */
+.lang-icon {
+  position: fixed; /* 🔥 chave */
+  top: 30px;
+  right: 30px;
+
+  display: flex;
+  align-items: center;
+
+  z-index: 9999; /* sempre acima da cena 3D */
+}
+
+/* botão da seta */
+.lang-btn {
+  transform: translate(2px, 3px);
+  background: none;
+  border: none;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+/* seta */
+#downarrow {
+  transition: transform 0.3s ease;
+}
+
+/* menu escondido */
+.lang-menu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: 0.3s;
+}
+
+/* quando abre */
+.lang-menu.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* gira a seta */
+#downarrow.rotate {
+  transform: rotate(180deg);
+}
+
+/* bandeiras */
+.lang-menu img {
+  width: 40px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.lang-menu img:hover {
+  transform: scale(1.1);
+}
+ /*acabou ícone de idioma */

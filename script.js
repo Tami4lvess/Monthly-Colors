@@ -2260,3 +2260,31 @@ document.querySelectorAll(".letter").forEach(letter => {
   });
   
 });
+
+
+// Menu de idiomas
+const menu = document.getElementById("langMenu");
+const arrow = document.getElementById("downarrow");
+const currentFlag = document.getElementById("currentFlag");
+
+document.querySelector(".lang-btn").addEventListener("click", () => {
+  menu.classList.toggle("active");
+  arrow.classList.toggle("rotate");
+});
+
+// troca de idioma (bandeira)
+document.querySelectorAll(".lang-menu img").forEach(flag => {
+  flag.addEventListener("click", () => {
+    const newSrc = flag.getAttribute("src");
+
+    // troca a bandeira principal
+    currentFlag.setAttribute("src", newSrc);
+
+    // fecha menu
+    menu.classList.remove("active");
+    arrow.classList.remove("rotate");
+  });
+});
+
+
+//acabou menu de idiomas
