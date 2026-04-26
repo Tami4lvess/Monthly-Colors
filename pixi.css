@@ -8,6 +8,17 @@ body {
   background: #f3f3f3;
   font-family: 'Inter', sans-serif;
   overflow: hidden; /* evita scroll */
+  -webkit-user-select: none; /*safari*/
+  -ms-user-secelect: none; /*IE10+ e edge*/
+  user-select: none; /* padrão */
+
+}
+
+.nao-selecionavel {
+  -webkit-user-select: none; /*safari*/
+  -ms-user-secelect: none; /*IE10+ e edge*/
+  user-select: none; /* padrão */
+  -moz-user-select: none; /* firefox */ 
 }
 
 /* camada UI acima da animação */
