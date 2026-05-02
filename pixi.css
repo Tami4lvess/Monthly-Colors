@@ -1,14 +1,17 @@
+/* ===========================
+   RESET & BASE
+=========================== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
- 
+
 body {
-  background: #abc6e4;
+  background: #0e0e12;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-user-select: none;
   user-select: none;
 }
- 
+
 /* ===== HERO ===== */
 #hero {
   position: relative;
@@ -16,8 +19,7 @@ body {
   height: 100vh;
   overflow: hidden;
 }
- 
-/* Container do canvas — preenche o hero inteiro */
+
 #canvas-container {
   position: absolute;
   inset: 0;
@@ -25,22 +27,18 @@ body {
   height: 100%;
   z-index: 0;
 }
- 
-/* Canvas gerado pelo Three.js — absoluto dentro do #canvas-container */
+
 #canvas-container canvas {
   position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
+  top: 0 !important; left: 0 !important;
+  width: 100% !important; height: 100% !important;
   display: block;
 }
- 
+
 /* ===== TÍTULO ===== */
 .title {
   position: absolute;
-  top: 40%;
-  left: 5%;
+  top: 40%; left: 5%;
   font-weight: 800;
   font-size: clamp(30px, 6vw, 80px);
   line-height: 0.9;
@@ -50,7 +48,7 @@ body {
   z-index: 10;
   pointer-events: auto;
 }
- 
+
 .letter {
   display: inline-block;
   transition: transform 0.4s cubic-bezier(0.25, 1.5, 0.5, 1), color 0.8s ease;
@@ -66,37 +64,29 @@ body {
   75%  { transform: translateX(-3px) rotate(-2deg); }
   100% { transform: translateX(0) rotate(0deg); }
 }
- 
+
 /* ===== BOTÕES VARIAÇÃO ===== */
 #variation-bar {
   position: absolute;
-  bottom: 32px;
-  left: 50%;
+  bottom: 32px; left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  gap: 4px;
+  display: flex; gap: 4px;
   z-index: 10;
 }
-
 .morph-btn {
   padding: 10px 22px;
-  background: transparent;
-  border: none;
+  background: transparent; border: none;
   color: rgba(255,255,255,0.35);
   font-family: 'Instrument Serif', serif;
-  cursor: pointer;
-  border-radius: 20px;
+  cursor: pointer; border-radius: 20px;
   transition: background 0.2s, color 0.2s;
 }
 .morph-btn:hover { color: rgba(255,255,255,0.7); }
 .morph-btn.active { background: rgba(255,255,255,0.08); color: #fff; }
- 
+
 /* ===== THEME SWITCH ===== */
 .theme-switch {
-  position: absolute;
-  top: 30px;
-  left: 15px;
-  z-index: 20;
+  position: absolute; top: 30px; left: 15px; z-index: 20;
   --toggle-size: 20px;
   --container-width: 5.625em; --container-height: 2.5em; --container-radius: 6.25em;
   --container-light-bg: #3D7EAE; --container-night-bg: #1D1F2C;
@@ -107,11 +97,9 @@ body {
   --transition: .5s cubic-bezier(0, -0.02, 0.4, 1.25);
   --circle-transition: .3s cubic-bezier(0, -0.02, 0.35, 1.17);
 }
-
 .theme-switch, .theme-switch *, .theme-switch *::before, .theme-switch *::after {
   box-sizing: border-box; margin: 0; padding: 0; font-size: var(--toggle-size);
 }
-
 .theme-switch__container {
   width: var(--container-width); height: var(--container-height);
   background-color: var(--container-light-bg); border-radius: var(--container-radius);
@@ -119,7 +107,6 @@ body {
   box-shadow: 0em -0.062em 0.062em rgba(0,0,0,.25), 0em 0.062em 0.125em rgba(255,255,255,.94);
   transition: var(--transition); position: relative;
 }
-
 .theme-switch__container::before {
   content: ""; position: absolute; z-index: 1; inset: 0;
   box-shadow: 0em 0.05em 0.187em rgba(0,0,0,.25) inset, 0em 0.05em 0.187em rgba(0,0,0,.25) inset;
@@ -135,7 +122,6 @@ body {
               0 0 0 0.625em rgba(255,255,255,.1), 0 0 0 1.25em rgba(255,255,255,.1);
   display: flex; transition: var(--circle-transition); pointer-events: none;
 }
-
 .theme-switch__sun-moon-container {
   pointer-events: auto; position: relative; z-index: 2;
   width: var(--sun-moon-diameter); height: var(--sun-moon-diameter); margin: auto;
@@ -144,14 +130,12 @@ body {
   filter: drop-shadow(0.062em 0.125em 0.125em rgba(0,0,0,.25)) drop-shadow(0em 0.062em 0.125em rgba(0,0,0,.25));
   overflow: hidden; transition: var(--transition);
 }
-
 .theme-switch__moon {
   transform: translateX(100%); width: 100%; height: 100%;
   background-color: var(--moon-bg); border-radius: inherit;
   box-shadow: 0.062em 0.062em 0.062em 0em rgba(254,255,239,.61) inset, 0em -0.062em 0.062em 0em #969696 inset;
   transition: var(--transition); position: relative;
 }
-
 .theme-switch__spot {
   position: absolute; top: 0.75em; left: 0.312em; width: 0.75em; height: 0.75em;
   border-radius: var(--container-radius); background-color: var(--spot-color);
@@ -172,7 +156,6 @@ body {
     4.125em -2.125em 0 0.437em var(--back-clouds-color);
   transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
 }
-
 .theme-switch__stars-container {
   position: absolute; color: var(--stars-color); top: -100%; left: 0.312em;
   width: 2.75em; height: auto; transition: var(--transition);
@@ -184,7 +167,7 @@ body {
 .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__moon { transform: translate(0); }
 .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__clouds { bottom: -4.062em; }
 .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__stars-container { top: 50%; transform: translateY(-50%); }
- 
+
 /* ===== LANG ICON ===== */
 .lang-icon {
   position: absolute; top: 30px; right: 30px;
@@ -203,7 +186,7 @@ body {
 #downarrow.rotate { transform: rotate(180deg); }
 .lang-menu img { width: 40px; cursor: pointer; border-radius: 5px; transition: transform 0.2s; }
 .lang-menu img:hover { transform: scale(1.1); }
- 
+
 /* ===== SCROLL DOWN ===== */
 .scroll-down {
   position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
@@ -215,32 +198,68 @@ body {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50%       { transform: translateX(-50%) translateY(7px); }
 }
- 
-/* ===== SEÇÃO MESES ===== */
-#meses { background: #628ec0; padding: 80px 40px 100px; }
- 
+
+/* ===========================
+   SEÇÃO MESES
+=========================== */
+#meses {
+  background: #739bc7;
+  padding: 80px 0 60px;
+}
+
+#meses .sinalizacao,
+#meses .container-meses {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
 .sinalizacao {
-  text-align: center; color: rgba(2, 62, 102, 0.4);
+  text-align: center;
+  color: rgba(255,255,255,0.7);
   font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
-  margin-bottom: 48px; font-family: 'Instrument Sans', sans-serif;
+  margin-bottom: 48px;
+  font-family: 'Instrument Sans', sans-serif;
 }
+
+/* ===== DIVISÓRIA — faixa bege full-width ===== */
 .divisoria {
-  text-align: center; color: rgba(9, 58, 135, 0.08);
-  font-size: clamp(28px, 5vw, 64px); font-weight: 800;
-  letter-spacing: -2px; margin: 60px 0 48px;
+  background-color: #f3f1e2;
+  padding: 18px 0;
+  margin: 60px 0;
+  text-align: center;
+  width: 100%;
 }
+
+.divisoria span {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(16px, 2vw, 22px);
+  letter-spacing: 8px;
+  color: #5a5448;
+  text-transform: uppercase;
+}
+
+/* Grid de cards */
 .container-meses {
-  display: grid; grid-template-columns: repeat(3, 460px);
-  gap: 30px 20px; justify-content: center; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 460px);
+  gap: 30px 20px;
+  justify-content: center;
+  margin: 0 auto;
 }
+
 .mes {
   position: relative; width: 460px; height: 280px; border-radius: 20px;
-  background: #457cb8; display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.65); font-size: 20px; font-family: 'Instrument Serif', serif;
-  overflow: hidden; cursor: pointer; transition: transform 0.3s ease, background 0.3s ease;
+  background: #5a82b0;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.85); font-size: 20px;
+  font-family: 'Instrument Serif', serif;
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
-.mes:hover { transform: scale(1.03); background: #5587d2; }
+.mes:hover { transform: scale(1.03); background: #4d74a3; }
+
 .border-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
 .border-line {
   fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;
   stroke-dasharray: 1500; stroke-dashoffset: 1500; opacity: 0; will-change: stroke-dashoffset;
@@ -248,10 +267,84 @@ body {
 .mes:hover .border-line {
   opacity: 1; stroke-dashoffset: 0;
   transition: stroke-dashoffset 0.6s ease, opacity 0.2s;
-  animation: moveBorder 3s linear infinite; animation-delay: 0.6s; stroke-dasharray: 130 1300;
+  animation: moveBorder 3s linear infinite; animation-delay: 0.6s;
+  stroke-dasharray: 130 1300;
 }
 @keyframes moveBorder { to { stroke-dashoffset: -1400; } }
- 
+
+/* ===========================
+   FOOTER
+=========================== */
+footer {
+  background-color: #f3f1e2;
+  padding: 40px;
+}
+
+.container-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.container-footer p {
+  font-size: 1rem;
+  color: #5a5448;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 8px;
+}
+
+/* Social icons */
+.wrapper {
+  display: inline-flex;
+  list-style: none;
+  height: 100px;
+  width: 100%;
+  padding-top: 20px;
+  font-family: 'Poppins', sans-serif;
+  justify-content: center;
+}
+
+.wrapper a { text-decoration: none; }
+
+.wrapper .icon {
+  position: relative;
+  background: #fff;
+  border-radius: 50%;
+  margin: 10px;
+  width: 50px; height: 50px;
+  font-size: 18px;
+  display: flex; justify-content: center; align-items: center; flex-direction: column;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip {
+  position: absolute; top: 0; font-size: 14px;
+  background: #fff; color: #fff;
+  padding: 5px 8px; border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+  opacity: 0; pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip::before {
+  position: absolute; content: "";
+  height: 8px; width: 8px; background: #fff;
+  bottom: -3px; left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon:hover .tooltip { top: -45px; opacity: 1; visibility: visible; pointer-events: auto; }
+.wrapper .icon:hover span,
+.wrapper .icon:hover .tooltip { text-shadow: 0px -1px 0px rgba(0,0,0,0.1); }
+
+.wrapper .instagram:hover,
+.wrapper .instagram:hover .tooltip,
+.wrapper .instagram:hover .tooltip::before { background: #e4405f; color: #fff; }
+
 /* ===== DEBUG ===== */
 #ui-panel, #fps-counter {
   position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; overflow: hidden;

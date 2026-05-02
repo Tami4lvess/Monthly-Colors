@@ -685,7 +685,6 @@ function generateSnowyPineOffsets() {
   const pineTrunk = ['#3a2818', '#2e2010', '#4a3420', '#342818'];
   const snowWhite = ['#f0f5ff', '#e8eeff', '#ffffff', '#f5f8ff', '#eaf0ff'];
   const iceBlue = ['#c8e0f8', '#b0d0f0', '#a8c8e8'];
-  const pineOccupied = new Set();
   voxels.forEach(im => {
     const data = instanceData.get(im);
     if (!data) return;
@@ -709,14 +708,9 @@ function generateSnowyPineOffsets() {
         const tierRadius = Math.max(0.3, (5.5 - tier * 1.0) * (1.0 - tierFrac * 0.3));
         const mappedR = Math.min(origR, tierRadius) * (tierRadius / Math.max(3, origR + 1));
         nx = Math.cos(angle) * mappedR * 1.1; nz = Math.sin(angle) * mappedR * 1.1; ny = oy + relY * 2.0;
-        const dk = `${Math.round(nx)},${Math.round(ny)},${Math.round(nz)}`;
-        if (pineOccupied.has(dk)) { nx = 0; ny = 20; nz = 0; cr = 0; cg = 0; cb = 0; }
-        else {
-          pineOccupied.add(dk);
-          nx += (Math.random() - 0.5) * 0.25; ny += (Math.random() - 0.5) * 0.25; nz += (Math.random() - 0.5) * 0.25;
-          if (tierFrac > 0.6 || relY > 0.8) { const sc = new THREE.Color(pickRandom(snowWhite)); cr = sc.r * 0.72; cg = sc.g * 0.72; cb = sc.b * 0.75; }
-          else { const pc = new THREE.Color(pickRandom(pineColors)); cr = pc.r; cg = pc.g; cb = pc.b; }
-        }
+        nx += (Math.random() - 0.5) * 0.25; ny += (Math.random() - 0.5) * 0.25; nz += (Math.random() - 0.5) * 0.25;
+        if (tierFrac > 0.6 || relY > 0.8) { const sc = new THREE.Color(pickRandom(snowWhite)); cr = sc.r * 0.72; cg = sc.g * 0.72; cb = sc.b * 0.75; }
+        else { const pc = new THREE.Color(pickRandom(pineColors)); cr = pc.r; cg = pc.g; cb = pc.b; }
       } else if (cat === 'trunk') { nx = ox * 0.7 + (Math.random() - 0.5) * 0.15; nz = oz * 0.7 + (Math.random() - 0.5) * 0.15; const tc = new THREE.Color(pickRandom(pineTrunk)); cr = tc.r; cg = tc.g; cb = tc.b; }
       else if (cat === 'grass') { const sc = new THREE.Color(pickRandom(snowGrass)); cr = sc.r * 0.82; cg = sc.g * 0.82; cb = sc.b * 0.84; }
       else if (cat === 'rock') { const rc = new THREE.Color(pickRandom(Math.random() < 0.3 ? iceBlue : snowRock)); cr = rc.r * 0.85; cg = rc.g * 0.85; cb = rc.b * 0.88; }
@@ -741,7 +735,6 @@ function generateCherryBlossomOffsets() {
   const blossomWhite = ['#fff0f5', '#ffe8ef', '#fff5f8', '#ffeef3'];
   const sakuraTrunk = ['#5c3a28', '#4a2e1e', '#6b4835', '#3d2418', '#7a5840'];
   const mossGreen = ['#6b8c50', '#5a7a40', '#7a9c60'];
-  const cherryOccupied = new Set();
   voxels.forEach(im => {
     const data = instanceData.get(im);
     if (!data) return;
@@ -761,14 +754,9 @@ function generateCherryBlossomOffsets() {
         const origR = Math.sqrt(ox * ox + oz * oz);
         const droop = origR * 0.06;
         nx = ox * 1.3; nz = oz * 1.3; ny = oy - droop - relY * 1.5;
-        const dk = `${Math.round(nx)},${Math.round(ny)},${Math.round(nz)}`;
-        if (cherryOccupied.has(dk)) { nx = 0; ny = 20; nz = 0; cr = 0; cg = 0; cb = 0; }
-        else {
-          cherryOccupied.add(dk);
-          nx += (Math.random() - 0.5) * 0.25; ny += (Math.random() - 0.5) * 0.25; nz += (Math.random() - 0.5) * 0.25;
-          if (Math.random() < 0.15) { const wc = new THREE.Color(pickRandom(blossomWhite)); cr = wc.r; cg = wc.g; cb = wc.b; }
-          else { const pc = new THREE.Color(pickRandom(blossomPink)); cr = pc.r; cg = pc.g; cb = pc.b; }
-        }
+        nx += (Math.random() - 0.5) * 0.25; ny += (Math.random() - 0.5) * 0.25; nz += (Math.random() - 0.5) * 0.25;
+        if (Math.random() < 0.15) { const wc = new THREE.Color(pickRandom(blossomWhite)); cr = wc.r; cg = wc.g; cb = wc.b; }
+        else { const pc = new THREE.Color(pickRandom(blossomPink)); cr = pc.r; cg = pc.g; cb = pc.b; }
       } else if (cat === 'trunk') { const bend = Math.sin(oy * 0.15) * 0.8; nx = ox * 0.85 + bend + (Math.random() - 0.5) * 0.15; nz = oz * 0.85 + (Math.random() - 0.5) * 0.15; const tc = new THREE.Color(pickRandom(sakuraTrunk)); cr = tc.r; cg = tc.g; cb = tc.b; }
       else if (cat === 'grass') { const gc = new THREE.Color(pickRandom(Math.random() < 0.2 ? mossGreen : sakuraGrass)); cr = gc.r; cg = gc.g; cb = gc.b; }
       else if (cat === 'rock') { const rc = new THREE.Color(pickRandom(sakuraRock)); cr = rc.r; cg = rc.g; cb = rc.b; }
@@ -976,15 +964,19 @@ const _bboxCenter = new THREE.Vector3();
 _islandBBox.getCenter(_bboxCenter);
 const _rayPlane = new THREE.Plane(), _planeIntersect = new THREE.Vector3();
 
-// ✅ CORRIGIDO: mouse relativo ao sceneContainer (não a window)
-sceneContainer.addEventListener('mousemove', (e) => {
+// Mouse relativo ao sceneContainer
+window.addEventListener('mousemove', (e) => {
   const rect = sceneContainer.getBoundingClientRect();
+  // só ativa repulsão se o mouse estiver dentro do hero
+  if (e.clientY < rect.top || e.clientY > rect.bottom) {
+    mouse.x = 9999; mouse.y = 9999; mouseActive = false; return;
+  }
   mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
   mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
   lastMouseMoveTime = performance.now();
   mouseActive = true;
 });
-sceneContainer.addEventListener('mouseleave', () => { mouse.x = 9999; mouse.y = 9999; mouseActive = false; });
+window.addEventListener('mouseleave', () => { mouse.x = 9999; mouse.y = 9999; mouseActive = false; });
 
 const _hitPoint = new THREE.Vector3(), _dir = new THREE.Vector3(), _pos = new THREE.Vector3();
 const _dummy = new THREE.Object3D(), _mat4 = new THREE.Matrix4();
