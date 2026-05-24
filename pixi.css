@@ -349,3 +349,146 @@ footer {
 #ui-panel, #fps-counter {
   position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; overflow: hidden;
 }
+/* SOBRE NÓS pagina */
+/* HEADER */
+.topo {
+  background: #f7f6eb;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+}
+
+.topo img {
+  width: 40px;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.lupa {
+  font-size: 18px;
+}
+
+/* FUNDO VERDE (FULL WIDTH) */
+.secao {
+  width: 100%;
+  background: #8fa7a3;
+  padding: 100px 0;
+  min-height: 80vh;
+}
+
+/* CONTEÚDO CENTRAL */
+.conteudo {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 140px;
+  padding: 0 60px;
+}
+
+/* TÍTULO */
+h1 {
+  font-size: 32px;
+  margin-bottom: 40px;
+}
+
+.stack {
+  position: relative;
+  width: 320px;
+  height: 220px;
+}
+
+/* BASE */
+.base {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 110px;
+  background: #6f8f7c;
+}
+
+/* CARD */
+.card {
+  position: absolute;
+  top: -75px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 260px;
+  background: #e5e5e5;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* SOBRE NÓS */
+.sobretext{
+  width: 100%;
+  max-width: 380px;
+  min-height: 320px;
+  padding: 50px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.secao {
+  width: 100%;
+  background: #8fa7a3;
+  padding: 100px 0;
+  min-height: 85vh;
+}
+
+.devs h1 {
+  font-size: 32px;
+  transform: translateY(-50px);
+  text-align: center;
+}
+.icons {
+  position: relative;
+  top: 10px;
+  right: 40px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  font-family: "Otomanopee One", sans-serif;
+}
+#downarrow {
+  position: relative;
+  top: -19px;
+  right: 6px;
+}
+
+.sobre {
+  color: black;
+  text-decoration: none;
+  font-family: "Otomanopee One";
+  background-color: #dededeb3;
+  font-weight: bold;
+  font-size: 1.3rem;
+  padding: 10px 6px;
+  border-radius: 20px;
+  margin: 0 24px;
+  transition: 0.3s;
+}
+
+.sobre:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.sobre a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
