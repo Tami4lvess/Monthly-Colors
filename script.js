@@ -1996,3 +1996,7 @@ document.querySelectorAll(".lang-menu img").forEach((flag) => {
     arrow.classList.remove("rotate");
   });
 });
+
+
+
+
