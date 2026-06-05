@@ -4,16 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Monthly Colors — Janeiro</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="janeiro.css">
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
-  <a href="pixi.html">
-  <div class="nav-logo">Monthly <span>Colors</span> </div>
-  </a>
+<nav id="mainNav">
+  <a href="pixi.html" class="nav-logo">Monthly <span>Colors</span></a>
   <div class="nav-months">
     <a href="#" class="active">Jan</a><a href="#">Fev</a><a href="#">Mar</a>
     <a href="#">Abr</a><a href="#">Mai</a><a href="#">Jun</a>
@@ -27,32 +25,47 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-left fade-up">
-    <div class="hero-month-label">Mês 01</div>
-    <h1 class="hero-title">JA<em>NEI</em>RO</h1>
-    <p class="hero-subtitle">O mês dos novos começos, das campanhas de saúde e do verão brasileiro em plena força.</p>
-    <div class="estacao-row">
-      <span class="estacao-icon">☀️</span>
-      <span class="estacao-text">
-        <strong>Verão</strong>
-        Hemisfério Sul · Dias longos e quentes
-      </span>
+  <div class="hero-typo-bg" aria-hidden="true">
+    <span class="hero-typo-word">JANEIRO</span>
+  </div>
+  <div class="hero-number" aria-hidden="true">01</div>
+  <div class="hero-bar"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="hero-eyebrow-text">Monthly Colors — Mês 01</span>
+    </div>
+
+    <div class="hero-title-wrap">
+      <span class="hero-t1">JANEIRO</span>
+      <span class="hero-t2">O guardião dos começos</span>
+    </div>
+
+    <div class="hero-bottom fade-up">
+      <p class="hero-desc">O mês dos novos começos, das campanhas de saúde e do verão brasileiro em plena força.</p>
+      <div class="hero-meta">
+        <div class="estacao-row">
+          <span class="estacao-icon">☀️</span>
+          <span class="estacao-text">
+            <strong>Verão</strong>
+            Hemisfério Sul · Dias longos e quentes
+          </span>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="hero-right fade-up">
-    <div class="month-circle">
-      <div class="month-circle-ring"></div>
-      <div class="month-circle-ring month-circle-ring2"></div>
-      <span class="month-circle-inner">J</span>
-      <div class="season-tag">☀ Verão</div>
-    </div>
+
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
   </div>
 </section>
 
 <!-- WAVE -->
 <div class="wave-divider">
   <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#EEF6FD" d="M0,40 C240,0 480,60 720,30 C960,0 1200,50 1440,20 L1440,60 L0,60 Z"/>
+    <path fill="#F5F0E8" d="M0,40 C240,0 480,60 720,30 C960,0 1200,50 1440,20 L1440,60 L0,60 Z"/>
   </svg>
 </div>
 
@@ -197,7 +210,7 @@
     </div>
   </div>
   <svg class="clouds-svg" viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#EEF6FD" d="M0,80 Q60,50 120,80 Q160,100 200,75 Q240,50 300,80 Q360,100 420,70 Q480,40 540,75 Q590,100 640,72 Q700,45 760,78 Q810,100 870,68 Q930,40 990,75 Q1040,100 1100,72 Q1160,44 1220,78 Q1280,100 1340,74 Q1390,55 1440,80 L1440,100 L0,100 Z"/>
+    <path fill="#F5F0E8" d="M0,80 Q60,50 120,80 Q160,100 200,75 Q240,50 300,80 Q360,100 420,70 Q480,40 540,75 Q590,100 640,72 Q700,45 760,78 Q810,100 870,68 Q930,40 990,75 Q1040,100 1100,72 Q1160,44 1220,78 Q1280,100 1340,74 Q1390,55 1440,80 L1440,100 L0,100 Z"/>
   </svg>
 </section>
 
@@ -214,70 +227,70 @@
           <div class="date-num">01</div>
           <div class="date-name">Ano Novo · Confraternização Universal</div>
           <div class="date-desc">Feriado nacional. Celebração do início do ano civil e da paz entre os povos.</div>
-          <a class="date-gcal" onclick="addToCalendar('01/01/2025','Ano Novo - Confraternização Universal')"><span>📅</span> + Google Agenda</a>
+          <a class="date-gcal" onclick="addToCalendar('01/01/2026','Ano Novo - Confraternização Universal')"><span>📅</span> + Google Agenda</a>
         </div>
 
         <div class="date-card" style="border-top: 4px solid #4A7FA8;">
           <div class="date-num" style="color:#4A7FA8;">Jan</div>
           <div class="date-name">🤍 Janeiro Branco — Saúde Mental</div>
           <div class="date-desc">Campanha nacional de conscientização sobre saúde mental e projeto de vida. Durante todo o mês.</div>
-          <a class="date-gcal" onclick="addToCalendar('01/01/2025','Janeiro Branco - Saúde Mental')"><span>📅</span> + Google Agenda</a>
+          <a class="date-gcal" onclick="addToCalendar('01/01/2026','Janeiro Branco - Saúde Mental')"><span>📅</span> + Google Agenda</a>
         </div>
 
         <div class="date-card" style="border-top: 4px solid #6B3FA0;">
           <div class="date-num" style="color:#6B3FA0;">Jan</div>
           <div class="date-name">💜 Janeiro Roxo — Hanseníase</div>
           <div class="date-desc">Campanha nacional de prevenção e combate ao estigma da hanseníase. Durante todo o mês.</div>
-          <a class="date-gcal" onclick="addToCalendar('01/01/2025','Janeiro Roxo - Prevenção à Hanseníase')"><span>📅</span> + Google Agenda</a>
+          <a class="date-gcal" onclick="addToCalendar('01/01/2026','Janeiro Roxo - Prevenção à Hanseníase')"><span>📅</span> + Google Agenda</a>
         </div>
 
         <div class="date-card">
           <div class="date-num">03</div>
           <div class="date-name">Periélio — Terra mais próxima do Sol</div>
           <div class="date-desc">A Terra atinge o ponto mais próximo do Sol no ano (~147 milhões de km). Fenômeno astronômico anual.</div>
-          <a class="date-gcal" onclick="addToCalendar('03/01/2025','Periélio - Terra mais próxima do Sol')"><span>📅</span> + Google Agenda</a>
+          <a class="date-gcal" onclick="addToCalendar('03/01/2026','Periélio - Terra mais próxima do Sol')"><span>📅</span> + Google Agenda</a>
         </div>
 
         <div class="date-card">
           <div class="date-num">06</div>
           <div class="date-name">Dia de Reis (Epifania)</div>
           <div class="date-desc">Encerra o ciclo natalino. Tradição dos Três Reis Magos, celebrada especialmente no Nordeste do Brasil.</div>
-          <a class="date-gcal" onclick="addToCalendar('06/01/2025','Dia de Reis - Epifania')"><span>📅</span> + Google Agenda</a>
+          <a class="date-gcal" onclick="addToCalendar('06/01/2026','Dia de Reis - Epifania')"><span>📅</span> + Google Agenda</a>
         </div>
 
         <div class="date-card">
           <div class="date-num">13</div>
           <div class="date-name">🌕 Lua do Lobo — Lua Cheia</div>
           <div class="date-desc">A Lua Cheia de janeiro, chamada Wolf Moon nas tradições nativas americanas pelos uivos dos lobos no inverno do Hemisfério Norte.</div>
-          <a class="date-gcal" onclick="addToCalendar('13/01/2025','Lua do Lobo - Lua Cheia de Janeiro')"><span>📅</span> + Google Agenda</a>
+          <a class="date-gcal" onclick="addToCalendar('13/01/2026','Lua do Lobo - Lua Cheia de Janeiro')"><span>📅</span> + Google Agenda</a>
         </div>
 
         <div class="date-card">
           <div class="date-num">20</div>
           <div class="date-name">Dia de São Sebastião</div>
           <div class="date-desc">Padroeiro do Rio de Janeiro. Feriado municipal no RJ, com missas e procissões tradicionais.</div>
-          <a class="date-gcal" onclick="addToCalendar('20/01/2025','Dia de São Sebastião')"><span>📅</span> + Google Agenda</a>
+          <a class="date-gcal" onclick="addToCalendar('20/01/2026','Dia de São Sebastião')"><span>📅</span> + Google Agenda</a>
         </div>
 
         <div class="date-card">
           <div class="date-num">20</div>
           <div class="date-name">♒ Sol entra em Aquário</div>
           <div class="date-desc">O sol ingressa em Aquário, signo do ar associado à originalidade, humanismo e pensamento coletivo.</div>
-          <a class="date-gcal" onclick="addToCalendar('20/01/2025','Sol entra em Aquário')"><span>📅</span> + Google Agenda</a>
+          <a class="date-gcal" onclick="addToCalendar('20/01/2026','Sol entra em Aquário')"><span>📅</span> + Google Agenda</a>
         </div>
 
         <div class="date-card">
           <div class="date-num">25</div>
           <div class="date-name">Aniversário de São Paulo</div>
           <div class="date-desc">A maior cidade do Brasil completa mais um ano. Feriado municipal na capital paulista, com shows e eventos culturais.</div>
-          <a class="date-gcal" onclick="addToCalendar('25/01/2025','Aniversário de São Paulo')"><span>📅</span> + Google Agenda</a>
+          <a class="date-gcal" onclick="addToCalendar('25/01/2026','Aniversário de São Paulo')"><span>📅</span> + Google Agenda</a>
         </div>
 
         <div class="date-card">
           <div class="date-num">29</div>
           <div class="date-name">Dia Nacional da Visibilidade Trans</div>
           <div class="date-desc">Data de conscientização sobre os direitos e a visibilidade da população transgênero no Brasil.</div>
-          <a class="date-gcal" onclick="addToCalendar('29/01/2025','Dia Nacional da Visibilidade Trans')"><span>📅</span> + Google Agenda</a>
+          <a class="date-gcal" onclick="addToCalendar('29/01/2026','Dia Nacional da Visibilidade Trans')"><span>📅</span> + Google Agenda</a>
         </div>
 
       </div>
@@ -383,61 +396,9 @@
       <!-- MOONS PANEL -->
       <div class="moon-panel fade-up">
         <div class="moon-panel-title">Fases da Lua</div>
-        <div class="moon-panel-sub">Janeiro 2025</div>
-        <div class="moons-row">
-
-          <div class="moon-item">
-            <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
-              <defs><radialGradient id="ng1" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#2A3A4A"/><stop offset="100%" stop-color="#0D1520"/></radialGradient></defs>
-              <circle cx="32" cy="32" r="28" fill="url(#ng1)" stroke="#1E3A50" stroke-width="1.5"/>
-              <circle cx="26" cy="26" r="4" fill="rgba(255,255,255,0.04)"/>
-              <circle cx="38" cy="36" r="3" fill="rgba(255,255,255,0.03)"/>
-            </svg>
-            <span class="moon-label">Nova</span>
-            <span class="moon-date">29 Jan</span>
-          </div>
-
-          <div class="moon-item">
-            <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
-              <defs>
-                <radialGradient id="qcg" cx="60%" cy="35%" r="65%"><stop offset="0%" stop-color="#E8D5A0"/><stop offset="50%" stop-color="#C4A85A"/><stop offset="100%" stop-color="#8A6A20"/></radialGradient>
-                <clipPath id="qc-clip"><rect x="32" y="4" width="28" height="56"/></clipPath>
-              </defs>
-              <circle cx="32" cy="32" r="28" fill="#0D1520" stroke="#1E3A50" stroke-width="1"/>
-              <circle cx="32" cy="32" r="28" fill="url(#qcg)" clip-path="url(#qc-clip)"/>
-              <ellipse cx="32" cy="32" rx="8" ry="28" fill="#0D1520"/>
-            </svg>
-            <span class="moon-label">Crescente</span>
-            <span class="moon-date">06 Jan</span>
-          </div>
-
-          <div class="moon-item">
-            <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
-              <defs><radialGradient id="lcg" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#FFF5D6"/><stop offset="40%" stop-color="#E8C87A"/><stop offset="100%" stop-color="#A07A30"/></radialGradient></defs>
-              <circle cx="32" cy="32" r="26" fill="url(#lcg)" stroke="rgba(255,220,100,0.3)" stroke-width="1"/>
-              <circle cx="24" cy="22" r="5" fill="rgba(160,120,40,0.25)"/>
-              <circle cx="38" cy="30" r="3.5" fill="rgba(160,120,40,0.2)"/>
-              <circle cx="28" cy="38" r="4" fill="rgba(160,120,40,0.2)"/>
-            </svg>
-            <span class="moon-label">Cheia</span>
-            <span class="moon-date">13 Jan</span>
-          </div>
-
-          <div class="moon-item">
-            <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
-              <defs>
-                <radialGradient id="qmg" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#E8D5A0"/><stop offset="50%" stop-color="#C4A85A"/><stop offset="100%" stop-color="#8A6A20"/></radialGradient>
-                <clipPath id="qm-clip"><rect x="4" y="4" width="28" height="56"/></clipPath>
-              </defs>
-              <circle cx="32" cy="32" r="28" fill="#0D1520" stroke="#1E3A50" stroke-width="1"/>
-              <circle cx="32" cy="32" r="28" fill="url(#qmg)" clip-path="url(#qm-clip)"/>
-              <ellipse cx="32" cy="32" rx="8" ry="28" fill="#0D1520"/>
-            </svg>
-            <span class="moon-label">Minguante</span>
-            <span class="moon-date">21 Jan</span>
-          </div>
-
-        </div>
+        <div class="moon-panel-sub">Janeiro …</div>
+        <!-- as fases são preenchidas automaticamente pelo janeiro.js -->
+        <div class="moons-row"></div>
         <div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(200,224,244,0.1);">
           <p style="font-size:0.72rem;color:rgba(200,224,244,0.45);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Lua do Lobo</p>
           <p style="font-size:0.82rem;color:rgba(200,224,244,0.7);line-height:1.6;">A Lua Cheia de Janeiro é chamada de <em>Wolf Moon</em> (Lua do Lobo) nas tradições nativas americanas — nome dado pelo uivo dos lobos nas noites frias de inverno do Hemisfério Norte.</p>
@@ -468,5 +429,13 @@
 <div class="gcal-toast" id="gcalToast">📅 Abrindo Google Agenda...</div>
 
 <script src="janeiro.js"></script>
+<script>
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 60);
+  });
+</script>
+
+
 </body>
 </html>

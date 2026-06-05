@@ -446,15 +446,39 @@ body {
 /* Grid de cards */
 .container-meses {
   display: grid;
-  grid-template-columns: repeat(3, 460px);
+  grid-template-columns: repeat(3, minmax(0, 460px));
   gap: 30px 20px;
   justify-content: center;
   margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media (max-width: 1100px) {
+  .container-meses {
+    grid-template-columns: repeat(2, minmax(0, 460px));
+  }
+}
+
+@media (max-width: 680px) {
+  .container-meses {
+    grid-template-columns: 1fr;
+    padding-left: 20px;
+    padding-right: 20px;
+    gap: 18px;
+  }
+
+  #meses .sinalizacao,
+  #meses .container-meses {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
 
 .mes {
   position: relative;
-  width: 460px;
+  width: 100%;
+  max-width: 460px;
   height: 280px;
   border-radius: 20px;
   background: #5a82b0;
@@ -470,6 +494,14 @@ body {
     transform 0.3s ease,
     background 0.3s ease;
 }
+
+@media (max-width: 480px) {
+  .mes {
+    height: 160px;
+    font-size: 17px;
+  }
+}
+
 .mes:hover {
   transform: scale(1.03);
   background: #4d74a3;
@@ -750,7 +782,7 @@ h1 {
 }
 #downarrow {
   position: relative;
-  top: -19px;
+  top: -1px;
   right: 6px;
 }
 
@@ -777,5 +809,3 @@ h1 {
   color: inherit;
   display: block;
 }
-
-
