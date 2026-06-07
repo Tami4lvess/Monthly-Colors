@@ -575,3 +575,15 @@ footer p { font-size:0.7rem; color:rgba(168,204,232,0.25); letter-spacing:0.05em
 /* ── FADE UP ─────────────────────────────────────────────────────────────── */
 .fade-up { opacity:0; transform:translateY(26px); transition:opacity 0.7s ease, transform 0.7s ease; }
 .fade-up.visible { opacity:1; transform:translateY(0); }
+
+/* ajustes finos */
+* {
+    user-select: none;
+    -webkit-user-select: none; /* Chrome, Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Edge antigo */
+}
+img {
+    pointer-events: none;
+    -webkit-user-drag: none;
+}

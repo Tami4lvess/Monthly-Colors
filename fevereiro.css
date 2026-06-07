@@ -604,3 +604,15 @@ footer p { font-size: 0.7rem; color: rgba(245,185,145,0.25); letter-spacing: 0.0
 @media(max-width:600px){
   .color-section,.campaigns-section,.meaning-section,.dates-section,.curiosities-section { padding-left:24px; padding-right:24px; }
 }
+
+/* ajustes finos */
+* {
+    user-select: none;
+    -webkit-user-select: none; /* Chrome, Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Edge antigo */
+}
+img {
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
