@@ -92,7 +92,7 @@ try {
   renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.VSMShadowMap;
-  // ✅ CORRIGIDO: canvas vai direto pro sceneContainer
+  //  CORRIGIDO: canvas vai direto pro sceneContainer
   sceneContainer.appendChild(renderer.domElement);
   await renderer.init();
   console.log("WebGPU renderer initialized");
@@ -105,7 +105,7 @@ try {
   renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.VSMShadowMap;
-  // ✅ CORRIGIDO: canvas vai direto pro sceneContainer
+  //  CORRIGIDO: canvas vai direto pro sceneContainer
   sceneContainer.appendChild(renderer.domElement);
   await renderer.init();
 }
