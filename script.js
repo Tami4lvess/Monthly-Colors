@@ -59,7 +59,7 @@ try {
 // Scene setup
 const scene = new THREE.Scene();
 
-// ✅ CORRIGIDO: aponta para o container correto no HTML
+//  CORRIGIDO: aponta para o container correto no HTML
 const sceneContainer = document.getElementById("canvas-container");
 
 const containerW = () => sceneContainer.clientWidth || window.innerWidth;
