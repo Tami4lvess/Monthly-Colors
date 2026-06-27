@@ -1991,12 +1991,38 @@ document.querySelector(".lang-btn").addEventListener("click", () => {
 });
 document.querySelectorAll(".lang-menu img").forEach((flag) => {
   flag.addEventListener("click", () => {
-    currentFlag.setAttribute("src", flag.getAttribute("src"));
+    const novoSrc = flag.getAttribute("src");
+    const srcAtual = currentFlag.getAttribute("src");
+
+    // Se já é a bandeira selecionada, só fecha o menu
+    if (novoSrc === srcAtual) {
+      menu.classList.remove("active");
+      arrow.classList.remove("rotate");
+      return;
+    }
+
+    // Anima a saída da bandeira atual (gira e encolhe)
+    currentFlag.classList.add("flag-swap-out");
+
+    setTimeout(() => {
+      // Troca a imagem exibida
+      currentFlag.setAttribute("src", novoSrc);
+
+      // A bandeira clicada no menu assume o lugar (visualmente) da antiga,
+      // recebendo a bandeira anterior e fazendo a animação de entrada
+      flag.setAttribute("src", srcAtual);
+
+      currentFlag.classList.remove("flag-swap-out");
+      currentFlag.classList.add("flag-swap-in");
+      flag.classList.add("flag-menu-swap");
+
+      setTimeout(() => {
+        currentFlag.classList.remove("flag-swap-in");
+        flag.classList.remove("flag-menu-swap");
+      }, 350);
+    }, 220);
+
     menu.classList.remove("active");
     arrow.classList.remove("rotate");
   });
 });
-
-
-
-

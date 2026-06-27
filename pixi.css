@@ -377,6 +377,58 @@ body {
   transform: scale(1.1);
 }
 
+/* ===== ANIMAÇÃO DE TROCA DE BANDEIRA ===== */
+#currentFlag {
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.flag-swap-out {
+  animation: flagSwapOut 0.22s ease forwards;
+}
+.flag-swap-in {
+  animation: flagSwapIn 0.35s ease;
+}
+.flag-menu-swap {
+  animation: flagMenuSwapIn 0.35s ease;
+}
+@keyframes flagSwapOut {
+  0% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(90deg) scale(0.6);
+    opacity: 0;
+  }
+}
+@keyframes flagSwapIn {
+  0% {
+    transform: rotateY(-90deg) scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: rotateY(10deg) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+}
+@keyframes flagMenuSwapIn {
+  0% {
+    transform: scale(0.5) rotate(-8deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12) rotate(4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
 /* ===== SCROLL DOWN ===== */
 .scroll-down {
   position: absolute;
@@ -490,6 +542,7 @@ body {
   font-family: "Instrument Serif", serif;
   overflow: hidden;
   cursor: pointer;
+  text-decoration: none;
   transition:
     transform 0.3s ease,
     background 0.3s ease;
