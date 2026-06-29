@@ -69,7 +69,10 @@ const camera = new THREE.PerspectiveCamera(
   40,
   containerW() / containerH(),
   0.5,
-  500,
+  150, // ⚡ Otimização de leveza: era 500. A árvore + folhas caindo nunca
+  // passam de ~85 unidades de distância da câmera; 150 dá margem confortável
+  // sem desperdiçar GPU processando ~350 unidades de espaço vazio que
+  // nunca aparecem na tela (sombra, AO e profundidade calculam menos).
 );
 camera.position.set(30, 30, 66);
 camera.lookAt(0, 6, 0);
@@ -1860,7 +1863,7 @@ controls.enablePan = false;
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.minDistance = 2;
-controls.maxDistance = 500;
+controls.maxDistance = 150; // ajustado para ficar consistente com o novo far da câmera
 controls.target.set(0, 6, 0);
 
 // Post-processing

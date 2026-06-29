@@ -546,6 +546,14 @@ body {
   transition:
     transform 0.3s ease,
     background 0.3s ease;
+  /* ⚡ Otimização de leveza: isola este card numa camada de composição
+     própria. Sem isso, o navegador pode reavaliar/repintar elementos
+     vizinhos (inclusive o canvas 3D do header) toda vez que a borda
+     anima — "contain" garante que o que muda aqui dentro NUNCA afeta
+     o layout/pintura do resto da página. */
+  contain: layout style paint;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 @media (max-width: 480px) {
@@ -556,7 +564,7 @@ body {
 }
 
 .mes:hover {
-  transform: scale(1.03);
+  transform: scale(1.03) translateZ(0);
   background: #4d74a3;
 }
 
