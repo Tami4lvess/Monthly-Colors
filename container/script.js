@@ -1311,6 +1311,12 @@ function startMorph(toVariation) {
   morphTo = toVariation;
   morphStartTime = performance.now();
   isMorphing = true;
+  // Se a troca de variação aconteceu enquanto o vídeo ocioso está tocando
+  // (ex.: usuário clicou no botão de variação), a cena 3D real ainda
+  // precisa rodar para concluir o morph — então sai do modo vídeo agora
+  // e deixa o watcher de inatividade reativar o vídeo certo depois.
+  lastUserActivityTime = performance.now();
+  if (idleModeActive) exitIdleMode();
 }
 
 function updateMorph() {
@@ -1593,25 +1599,104 @@ const _rayPlane = new THREE.Plane(),
   _planeIntersect = new THREE.Vector3();
 
 // Mouse relativo ao sceneContainer
-window.addEventListener("mousemove", (e) => {
-  const rect = sceneContainer.getBoundingClientRect();
-  // só ativa repulsão se o mouse estiver dentro do hero
-  if (e.clientY < rect.top || e.clientY > rect.bottom) {
-    mouse.x = 9999;
-    mouse.y = 9999;
-    mouseActive = false;
-    return;
-  }
-  mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-  mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-  lastMouseMoveTime = performance.now();
-  mouseActive = true;
-});
+window.addEventListener(
+  "mousemove",
+  (e) => {
+    const rect = sceneContainer.getBoundingClientRect();
+    // só ativa repulsão se o mouse estiver dentro do hero
+    if (e.clientY < rect.top || e.clientY > rect.bottom) {
+      mouse.x = 9999;
+      mouse.y = 9999;
+      mouseActive = false;
+      return;
+    }
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    lastMouseMoveTime = performance.now();
+    mouseActive = true;
+  },
+  { passive: true },
+);
 window.addEventListener("mouseleave", () => {
   mouse.x = 9999;
   mouse.y = 9999;
   mouseActive = false;
 });
+
+// === MODO OCIOSO (vídeo substitui a animação 3D) ===========================
+// Depois de IDLE_TIMEOUT segundos sem interação dentro do hero, o render
+// loop do Three.js é pausado e um <video> pré-gravado (igual à variação
+// atual) assume visualmente. Ao mover o mouse / tocar a tela de novo, a
+// animação 3D ao vivo volta. Isso elimina o maior custo de CPU/GPU do site
+// (o loop de render contínuo) sem perder a folhagem caindo na árvore, já
+// que o vídeo é uma gravação da própria árvore ociosa soltando folhas.
+const IDLE_TIMEOUT = 9; // segundos parados até trocar para vídeo
+const idleVideos = Array.from(document.querySelectorAll(".idle-video"));
+let idleModeActive = false;
+let renderLoopPaused = false;
+let lastUserActivityTime = performance.now();
+
+function getActiveIdleVideo() {
+  return idleVideos.find(
+    (v) => parseInt(v.dataset.variation, 10) === currentVariation,
+  );
+}
+
+function enterIdleMode() {
+  if (idleModeActive) return;
+  const video = getActiveIdleVideo();
+  // Sem vídeo correspondente disponível (ainda não gravado/carregado):
+  // mantém a animação 3D ao vivo normalmente, sem quebrar nada.
+  if (!video) return;
+  idleModeActive = true;
+  sceneContainer.classList.add("idle-mode");
+  idleVideos.forEach((v) => v.classList.remove("is-active"));
+  video.preload = "auto";
+  video.classList.add("is-active");
+  const playPromise = video.play();
+  if (playPromise && playPromise.catch) playPromise.catch(() => {});
+  pauseRenderLoop();
+}
+
+function exitIdleMode() {
+  if (!idleModeActive) return;
+  idleModeActive = false;
+  sceneContainer.classList.remove("idle-mode");
+  idleVideos.forEach((v) => {
+    v.classList.remove("is-active");
+    v.pause();
+  });
+  resumeRenderLoop();
+}
+
+function registerActivity() {
+  lastUserActivityTime = performance.now();
+  if (idleModeActive) exitIdleMode();
+}
+
+// Só sai do modo vídeo quando o mouse de fato se aproxima da área do hero
+// (mesmo retângulo usado pela repulsão 3D) — mover o mouse em outra parte
+// da página não deve reativar a cena 3D pesada.
+function registerActivityIfInsideHero(e) {
+  const rect = sceneContainer.getBoundingClientRect();
+  if (e.clientY >= rect.top && e.clientY <= rect.bottom) {
+    registerActivity();
+  }
+}
+window.addEventListener("mousemove", registerActivityIfInsideHero);
+window.addEventListener("pointerdown", registerActivityIfInsideHero);
+window.addEventListener("touchstart", registerActivityIfInsideHero, {
+  passive: true,
+});
+document.querySelectorAll(".morph-btn").forEach((btn) => {
+  btn.addEventListener("pointerenter", registerActivity);
+});
+
+function updateIdleWatcher() {
+  if (idleModeActive) return;
+  const idleFor = (performance.now() - lastUserActivityTime) / 1000;
+  if (idleFor >= IDLE_TIMEOUT) enterIdleMode();
+}
 
 const _hitPoint = new THREE.Vector3(),
   _dir = new THREE.Vector3(),
@@ -1770,6 +1855,8 @@ scene.add(accentLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableZoom = false;
+controls.enableRotate = false; // ❌ Removido a pedido: não gira mais a câmera ao arrastar o mouse
+controls.enablePan = false;
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.minDistance = 2;
@@ -1904,6 +1991,31 @@ let frameCount = 0,
   lastFpsTime = performance.now(),
   lastTime = performance.now();
 
+// Controle de pausa do render loop. Quando pausado (modo vídeo ocioso,
+// aba em segundo plano, ou hero fora da viewport), o WebGPU/WebGL renderer
+// para de desenhar frames — o maior consumidor de GPU/CPU do site — sem
+// destruir a cena, então a volta é instantânea e sem flicker.
+let tabVisible = true;
+let heroInView = true;
+
+function shouldRender() {
+  return tabVisible && heroInView && !idleModeActive;
+}
+
+function pauseRenderLoop() {
+  if (renderLoopPaused) return;
+  renderLoopPaused = true;
+  renderer.setAnimationLoop(null);
+}
+
+function resumeRenderLoop() {
+  if (!renderLoopPaused) return;
+  if (!shouldRender()) return; // ainda há outro motivo para ficar pausado
+  renderLoopPaused = false;
+  lastTime = performance.now();
+  renderer.setAnimationLoop(animate);
+}
+
 function animate() {
   const now2 = performance.now();
   const dt = (now2 - lastTime) / 1000;
@@ -1917,6 +2029,7 @@ function animate() {
     frameCount = 0;
     lastFpsTime = now;
   }
+  updateIdleWatcher();
   controls.update();
   updateAdaptiveQuality();
   updateMorph();
@@ -1927,14 +2040,70 @@ function animate() {
 }
 renderer.setAnimationLoop(animate);
 
+// Pausa tudo quando a aba não está visível (troca de aba, minimizado etc),
+// incluindo o <video> ocioso, se estiver tocando — não tem porquê decodificar
+// vídeo numa aba que o usuário não está olhando.
+document.addEventListener("visibilitychange", () => {
+  tabVisible = document.visibilityState === "visible";
+  if (!tabVisible) {
+    pauseRenderLoop();
+  } else if (heroInView) {
+    resumeRenderLoop();
+  }
+  updateIdleVideoPlaybackState();
+});
+
+// Pausa quando o hero saiu da viewport (usuário rolou a página para baixo);
+// volta a renderizar (ou a tocar o vídeo) só quando o hero estiver visível
+// de novo.
+if ("IntersectionObserver" in window) {
+  const heroObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        heroInView = entry.isIntersecting;
+        if (!heroInView) {
+          pauseRenderLoop();
+        } else if (tabVisible) {
+          resumeRenderLoop();
+        }
+        updateIdleVideoPlaybackState();
+      });
+    },
+    { threshold: 0.01 },
+  );
+  heroObserver.observe(document.getElementById("hero"));
+}
+
+// Mantém o <video> ocioso tocando apenas quando a aba está visível E o hero
+// está na viewport — evita decodificar vídeo desnecessariamente.
+function updateIdleVideoPlaybackState() {
+  if (!idleModeActive) return;
+  const activeVideo = getActiveIdleVideo();
+  if (!activeVideo) return;
+  const videoShouldPlay = tabVisible && heroInView;
+  if (videoShouldPlay && activeVideo.paused) {
+    const p = activeVideo.play();
+    if (p && p.catch) p.catch(() => {});
+  } else if (!videoShouldPlay && !activeVideo.paused) {
+    activeVideo.pause();
+  }
+}
+
 // ✅ CORRIGIDO: resize usa sceneContainer
+// Agrupa chamadas de resize num único requestAnimationFrame — evita recalcular
+// câmera/renderer dezenas de vezes por segundo durante o arraste da janela.
+let resizeRAF = null;
 window.addEventListener("resize", () => {
-  camera.aspect = containerW() / containerH();
-  camera.updateProjectionMatrix();
-  applyViewOffset();
-  renderer.setSize(containerW(), containerH());
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  lastAdaptiveDist = -1;
+  if (resizeRAF) return;
+  resizeRAF = requestAnimationFrame(() => {
+    resizeRAF = null;
+    camera.aspect = containerW() / containerH();
+    camera.updateProjectionMatrix();
+    applyViewOffset();
+    renderer.setSize(containerW(), containerH());
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    lastAdaptiveDist = -1;
+  });
 });
 
 // Morph buttons
@@ -1985,10 +2154,26 @@ document.querySelectorAll(".letter").forEach((letter) => {
 const menu = document.getElementById("langMenu");
 const arrow = document.getElementById("downarrow");
 const currentFlag = document.getElementById("currentFlag");
+
 document.querySelector(".lang-btn").addEventListener("click", () => {
   menu.classList.toggle("active");
   arrow.classList.toggle("rotate");
 });
+
+// Fecha o menu se o usuário clicar fora dele (clique em qualquer outro
+// lugar da página) — evita o menu ficar aberto "preso" na tela.
+document.addEventListener("click", (e) => {
+  const langIcon = document.querySelector(".lang-icon");
+  if (langIcon && !langIcon.contains(e.target)) {
+    menu.classList.remove("active");
+    arrow.classList.remove("rotate");
+  }
+});
+
+// O menu sempre mostra as mesmas opções fixas (Brasil / EUA), definidas no
+// HTML. Clicar numa bandeira do menu só troca qual bandeira aparece em
+// destaque (#currentFlag) — as imagens dentro do menu NUNCA mudam de src,
+// evitando o bug de duas bandeiras iguais aparecerem ao mesmo tempo.
 document.querySelectorAll(".lang-menu img").forEach((flag) => {
   flag.addEventListener("click", () => {
     const novoSrc = flag.getAttribute("src");
@@ -2005,20 +2190,15 @@ document.querySelectorAll(".lang-menu img").forEach((flag) => {
     currentFlag.classList.add("flag-swap-out");
 
     setTimeout(() => {
-      // Troca a imagem exibida
+      // Troca a imagem exibida em destaque — o menu permanece intocado
       currentFlag.setAttribute("src", novoSrc);
-
-      // A bandeira clicada no menu assume o lugar (visualmente) da antiga,
-      // recebendo a bandeira anterior e fazendo a animação de entrada
-      flag.setAttribute("src", srcAtual);
+      currentFlag.setAttribute("alt", flag.getAttribute("alt") || "");
 
       currentFlag.classList.remove("flag-swap-out");
       currentFlag.classList.add("flag-swap-in");
-      flag.classList.add("flag-menu-swap");
 
       setTimeout(() => {
         currentFlag.classList.remove("flag-swap-in");
-        flag.classList.remove("flag-menu-swap");
       }, 350);
     }, 220);
 
