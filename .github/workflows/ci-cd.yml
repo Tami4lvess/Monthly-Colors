@@ -1,0 +1,23 @@
+name: CI-learning
+
+on:
+  push:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do projeto
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar ESLint
+        run: npm run lint

@@ -1,0 +1,27 @@
+{
+  "name": "tree-pixel",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000T\u0000r\u0000e\u0000e\u0000-\u0000P\u0000i\u0000x\u0000e\u0000l\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tami4lvess/Tree-Pixel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Tami4lvess/Tree-Pixel/issues"
+  },
+  "homepage": "https://github.com/Tami4lvess/Tree-Pixel#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.6.0",
+    "globals": "^17.7.0"
+  }
+}
