@@ -1,0 +1,97 @@
+name: CI/CD - Publicar site no GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - feature/ci-cd
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  lint:
+    name: Verificar ESLint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o projeto
+        uses: actions/checkout@v6
+
+      - name: Preparar o Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Executar lint
+        run: npm run lint
+
+  preparar-site:
+    name: Preparar site estatico
+    needs: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o projeto
+        uses: actions/checkout@v6
+
+      - name: Configurar o GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Preparar os arquivos publicados
+        shell: bash
+        run: |
+          mkdir -p _site
+
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='node_modules/' \
+            --exclude='_site/' \
+            ./ _site/
+
+          cat > _site/index.html <<'EOF'
+          <!doctype html>
+          <html lang="pt-BR">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <meta http-equiv="refresh" content="0; url=./container/pixi.html">
+              <title>Monthly Colors</title>
+            </head>
+            <body>
+              <p>Abrindo o site...</p>
+              <script>window.location.replace('./container/pixi.html');</script>
+            </body>
+          </html>
+          EOF
+
+      - name: Enviar arquivos para publicacao
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  publicar:
+    name: Publicar no GitHub Pages
+    needs: preparar-site
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Publicar site
+        id: deployment
+        uses: actions/deploy-pages@v5
