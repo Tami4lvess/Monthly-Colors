@@ -59,6 +59,14 @@ try {
 // Scene setup
 const scene = new THREE.Scene();
 
+// ⚡ Detecção de dispositivo leve: telas pequenas e/ou touch (sem mouse fino)
+// rodam em GPUs bem mais fracas que desktop, então usamos isso para cortar
+// os efeitos mais caros (AO, SSR, sombras em alta resolução, MSAA) e manter
+// a animação fluida no celular.
+const isMobile =
+  window.matchMedia("(max-width: 820px)").matches ||
+  window.matchMedia("(pointer: coarse)").matches;
+
 //  CORRIGIDO: aponta para o container correto no HTML
 const sceneContainer = document.getElementById("canvas-container");
 
@@ -88,26 +96,37 @@ applyViewOffset();
 
 let renderer;
 try {
-  renderer = new THREE.WebGPURenderer({ antialias: true });
+  renderer = new THREE.WebGPURenderer({ antialias: !isMobile });
   renderer.setSize(containerW(), containerH());
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setPixelRatio(
+    isMobile ? 1 : Math.min(window.devicePixelRatio, 1.5),
+  );
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.VSMShadowMap;
+  renderer.shadowMap.type = isMobile
+    ? THREE.PCFShadowMap
+    : THREE.VSMShadowMap;
   //  CORRIGIDO: canvas vai direto pro sceneContainer
   sceneContainer.appendChild(renderer.domElement);
   await renderer.init();
   console.log("WebGPU renderer initialized");
 } catch (e) {
   console.warn("WebGPU not available, falling back to WebGL:", e);
-  renderer = new THREE.WebGPURenderer({ antialias: true, forceWebGL: true });
+  renderer = new THREE.WebGPURenderer({
+    antialias: !isMobile,
+    forceWebGL: true,
+  });
   renderer.setSize(containerW(), containerH());
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setPixelRatio(
+    isMobile ? 1 : Math.min(window.devicePixelRatio, 1.5),
+  );
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.VSMShadowMap;
+  renderer.shadowMap.type = isMobile
+    ? THREE.PCFShadowMap
+    : THREE.VSMShadowMap;
   //  CORRIGIDO: canvas vai direto pro sceneContainer
   sceneContainer.appendChild(renderer.domElement);
   await renderer.init();
@@ -462,18 +481,6 @@ const stoneUndersideColors = [
   "#63594F",
   "#7A7068",
 ];
-
-function islandRadius(y) {
-  if (y <= -1) return 8.5;
-  if (y === 0) return 7.5;
-  if (y === 1) return 6.0;
-  if (y === 2) return 4.5;
-  if (y === 3) return 3.5;
-  if (y === 4) return 2.8;
-  if (y === 5) return 2.0;
-  if (y === 6) return 1.2;
-  return 0;
-}
 
 for (let x = -8; x <= 8; x++) {
   for (let z = -6; z <= 6; z++) {
@@ -1442,7 +1449,7 @@ dustPoints.name = "dustMotes";
 dustPoints.frustumCulled = false;
 particleGroup.add(dustPoints);
 
-const fallingLeafCount = 40;
+const fallingLeafCount = isMobile ? 18 : 40;
 const leafQuadGeo = new THREE.PlaneGeometry(0.5, 0.5);
 const leafQuadMat = new THREE.MeshBasicNodeMaterial({
   transparent: true,
@@ -1817,8 +1824,8 @@ scene.add(ambientLight);
 const mainLight = new THREE.DirectionalLight(0xfff5e0, 2.5);
 mainLight.position.set(6, 14, 5);
 mainLight.castShadow = true;
-mainLight.shadow.mapSize.width = 2048;
-mainLight.shadow.mapSize.height = 2048;
+mainLight.shadow.mapSize.width = isMobile ? 1024 : 2048;
+mainLight.shadow.mapSize.height = isMobile ? 1024 : 2048;
 mainLight.shadow.camera.near = 0.5;
 mainLight.shadow.camera.far = 40;
 mainLight.shadow.camera.left = -32;
@@ -1833,8 +1840,8 @@ scene.add(mainLight);
 const softShadowLight = new THREE.DirectionalLight(0xffeedd, 0.6);
 softShadowLight.position.set(-3, 8, 6);
 softShadowLight.castShadow = true;
-softShadowLight.shadow.mapSize.width = 512;
-softShadowLight.shadow.mapSize.height = 512;
+softShadowLight.shadow.mapSize.width = isMobile ? 256 : 512;
+softShadowLight.shadow.mapSize.height = isMobile ? 256 : 512;
 softShadowLight.shadow.camera.near = 0.5;
 softShadowLight.shadow.camera.far = 30;
 softShadowLight.shadow.camera.left = -24;
@@ -1881,7 +1888,7 @@ try {
   const scenePassMetalness = scenePass.getTextureNode("metalness");
   const scenePassRoughness = scenePass.getTextureNode("roughness");
   let currentOutput = scenePassColor;
-  if (ao) {
+  if (ao && !isMobile) {
     try {
       aoPass = ao(scenePassDepth, scenePassNormal, camera);
       aoPass.resolutionScale = 1.0;
@@ -1918,7 +1925,7 @@ try {
       console.warn("GTAO setup failed:", e);
     }
   }
-  if (ssrModule && ssrModule.ssr) {
+  if (ssrModule && ssrModule.ssr && !isMobile) {
     try {
       ssrPass = ssrModule.ssr(
         scenePassColor,
@@ -1962,8 +1969,8 @@ const aoBaseSettings = { samples: 16, radius: 0.6 };
 const AO_NEAR_DIST = 3,
   AO_FAR_DIST = 8;
 let lastAdaptiveDist = -1;
-let aoEnabled = true,
-  ssrEnabled = true,
+let aoEnabled = !isMobile,
+  ssrEnabled = !isMobile,
   bloomEnabled = true;
 let aoSavedThickness = 1.6,
   ssrSavedStrength = 0.25,
@@ -1985,7 +1992,9 @@ function updateAdaptiveQuality() {
   }
   if (ssrPass && ssrEnabled) ssrPass.resolutionScale = 0.15 + 0.1 * s;
   renderer.setPixelRatio(
-    Math.max(1, Math.min(window.devicePixelRatio, 1.5) * (0.75 + 0.25 * s)),
+    isMobile
+      ? 1
+      : Math.max(1, Math.min(window.devicePixelRatio, 1.5) * (0.75 + 0.25 * s)),
   );
 }
 
@@ -2104,7 +2113,7 @@ window.addEventListener("resize", () => {
     camera.updateProjectionMatrix();
     applyViewOffset();
     renderer.setSize(containerW(), containerH());
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.5));
     lastAdaptiveDist = -1;
   });
 });

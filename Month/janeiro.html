@@ -4,31 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Monthly Colors — Janeiro</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="janeiro.css">
 </head>
 <body>
 
 <!-- NAV -->
 <nav id="mainNav">
-  <a href="../container/pixi.html?v=3" class="nav-logo">Monthly <span>Colors</span></a>
-  <div class="nav-months">
-    <a href="../Month/janeiro.html?v=3" class="active">Jan</a><a href="../Month/fevereiro.html?v=3">Fev</a><a href="../Month/marco.html?v=3">Mar</a>
-    <a href="#">Abr</a><a href="#">Mai</a><a href="#">Jun</a>
+  <a href="../container/pixi.html" class="nav-logo">Monthly <span>Colors</span></a>
+  <div class="nav-months" id="navMonths">
+    <a href="../Month/janeiro.html" class="active">Jan</a><a href="../Month/fevereiro.html">Fev</a><a href="../Month/marco.html">Mar</a>
+    <a href="../Month/abril.html">Abr</a><a href="#">Mai</a><a href="#">Jun</a>
     <a href="#">Jul</a><a href="#">Ago</a><a href="#">Set</a>
     <a href="#">Out</a><a href="#">Nov</a><a href="#">Dez</a>
   </div>
   <button class="nav-search" onclick="alert('Busca em breve!')" aria-label="Buscar">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
   </button>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu de meses" aria-expanded="false" aria-controls="navMonths">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-typo-bg" aria-hidden="true">
-    <span class="hero-typo-word">JANEIRO</span>
-  </div>
-  <div class="hero-number" aria-hidden="true">01</div>
+  <div class="hero-accent"></div>
+  <div class="hero-accent2"></div>
+  <div class="hero-ghost-word" aria-hidden="true">JANEIRO</div>
+  <div class="hero-bg-number" aria-hidden="true">01</div>
+  <div class="hero-lines" aria-hidden="true"></div>
   <div class="hero-bar"></div>
 
   <div class="hero-content">
@@ -39,11 +43,9 @@
 
     <div class="hero-title-wrap">
       <span class="hero-t1">JANEIRO</span>
-   
     </div>
 
     <div class="hero-bottom fade-up">
-      <p class="hero-desc">O mês dos novos começos, das campanhas de saúde e do verão brasileiro em plena força.</p>
       <div class="hero-meta">
         <div class="estacao-row">
           <span class="estacao-icon">☀️</span>
@@ -56,7 +58,7 @@
     </div>
   </div>
 
-
+  
 </section>
 
 <!-- WAVE -->
@@ -207,7 +209,7 @@
     </div>
   </div>
   <svg class="clouds-svg" viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#F5F0E8" d="M0,80 Q60,50 120,80 Q160,100 200,75 Q240,50 300,80 Q360,100 420,70 Q480,40 540,75 Q590,100 640,72 Q700,45 760,78 Q810,100 870,68 Q930,40 990,75 Q1040,100 1100,72 Q1160,44 1220,78 Q1280,100 1340,74 Q1390,55 1440,80 L1440,100 L0,100 Z"/>
+    <path fill="#FAF7F2" d="M0,80 Q60,50 120,80 Q160,100 200,75 Q240,50 300,80 Q360,100 420,70 Q480,40 540,75 Q590,100 640,72 Q700,45 760,78 Q810,100 870,68 Q930,40 990,75 Q1040,100 1100,72 Q1160,44 1220,78 Q1280,100 1340,74 Q1390,55 1440,80 L1440,100 L0,100 Z"/>
   </svg>
 </section>
 
@@ -428,11 +430,37 @@
 <script src="janeiro.js"></script>
 <script>
   // Nav scroll effect
+  const nav = document.getElementById('mainNav');
   window.addEventListener('scroll', () => {
-    document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 60);
+    nav.classList.toggle('solid', window.scrollY > 40);
   });
+
+  // Menu mobile (hamburguer) — abre/fecha o dropdown de meses no celular
+  const navToggle = document.getElementById('navToggle');
+  const navMonths = document.getElementById('navMonths');
+  if (navToggle && navMonths) {
+    navToggle.addEventListener('click', () => {
+      const open = navMonths.classList.toggle('open');
+      navToggle.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    navMonths.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMonths.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if (!navMonths.classList.contains('open')) return;
+      if (navMonths.contains(e.target) || navToggle.contains(e.target)) return;
+      navMonths.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  }
 </script>
 
 
 </body>
-</html>   
+</html>

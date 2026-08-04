@@ -11,15 +11,18 @@
 
 <!-- NAV -->
 <nav id="mainNav">
-  <a href="../container/pixi.html?v=3" class="nav-logo">Monthly <span>Colors</span></a>
-  <div class="nav-months">  
-    <a href="../Month/janeiro.html?v=3">Jan</a><a href="../Month/fevereiro.html?v=3">Fev</a><a href="../Month/marco.html?v=3" class="active">Mar</a>
-    <a href="#">Abr</a><a href="#">Mai</a><a href="#">Jun</a>
+  <a href="../container/pixi.html" class="nav-logo">Monthly <span>Colors</span></a>
+  <div class="nav-months" id="navMonths">
+    <a href="../Month/janeiro.html">Jan</a><a href="../Month/fevereiro.html">Fev</a><a href="../Month/marco.html" class="active">Mar</a>
+    <a href="../Month/abril.html">Abr</a><a href="#">Mai</a><a href="#">Jun</a>
     <a href="#">Jul</a><a href="#">Ago</a><a href="#">Set</a>
     <a href="#">Out</a><a href="#">Nov</a><a href="#">Dez</a>
   </div>
   <button class="nav-search" onclick="alert('Busca em breve!')" aria-label="Buscar">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </button>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu de meses" aria-expanded="false" aria-controls="navMonths">
+    <span></span><span></span><span></span>
   </button>
 </nav>
 
@@ -44,7 +47,6 @@
     </div>
 
     <div class="hero-bottom fade-up">
-      <p class="hero-desc">Mulheres, prevenção e a virada das estações. O mês de Marte abre caminho para o outono com cores que pedem cuidado e atenção à saúde.</p>
       <div class="hero-meta">
         <div class="estacao-row">
           <span class="estacao-icon">🍂</span>
@@ -214,7 +216,7 @@
     </div>
   </div>
   <svg class="clouds-svg" viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#F1F0EC" d="M0,80 Q60,50 120,80 Q160,100 200,75 Q240,50 300,80 Q360,100 420,70 Q480,40 540,75 Q590,100 640,72 Q700,45 760,78 Q810,100 870,68 Q930,40 990,75 Q1040,100 1100,72 Q1160,44 1220,78 Q1280,100 1340,74 Q1390,55 1440,80 L1440,100 L0,100 Z"/>
+    <path fill="#E9E8E2" d="M0,80 Q60,50 120,80 Q160,100 200,75 Q240,50 300,80 Q360,100 420,70 Q480,40 540,75 Q590,100 640,72 Q700,45 760,78 Q810,100 870,68 Q930,40 990,75 Q1040,100 1100,72 Q1160,44 1220,78 Q1280,100 1340,74 Q1390,55 1440,80 L1440,100 L0,100 Z"/>
   </svg>
 </section>
 
@@ -451,6 +453,31 @@
   window.addEventListener('scroll', () => {
     nav.classList.toggle('solid', window.scrollY > 40);
   });
+
+  // Menu mobile (hamburguer) — abre/fecha o dropdown de meses no celular
+  const navToggle = document.getElementById('navToggle');
+  const navMonths = document.getElementById('navMonths');
+  if (navToggle && navMonths) {
+    navToggle.addEventListener('click', () => {
+      const open = navMonths.classList.toggle('open');
+      navToggle.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    navMonths.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMonths.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if (!navMonths.classList.contains('open')) return;
+      if (navMonths.contains(e.target) || navToggle.contains(e.target)) return;
+      navMonths.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  }
 </script>
 
 </body>

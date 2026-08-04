@@ -70,7 +70,47 @@ nav.solid .nav-months a.active { color: var(--orange); }
 .nav-search:hover { color: #fff; }
 nav.solid .nav-search       { color: var(--muted); }
 nav.solid .nav-search:hover { color: var(--ink); }
-@media(max-width:700px){ .nav-months{display:none;} nav,nav.solid{padding:14px 22px;} }
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px; height: 44px;
+  background: none; border: none; cursor: pointer; padding: 0;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 2px;
+  background: rgba(255,255,255,0.85); border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s, background 0.3s;
+}
+nav.solid .nav-toggle span { background: var(--ink); }
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media(max-width:700px){
+  nav,nav.solid{padding:14px 22px;}
+  .nav-toggle{ display:flex; }
+  .nav-search{ width:40px; height:40px; display:flex; align-items:center; justify-content:center; }
+  .nav-months{
+    display:flex; flex-direction:column; gap:0;
+    position:absolute; top:100%; left:0; right:0;
+    background:rgba(25,4,46,0.97); backdrop-filter:blur(16px);
+    max-height:0; overflow:hidden; opacity:0; pointer-events:none;
+    transition:max-height 0.35s ease, opacity 0.25s ease;
+  }
+  nav.solid .nav-months{ background:rgba(250,243,238,0.98); }
+  .nav-months.open{
+    max-height:70vh; opacity:1; pointer-events:auto;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .nav-months a{
+    font-size:1rem; padding:16px 22px; width:100%; border-radius:0;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  nav.solid .nav-months a{ border-bottom-color:rgba(18,8,10,0.06); }
+}
 
 /* ── HERO ─────────────────────────────────────────────────────────────────── */
 .hero {
@@ -426,7 +466,7 @@ nav.solid .nav-search:hover { color: var(--ink); }
 }
 .stat-label { font-size: 0.6rem; color: rgba(245,185,145,0.45); margin-top: 6px; letter-spacing: 0.12em; text-transform: uppercase; }
 @media(max-width:640px){ .meaning-inner{ grid-template-columns:1fr; gap:44px; } }
-.clouds-svg { position: absolute; bottom: 0; left: 0; right: 0; width: 100%; }
+.clouds-svg { position: absolute; bottom: -2px; left: 0; right: 0; width: 100%; display: block; }
 
 /* ── DATES ───────────────────────────────────────────────────────────────── */
 .dates-section { background: var(--cream); padding: 96px 52px 80px; }
