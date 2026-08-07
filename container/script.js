@@ -2098,34 +2098,98 @@ document.querySelectorAll(".morph-btn").forEach((btn) => {
 // Title letters
 const title = document.getElementById("title");
 const letterColors = [
-  "#ff6b6b",
-  "#4ecdc4",
-  "#ffe66d",
-  "#1a535c",
-  "#ff9f1c",
-  "#8338ec",
-  "#3a86ff",
+  "#ffadad",
+  "#ffd6a5",
+  "#fdffb6",
+  "#caffbf",
+  "#9bf6ff",
+  "#a0c4ff",
+  "#bdb2ff",
+  "#ffc6ff",
 ];
+
 function splitLetters() {
-  title.innerHTML = title.textContent
-    .split("")
-    .map((char) => (char === " " ? " " : `<span class="letter">${char}</span>`))
-    .join("");
-}
-splitLetters();
-document.querySelectorAll(".letter").forEach((letter) => {
-  let timeout;
-  letter.addEventListener("mouseenter", () => {
-    clearTimeout(timeout);
-    letter.style.color =
-      letterColors[Math.floor(Math.random() * letterColors.length)];
+  const label = title.textContent.trim();
+  const fragment = document.createDocumentFragment();
+
+  title.textContent = "";
+  title.setAttribute("aria-label", label);
+
+  [...label].forEach((char) => {
+    if (char === " ") {
+      fragment.append(document.createTextNode(" "));
+      return;
+    }
+
+    const span = document.createElement("span");
+    span.className = "letter";
+    span.textContent = char;
+    span.setAttribute("aria-hidden", "true");
+    fragment.append(span);
   });
-  letter.addEventListener("mouseleave", () => {
-    timeout = setTimeout(() => {
-      letter.style.color = "";
-    }, 1400);
+
+  title.append(fragment);
+}
+
+splitLetters();
+
+const titleLetters = [...title.querySelectorAll(".letter")];
+const reduceTitleMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const letterResetTimers = new Map();
+let colorOffset = 0;
+
+function colorizeLetter(letter, colorIndex, delay = 0) {
+  window.setTimeout(() => {
+    const previousReset = letterResetTimers.get(letter);
+    window.clearTimeout(previousReset);
+
+    letter.style.setProperty(
+      "--letter-color",
+      letterColors[colorIndex % letterColors.length],
+    );
+    letter.classList.add("is-colorized");
+
+    // Remover e recolocar a classe reinicia o salto mesmo em passagens rápidas.
+    letter.classList.remove("is-popping");
+    void letter.offsetWidth;
+    letter.classList.add("is-popping");
+
+    const resetTimer = window.setTimeout(() => {
+      letter.classList.remove("is-colorized", "is-popping");
+      letter.style.removeProperty("--letter-color");
+      letterResetTimers.delete(letter);
+    }, 900);
+
+    letterResetTimers.set(letter, resetTimer);
+  }, delay);
+}
+
+function animateTitleIntro() {
+  if (document.hidden || reduceTitleMotion.matches) return;
+
+  // Cada letra conclui o salto antes de a seguinte começar.
+  titleLetters.forEach((letter, index) => {
+    colorizeLetter(
+      letter,
+      colorOffset + index,
+      index * 390,
+    );
+  });
+
+  colorOffset = (colorOffset + 2) % letterColors.length;
+}
+
+titleLetters.forEach((letter, index) => {
+  letter.addEventListener("pointerenter", () => {
+    if (reduceTitleMotion.matches) return;
+
+    // No mouse, somente a letra realmente tocada reage.
+    colorizeLetter(letter, colorOffset + index);
+    colorOffset = (colorOffset + 1) % letterColors.length;
   });
 });
+
+window.setTimeout(animateTitleIntro, 650);
 
 // Menu de idiomas
 const menu = document.getElementById("langMenu");

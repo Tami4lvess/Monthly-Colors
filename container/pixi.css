@@ -59,38 +59,42 @@ body {
 }
 
 .letter {
+  --letter-color: #fff;
   display: inline-block;
-  transition:
-    transform 0.4s cubic-bezier(0.25, 1.5, 0.5, 1),
-    color 0.8s ease;
+  position: relative;
+  color: inherit;
+  transform-origin: 50% 90%;
+  transition: color 0.42s ease;
 }
-.letter:hover {
-  animation: swaySmooth 0.6s ease;
+
+.letter.is-colorized {
+  color: var(--letter-color);
 }
-@keyframes swaySmooth {
+
+.letter.is-popping {
+  animation: coolorsLetterPop 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes coolorsLetterPop {
   0% {
-    transform: translateX(0) rotate(0deg);
+    transform: translateY(0) rotate(0deg) scale(1);
   }
-  5% {
-    transform: translateX(-5px) rotate(-3deg);
+  35% {
+    transform: translateY(-0.075em) rotate(-1.2deg) scale(1.015);
   }
-  15% {
-    transform: translateX(-10px) rotate(-8deg);
-  }
-  30% {
-    transform: translateX(8px) rotate(6deg);
-  }
-  45% {
-    transform: translateX(-6px) rotate(-5deg);
-  }
-  60% {
-    transform: translateX(5px) rotate(4deg);
-  }
-  75% {
-    transform: translateX(-3px) rotate(-2deg);
+  68% {
+    transform: translateY(0.018em) rotate(0.5deg) scale(0.995, 1.005);
   }
   100% {
-    transform: translateX(0) rotate(0deg);
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .letter,
+  .letter.is-popping {
+    animation: none;
+    transition: color 0.2s ease;
   }
 }
 
