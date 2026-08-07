@@ -1321,10 +1321,8 @@ function startMorph(toVariation) {
   morphTo = toVariation;
   morphStartTime = performance.now();
   isMorphing = true;
-  // Se a troca de variação aconteceu enquanto o vídeo ocioso está tocando
-  // (ex.: usuário clicou no botão de variação), a cena 3D real ainda
-  // precisa rodar para concluir o morph — então sai do modo vídeo agora
-  // e deixa o watcher de inatividade reativar o vídeo certo depois.
+  // Uma troca de variação precisa reativar o render caso a cena esteja
+  // pausada por inatividade, para que o morph seja concluído normalmente.
   lastUserActivityTime = performance.now();
   if (idleModeActive) exitIdleMode();
 }
@@ -1624,6 +1622,7 @@ window.addEventListener(
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     lastMouseMoveTime = performance.now();
     mouseActive = true;
+    registerActivity();
   },
   { passive: true },
 );
@@ -1633,49 +1632,26 @@ window.addEventListener("mouseleave", () => {
   mouseActive = false;
 });
 
-// === MODO OCIOSO (vídeo substitui a animação 3D) ===========================
-// Depois de IDLE_TIMEOUT segundos sem interação dentro do hero, o render
-// loop do Three.js é pausado e um <video> pré-gravado (igual à variação
-// atual) assume visualmente. Ao mover o mouse / tocar a tela de novo, a
-// animação 3D ao vivo volta. Isso elimina o maior custo de CPU/GPU do site
-// (o loop de render contínuo) sem perder a folhagem caindo na árvore, já
-// que o vídeo é uma gravação da própria árvore ociosa soltando folhas.
-const IDLE_TIMEOUT = 9; // segundos parados até trocar para vídeo
-const idleVideos = Array.from(document.querySelectorAll(".idle-video"));
+// === MODO OCIOSO ===========================================================
+// Depois de IDLE_TIMEOUT segundos sem interação dentro do hero, o loop do
+// Three.js é pausado. O canvas preserva o último quadro renderizado, então a
+// árvore continua visível sem depender de vídeo e sem consumir GPU desenhando
+// quadros que o usuário não está observando. Qualquer nova interação retoma o
+// loop imediatamente.
+const IDLE_TIMEOUT = 9;
 let idleModeActive = false;
 let renderLoopPaused = false;
 let lastUserActivityTime = performance.now();
 
-function getActiveIdleVideo() {
-  return idleVideos.find(
-    (v) => parseInt(v.dataset.variation, 10) === currentVariation,
-  );
-}
-
 function enterIdleMode() {
   if (idleModeActive) return;
-  const video = getActiveIdleVideo();
-  // Sem vídeo correspondente disponível (ainda não gravado/carregado):
-  // mantém a animação 3D ao vivo normalmente, sem quebrar nada.
-  if (!video) return;
   idleModeActive = true;
-  sceneContainer.classList.add("idle-mode");
-  idleVideos.forEach((v) => v.classList.remove("is-active"));
-  video.preload = "auto";
-  video.classList.add("is-active");
-  const playPromise = video.play();
-  if (playPromise && playPromise.catch) playPromise.catch(() => {});
   pauseRenderLoop();
 }
 
 function exitIdleMode() {
   if (!idleModeActive) return;
   idleModeActive = false;
-  sceneContainer.classList.remove("idle-mode");
-  idleVideos.forEach((v) => {
-    v.classList.remove("is-active");
-    v.pause();
-  });
   resumeRenderLoop();
 }
 
@@ -1684,17 +1660,18 @@ function registerActivity() {
   if (idleModeActive) exitIdleMode();
 }
 
-// Só sai do modo vídeo quando o mouse de fato se aproxima da área do hero
-// (mesmo retângulo usado pela repulsão 3D) — mover o mouse em outra parte
-// da página não deve reativar a cena 3D pesada.
+// Cliques e toques só reativam a cena quando acontecem dentro do hero.
+// O movimento do mouse já é tratado pelo listener da repulsão acima, evitando
+// calcular getBoundingClientRect() duas vezes para cada evento de mousemove.
 function registerActivityIfInsideHero(e) {
   const rect = sceneContainer.getBoundingClientRect();
   if (e.clientY >= rect.top && e.clientY <= rect.bottom) {
     registerActivity();
   }
 }
-window.addEventListener("mousemove", registerActivityIfInsideHero);
-window.addEventListener("pointerdown", registerActivityIfInsideHero);
+window.addEventListener("pointerdown", registerActivityIfInsideHero, {
+  passive: true,
+});
 window.addEventListener("touchstart", registerActivityIfInsideHero, {
   passive: true,
 });
@@ -2003,11 +1980,11 @@ let frameCount = 0,
   lastFpsTime = performance.now(),
   lastTime = performance.now();
 
-// Controle de pausa do render loop. Quando pausado (modo vídeo ocioso,
+// Controle de pausa do render loop. Quando pausado (modo ocioso,
 // aba em segundo plano, ou hero fora da viewport), o WebGPU/WebGL renderer
 // para de desenhar frames — o maior consumidor de GPU/CPU do site — sem
 // destruir a cena, então a volta é instantânea e sem flicker.
-let tabVisible = true;
+let tabVisible = document.visibilityState === "visible";
 let heroInView = true;
 
 function shouldRender() {
@@ -2051,10 +2028,9 @@ function animate() {
   else renderer.render(scene, camera);
 }
 renderer.setAnimationLoop(animate);
+if (!tabVisible) pauseRenderLoop();
 
-// Pausa tudo quando a aba não está visível (troca de aba, minimizado etc),
-// incluindo o <video> ocioso, se estiver tocando — não tem porquê decodificar
-// vídeo numa aba que o usuário não está olhando.
+// Pausa tudo quando a aba não está visível (troca de aba, minimizado etc.).
 document.addEventListener("visibilitychange", () => {
   tabVisible = document.visibilityState === "visible";
   if (!tabVisible) {
@@ -2062,12 +2038,17 @@ document.addEventListener("visibilitychange", () => {
   } else if (heroInView) {
     resumeRenderLoop();
   }
-  updateIdleVideoPlaybackState();
+});
+
+// Também cobre o congelamento/restauração da página pelo navegador (bfcache).
+window.addEventListener("pagehide", pauseRenderLoop);
+window.addEventListener("pageshow", () => {
+  tabVisible = document.visibilityState === "visible";
+  resumeRenderLoop();
 });
 
 // Pausa quando o hero saiu da viewport (usuário rolou a página para baixo);
-// volta a renderizar (ou a tocar o vídeo) só quando o hero estiver visível
-// de novo.
+// volta a renderizar só quando o hero estiver visível de novo.
 if ("IntersectionObserver" in window) {
   const heroObserver = new IntersectionObserver(
     (entries) => {
@@ -2078,27 +2059,11 @@ if ("IntersectionObserver" in window) {
         } else if (tabVisible) {
           resumeRenderLoop();
         }
-        updateIdleVideoPlaybackState();
       });
     },
     { threshold: 0.01 },
   );
   heroObserver.observe(document.getElementById("hero"));
-}
-
-// Mantém o <video> ocioso tocando apenas quando a aba está visível E o hero
-// está na viewport — evita decodificar vídeo desnecessariamente.
-function updateIdleVideoPlaybackState() {
-  if (!idleModeActive) return;
-  const activeVideo = getActiveIdleVideo();
-  if (!activeVideo) return;
-  const videoShouldPlay = tabVisible && heroInView;
-  if (videoShouldPlay && activeVideo.paused) {
-    const p = activeVideo.play();
-    if (p && p.catch) p.catch(() => {});
-  } else if (!videoShouldPlay && !activeVideo.paused) {
-    activeVideo.pause();
-  }
 }
 
 // ✅ CORRIGIDO: resize usa sceneContainer

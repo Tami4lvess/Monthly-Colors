@@ -18,10 +18,10 @@
     <a href="#">Jul</a><a href="#">Ago</a><a href="#">Set</a>
     <a href="#">Out</a><a href="#">Nov</a><a href="#">Dez</a>
   </div>
-  <button class="nav-search" onclick="alert('Busca em breve!')" aria-label="Buscar">
+  <button type="button" class="nav-search" onclick="alert('Busca em breve!')" aria-label="Buscar">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
   </button>
-  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu de meses" aria-expanded="false" aria-controls="navMonths">
+  <button type="button" class="nav-toggle" id="navToggle" aria-label="Abrir menu de meses" aria-expanded="false" aria-controls="navMonths">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  
+
 </section>
 
 <!-- WAVE -->
@@ -70,27 +70,27 @@
 
 <!-- CORES DO MÊS -->
 <section class="color-section">
-  <div style="max-width:900px;margin:0 auto;">
+  <div class="content-900">
     <p class="section-label">Paleta do mês</p>
     <h2 class="section-title">Cores de Janeiro<br>e o que representam</h2>
-    <p style="font-size:0.92rem;color:#5A7A94;max-width:600px;line-height:1.7;">
+    <p class="color-section-intro">
       As cores de janeiro não são aleatórias — cada uma carrega uma campanha, uma causa e uma intenção. O azul do céu de verão, o branco da saúde mental e o roxo da luta contra a hanseníase formam a paleta com propósito deste mês.
     </p>
     <div class="color-grid fade-up">
       <div class="color-card blue">
-        <div class="color-swatch" style="background: linear-gradient(135deg, #1A3A5C, #2E6B9E);"></div>
+        <div class="color-swatch swatch-primary"></div>
         <h3>Azul do Verão</h3>
         <p>O azul de janeiro é o céu de verão aberto, a vastidão do mar nas praias brasileiras e a cor da determinação para encarar um novo ano. Representa confiança e introspecção.</p>
         <span class="color-tag tag-blue">🌊 Identidade do mês</span>
       </div>
       <div class="color-card branco">
-        <div class="color-swatch" style="background: linear-gradient(135deg, #FFFFFF, #E0ECF8); border: 1.5px solid #CBD5E1;"></div>
+        <div class="color-swatch swatch-secondary"></div>
         <h3>Branco — Saúde Mental</h3>
         <p>O branco simboliza a folha em branco do novo ano: possibilidade, abertura e recomeço. A campanha <strong>Janeiro Branco</strong> convida a refletir sobre bem-estar psicológico e projetos de vida antes que a rotina absorva tudo.</p>
         <span class="color-tag tag-white">🤍 Janeiro Branco</span>
       </div>
       <div class="color-card roxo">
-        <div class="color-swatch" style="background: linear-gradient(135deg, #6B3FA0, #9B60D0);"></div>
+        <div class="color-swatch swatch-accent"></div>
         <h3>Roxo — Hanseníase</h3>
         <p>O roxo marca a campanha <strong>Janeiro Roxo</strong>: alerta para a hanseníase, doença infecciosa ainda prevalente no Brasil (2º maior número de casos do mundo), com tratamento gratuito e curável pelo SUS.</p>
         <span class="color-tag tag-purple">💜 Janeiro Roxo</span>
@@ -101,10 +101,10 @@
 
 <!-- CAMPANHAS DE JANEIRO -->
 <section class="campaigns-section">
-  <div style="max-width:900px;margin:0 auto;">
+  <div class="content-900">
     <p class="section-label">Campanhas de conscientização</p>
     <h2 class="section-title">Janeiro Branco &amp; Janeiro Roxo</h2>
-    <p style="font-size:0.92rem;color:#5A7A94;max-width:620px;line-height:1.7;margin-bottom:40px;">Janeiro carrega duas campanhas nacionais de saúde com cores e missões distintas. Enquanto o branco abre espaço para o diálogo sobre saúde mental, o roxo chama atenção para uma das doenças mais antigas da humanidade — ainda presente, ainda estigmatizada, mas completamente curável.</p>
+    <p class="campaigns-intro">Janeiro carrega duas campanhas nacionais de saúde com cores e missões distintas. Enquanto o branco abre espaço para o diálogo sobre saúde mental, o roxo chama atenção para uma das doenças mais antigas da humanidade — ainda presente, ainda estigmatizada, mas completamente curável.</p>
     <div class="campaigns-grid fade-up">
 
       <!-- JANEIRO BRANCO -->
@@ -136,7 +136,7 @@
             <span>A cor branca foi escolhida porque, assim como uma página em branco, janeiro convida a escrever uma história nova.</span>
           </div>
         </div>
-        <a class="camp-link link-blue" href="https://www.janeirobranco.com.br" target="_blank">
+        <a class="camp-link link-blue" href="https://www.janeirobranco.com.br" target="_blank" rel="noopener noreferrer">
           Saiba mais sobre Janeiro Branco →
         </a>
       </div>
@@ -170,7 +170,7 @@
             <span>O roxo foi escolhido em referência à luta contra o preconceito histórico que ainda isola pacientes e atrasa diagnósticos.</span>
           </div>
         </div>
-        <a class="camp-link link-purple" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/h/hanseniase" target="_blank">
+        <a class="camp-link link-purple" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/h/hanseniase" target="_blank" rel="noopener noreferrer">
           Saiba mais sobre Hanseníase no SUS →
         </a>
       </div>
@@ -184,7 +184,7 @@
   <div class="meaning-inner">
     <div class="meaning-text fade-up">
       <p class="section-label">Significado do mês</p>
-      <h2 class="section-title" style="font-size:clamp(1.6rem,4vw,2.4rem);">Janeiro: o guardião<br>dos começos</h2>
+      <h2 class="section-title section-title-compact">Janeiro: o guardião<br>dos começos</h2>
       <p>O nome vem de <em>Janus</em>, o deus romano de duas faces — uma olhando para o passado, outra para o futuro. É o mês do limiar, da soleira da porta entre o que foi e o que será.</p>
       <p>No Brasil, janeiro coincide com o verão pleno: férias escolares, carnaval no horizonte, e a energia do sol e do mar como pano de fundo de tudo.</p>
       <p>Com as campanhas Branco e Roxo, janeiro também se tornou o mês da consciência coletiva sobre saúde: mental, física e social.</p>
@@ -215,10 +215,10 @@
 
 <!-- DATAS -->
 <section class="dates-section">
-  <div style="max-width:900px;margin:0 auto;">
+  <div class="content-900">
     <p class="section-label">Calendário</p>
     <h2 class="section-title">Datas importantes<br>de Janeiro</h2>
-    <p style="font-size:0.88rem;color:#6A8EA8;margin-top:8px;">Clique em "+ Google Agenda" para adicionar ao seu calendário.</p>
+    <p class="calendar-note">Clique em "+ Google Agenda" para adicionar ao seu calendário.</p>
     <div class="dates-carousel-wrap">
       <div class="dates-carousel" id="datesCarousel">
 
@@ -229,15 +229,15 @@
           <a class="date-gcal" onclick="addToCalendar('01/01/2026','Ano Novo - Confraternização Universal')"><span>📅</span> + Google Agenda</a>
         </div>
 
-        <div class="date-card" style="border-top: 4px solid #4A7FA8;">
-          <div class="date-num" style="color:#4A7FA8;">Jan</div>
+        <div class="date-card date-card-primary">
+          <div class="date-num date-num-primary">Jan</div>
           <div class="date-name">🤍 Janeiro Branco — Saúde Mental</div>
           <div class="date-desc">Campanha nacional de conscientização sobre saúde mental e projeto de vida. Durante todo o mês.</div>
           <a class="date-gcal" onclick="addToCalendar('01/01/2026','Janeiro Branco - Saúde Mental')"><span>📅</span> + Google Agenda</a>
         </div>
 
-        <div class="date-card" style="border-top: 4px solid #6B3FA0;">
-          <div class="date-num" style="color:#6B3FA0;">Jan</div>
+        <div class="date-card date-card-secondary">
+          <div class="date-num date-num-secondary">Jan</div>
           <div class="date-name">💜 Janeiro Roxo — Hanseníase</div>
           <div class="date-desc">Campanha nacional de prevenção e combate ao estigma da hanseníase. Durante todo o mês.</div>
           <a class="date-gcal" onclick="addToCalendar('01/01/2026','Janeiro Roxo - Prevenção à Hanseníase')"><span>📅</span> + Google Agenda</a>
@@ -294,8 +294,8 @@
 
       </div>
       <div class="carousel-nav">
-        <button class="carousel-btn" onclick="scrollCarousel(-1)">&#8592;</button>
-        <button class="carousel-btn" onclick="scrollCarousel(1)">&#8594;</button>
+        <button type="button" class="carousel-btn" onclick="scrollCarousel(-1)" aria-label="Ver datas anteriores">&#8592;</button>
+        <button type="button" class="carousel-btn" onclick="scrollCarousel(1)" aria-label="Ver próximas datas">&#8594;</button>
       </div>
     </div>
   </div>
@@ -311,7 +311,7 @@
 
 <!-- CURIOSIDADES + MOONS -->
 <section class="curiosities-section">
-  <div style="max-width:960px;margin:0 auto;">
+  <div class="content-960">
     <p class="section-label">Você sabia?</p>
     <h2 class="section-title">Curiosidades de Janeiro</h2>
     <div class="curio-moon-grid">
@@ -321,7 +321,7 @@
         <div class="curio-card active" onclick="toggleCurio(this)">
           <div class="curio-card-header">
             <span class="curio-tag">Etimologia</span>
-            <button class="curio-toggle">+</button>
+            <button type="button" class="curio-toggle" aria-label="Abrir ou fechar curiosidade">+</button>
           </div>
           <div class="curio-title">Por que se chama Janeiro?</div>
           <div class="curio-body">O nome vem do latim <em>Ianuarius</em>, em homenagem a Janus, o deus romano das passagens, portas e inícios. Janus tinha duas faces: uma olhando para o passado e outra para o futuro — uma metáfora perfeita para o primeiro mês do ano. Os romanos acreditavam que Janus protegia as transições e as mudanças de estado.</div>
@@ -330,7 +330,7 @@
         <div class="curio-card" onclick="toggleCurio(this)">
           <div class="curio-card-header">
             <span class="curio-tag">História</span>
-            <button class="curio-toggle">+</button>
+            <button type="button" class="curio-toggle" aria-label="Abrir ou fechar curiosidade">+</button>
           </div>
           <div class="curio-title">Nem sempre foi o primeiro mês</div>
           <div class="curio-body">No calendário romano original, o ano começava em março e tinha apenas 10 meses. Foi o rei Numa Pompílio quem adicionou Janeiro e Fevereiro ao final do calendário, por volta de 713 a.C. Só em 153 a.C. os cônsules romanos passaram a tomar posse em 1º de janeiro, tornando-o efetivamente o início do ano civil.</div>
@@ -339,7 +339,7 @@
         <div class="curio-card" onclick="toggleCurio(this)">
           <div class="curio-card-header">
             <span class="curio-tag">Saúde Mental</span>
-            <button class="curio-toggle">+</button>
+            <button type="button" class="curio-toggle" aria-label="Abrir ou fechar curiosidade">+</button>
           </div>
           <div class="curio-title">Por que o branco em janeiro?</div>
           <div class="curio-body">A campanha Janeiro Branco nasceu em Uberlândia (MG) em 2014, criada por psicólogos. A escolha do branco é simbólica: assim como uma tela em branco convida a criar algo novo, o primeiro mês do ano é o momento ideal para refletir sobre saúde mental e projetos de vida. A campanha hoje é reconhecida pelo Conselho Federal de Psicologia e realizada em mais de 50 países.</div>
@@ -348,7 +348,7 @@
         <div class="curio-card" onclick="toggleCurio(this)">
           <div class="curio-card-header">
             <span class="curio-tag">Hanseníase</span>
-            <button class="curio-toggle">+</button>
+            <button type="button" class="curio-toggle" aria-label="Abrir ou fechar curiosidade">+</button>
           </div>
           <div class="curio-title">A doença mais antiga registrada — e ainda presente</div>
           <div class="curio-body">A hanseníase é mencionada em textos de mais de 4.000 anos, incluindo a Bíblia e papiros egípcios. Apesar de curável desde os anos 1980 com o esquema PQT (poliquimioterapia gratuita no SUS), o Brasil registra cerca de 18 mil casos novos por ano — o maior número das Américas. O diagnóstico precoce evita sequelas permanentes nos nervos. O roxo representa a superação do preconceito histórico que ainda afasta pessoas do tratamento.</div>
@@ -357,7 +357,7 @@
         <div class="curio-card" onclick="toggleCurio(this)">
           <div class="curio-card-header">
             <span class="curio-tag">Cultura</span>
-            <button class="curio-toggle">+</button>
+            <button type="button" class="curio-toggle" aria-label="Abrir ou fechar curiosidade">+</button>
           </div>
           <div class="curio-title">Réveillon e a tradição do branco</div>
           <div class="curio-body">No Brasil, vestir branco na virada é uma tradição ligada ao candomblé e à umbanda, em homenagem a Iemanjá, a rainha do mar. Pular sete ondas e jogar flores ao mar são rituais de purificação que mesclam influências africanas, indígenas e europeias — uma síntese única da alma brasileira que deu um novo significado à cor branca em janeiro.</div>
@@ -366,7 +366,7 @@
         <div class="curio-card" onclick="toggleCurio(this)">
           <div class="curio-card-header">
             <span class="curio-tag">Astronomia</span>
-            <button class="curio-toggle">+</button>
+            <button type="button" class="curio-toggle" aria-label="Abrir ou fechar curiosidade">+</button>
           </div>
           <div class="curio-title">Periélio: a Terra mais próxima do Sol</div>
           <div class="curio-body">Paradoxalmente, é em janeiro que a Terra fica mais próxima do Sol durante o ano — o chamado periélio, que ocorre por volta do dia 3-5 de janeiro. Mas isso não determina as estações: o que importa é a inclinação do eixo terrestre. Por isso, enquanto no Brasil é verão pleno, no Hemisfério Norte é pleno inverno.</div>
@@ -375,7 +375,7 @@
         <div class="curio-card" onclick="toggleCurio(this)">
           <div class="curio-card-header">
             <span class="curio-tag">Pedra &amp; Flor</span>
-            <button class="curio-toggle">+</button>
+            <button type="button" class="curio-toggle" aria-label="Abrir ou fechar curiosidade">+</button>
           </div>
           <div class="curio-title">Granate e Cravo — símbolos do mês</div>
           <div class="curio-body">A pedra do mês é o <strong>granate</strong>, uma gema vermelha ou rosada associada à paixão, força e proteção. Já a flor de janeiro é o <strong>cravo</strong> (carnation), que simboliza amor, fascínio e distinção. Nas culturas europeias, presentear alguém com um cravo em janeiro é um desejo de boa sorte para o ano inteiro.</div>
@@ -384,7 +384,7 @@
         <div class="curio-card" onclick="toggleCurio(this)">
           <div class="curio-card-header">
             <span class="curio-tag">Estação</span>
-            <button class="curio-toggle">+</button>
+            <button type="button" class="curio-toggle" aria-label="Abrir ou fechar curiosidade">+</button>
           </div>
           <div class="curio-title">Verão no Brasil: muito além do calor</div>
           <div class="curio-body">O verão brasileiro é marcado pelas chuvas de monção no Centro-Oeste e Amazônia, pelas temperaturas acima de 35°C no Sudeste e pelos fenômenos como a ZCAS (Zona de Convergência do Atlântico Sul), responsável pelas chuvas intensas. Janeiro é também o mês de maior risco de deslizamentos em serras e encostas urbanas — um verão de contrastes.</div>
@@ -398,9 +398,9 @@
         <div class="moon-panel-sub">Janeiro …</div>
         <!-- as fases são preenchidas automaticamente pelo janeiro.js -->
         <div class="moons-row"></div>
-        <div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(200,224,244,0.1);">
-          <p style="font-size:0.72rem;color:rgba(200,224,244,0.45);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Lua do Lobo</p>
-          <p style="font-size:0.82rem;color:rgba(200,224,244,0.7);line-height:1.6;">A Lua Cheia de Janeiro é chamada de <em>Wolf Moon</em> (Lua do Lobo) nas tradições nativas americanas — nome dado pelo uivo dos lobos nas noites frias de inverno do Hemisfério Norte.</p>
+        <div class="moon-note">
+          <p class="moon-note-title">Lua do Lobo</p>
+          <p class="moon-note-text">A Lua Cheia de Janeiro é chamada de <em>Wolf Moon</em> (Lua do Lobo) nas tradições nativas americanas — nome dado pelo uivo dos lobos nas noites frias de inverno do Hemisfério Norte.</p>
         </div>
       </div>
 
@@ -412,14 +412,14 @@
 <footer>
   <div class="container-footer">
     <ul class="wrapper">
-      <a href="https://www.instagram.com/creatively.project/">
-        <li class="icon instagram">
+      <li class="icon instagram">
+        <a href="https://www.instagram.com/creatively.project/" aria-label="Instagram do projeto Creatively">
           <span class="tooltip">Instagram</span>
           <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
             <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
           </svg>
-        </li>
-      </a>
+        </a>
+      </li>
     </ul>
     <p>Projeto TCC 2026 - Desenvolvido por Lucas Cruz e Tamires Alves - Monthly Colors</p>
   </div>
