@@ -15,11 +15,6 @@ function toggleCurio(card) {
   if (!isActive) card.classList.add('active');
 }
 
-// ── Carrossel de datas ───────────────────────────────────────────────────────
-function scrollCarousel(dir) {
-  document.getElementById('datesCarousel').scrollBy({ left: dir * 230, behavior: 'smooth' });
-}
-
 // ── Google Agenda ────────────────────────────────────────────────────────────
 function addToCalendar(dateStr, title) {
   const parts = dateStr.split('/');

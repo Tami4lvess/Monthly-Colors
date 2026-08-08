@@ -319,8 +319,9 @@
 
       </div>
       <div class="carousel-nav">
-        <button type="button" class="carousel-btn" onclick="scrollCarousel(-1)" aria-label="Ver datas anteriores">&#8592;</button>
-        <button type="button" class="carousel-btn" onclick="scrollCarousel(1)" aria-label="Ver próximas datas">&#8594;</button>
+        <button class="carousel-btn" id="carouselPrev" aria-label="Data anterior">&#8592;</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="carousel-btn" id="carouselNext" aria-label="Próxima data">&#8594;</button>
       </div>
     </div>
   </div>
@@ -645,6 +646,80 @@ function initNavSearch() {
   }
 }
 initNavSearch();
+function initDatesCarousel() {
+  const track = document.getElementById('datesCarousel');
+  const prevBtn = document.getElementById('carouselPrev');
+  const nextBtn = document.getElementById('carouselNext');
+  const dotsWrap = document.getElementById('carouselDots');
+  if (!track || !prevBtn || !nextBtn) return;
+
+  let dots = [];
+  let pageCount = 0;
+
+  function maxScroll() {
+    return Math.max(0, track.scrollWidth - track.clientWidth);
+  }
+
+  // Conta quantas "páginas" existem de verdade, olhando pro scroll real
+  // (não pra uma conta teórica de cards ÷ cards-visíveis) — assim a última
+  // bolinha sempre corresponde a um ponto que o carrossel consegue alcançar,
+  // mesmo quando o último grupo de cards não enche uma página inteira.
+  function computePageCount() {
+    const ms = maxScroll();
+    if (ms <= 4) return 1;
+    return Math.round(ms / track.clientWidth) + 1;
+  }
+
+  function rebuildDotsIfNeeded() {
+    const nowPages = computePageCount();
+    if (nowPages === pageCount) return;
+    pageCount = nowPages;
+    if (!dotsWrap) return;
+    dotsWrap.innerHTML = Array.from({ length: pageCount }, (_, i) =>
+      `<button class="carousel-dot" aria-label="Ir para página ${i + 1}"></button>`
+    ).join('');
+    dots = Array.from(dotsWrap.children);
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        const target = i === pageCount - 1 ? maxScroll() : i * track.clientWidth;
+        track.scrollTo({ left: target, behavior: 'smooth' });
+      });
+    });
+  }
+
+  function currentPage() {
+    const ms = maxScroll();
+    if (ms <= 4) return 0;
+    if (track.scrollLeft >= ms - 4) return pageCount - 1; // encostou no fim = última página
+    return Math.round(track.scrollLeft / track.clientWidth);
+  }
+
+  function updateUI() {
+    rebuildDotsIfNeeded();
+    const page = currentPage();
+    prevBtn.disabled = track.scrollLeft <= 4;
+    nextBtn.disabled = track.scrollLeft >= maxScroll() - 4;
+    dots.forEach((d, i) => d.classList.toggle('active', i === page));
+  }
+
+  prevBtn.addEventListener('click', () => {
+    track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
+  });
+  nextBtn.addEventListener('click', () => {
+    const next = track.scrollLeft + track.clientWidth;
+    track.scrollTo({ left: Math.min(next, maxScroll()), behavior: 'smooth' });
+  });
+
+  let scrollTimeout;
+  track.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(updateUI, 60);
+  });
+  window.addEventListener('resize', () => { pageCount = -1; updateUI(); });
+
+  updateUI();
+}
+initDatesCarousel();
 </script>
 
 </body>

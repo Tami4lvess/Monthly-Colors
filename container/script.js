@@ -1856,7 +1856,7 @@ let postProcessing = null,
   ssrPass = null,
   bloomPass = null;
 try {
-  postProcessing = new THREE.PostProcessing(renderer);
+  postProcessing = new THREE.RenderPipeline(renderer);
   const scenePass = pass(scene, camera);
   scenePass.setMRT(mrt({ output, normal: normalView, metalness, roughness }));
   const scenePassColor = scenePass.getTextureNode("output");
