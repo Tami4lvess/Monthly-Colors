@@ -1,0 +1,94 @@
+/* MOBILE COMPARTILHADO ENTRE OS MESES */
+@media (max-width: 700px) {
+  nav,
+  nav.solid {
+    min-height: 60px;
+    padding: 10px 16px;
+  }
+
+  .nav-logo {
+    font-size: 1.15rem;
+  }
+
+  /* Retira a busca que estava separando os elementos */
+  .nav-search {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+  }
+
+  .nav-months {
+    top: 100%;
+  }
+
+  .nav-months.open {
+    max-height: calc(100svh - 60px);
+    overflow-y: auto;
+  }
+
+  /* Hero do mês mais baixo e organizado */
+  .hero {
+    min-height: 82svh;
+    justify-content: center;
+    padding-top: 60px;
+  }
+
+  .hero-content {
+    width: 100%;
+    padding: 38px 20px 32px;
+  }
+
+  .hero-eyebrow {
+    margin-bottom: 12px;
+  }
+
+  .hero-eyebrow-text {
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+  }
+
+  /* Faz FEVEREIRO caber sem cortar */
+  .hero-t1 {
+    width: 100%;
+    max-width: 100%;
+    font-size: min(17vw, 5rem);
+    line-height: 0.9;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .hero-bottom {
+    margin-top: 20px;
+    gap: 14px;
+  }
+
+  .estacao-row {
+    padding: 8px 12px;
+  }
+
+  .estacao-text {
+    font-size: 0.68rem;
+  }
+
+  .estacao-text strong {
+    font-size: 0.76rem;
+  }
+
+  /* Remove elementos grandes e decorativos no celular */
+  .hero-bg-number,
+  .hero-ghost-word,
+  .hero-scroll-hint {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-t1 {
+    font-size: 16vw;
+  }
+}

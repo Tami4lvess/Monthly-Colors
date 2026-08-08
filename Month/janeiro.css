@@ -660,10 +660,28 @@ footer {
 }
 footer p { font-size: 0.7rem; color: rgba(168,204,232,0.28); letter-spacing: 0.05em; margin-top: 2px; }
 .wrapper {
-  display: inline-flex; list-style: none; height: 72px; width: 100%;
-  padding-top: 8px; font-family: 'DM Sans', sans-serif; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  width: 100%;
+  height: 72px;
+  margin: 0;
+  padding: 8px 0 0;
+  font-family: 'DM Sans', sans-serif;
 }
-.wrapper a { text-decoration: none; }
+.wrapper a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  text-decoration: none;
+  
+}
+.wrapper .instagram svg {
+  display: block;
+  color: inherit;
+}
 .wrapper .icon {
   position: relative; background: rgba(255,255,255,0.04);
   border: 1px solid rgba(168,204,232,0.1); border-radius: 3px;

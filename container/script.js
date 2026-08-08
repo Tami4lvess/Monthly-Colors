@@ -103,7 +103,7 @@ try {
   );
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = !isMobile;
   renderer.shadowMap.type = isMobile
     ? THREE.PCFShadowMap
     : THREE.VSMShadowMap;
@@ -420,8 +420,8 @@ function buildInstancedMeshes() {
 
     const im = new THREE.InstancedMesh(geo, mat, count);
     im.name = "cat_" + catKey.replace(/[^a-zA-Z0-9]/g, "_").slice(0, 40);
-    im.castShadow = true;
-    im.receiveShadow = true;
+    im.castShadow = !isMobile;
+    im.receiveShadow = !isMobile;
 
     for (let i = 0; i < count; i++) {
       const t = batch.transforms[i];
@@ -1409,7 +1409,7 @@ const particleGroup = new THREE.Group();
 particleGroup.name = "particleGroup";
 scene.add(particleGroup);
 
-const dustCount = 120;
+const dustCount = isMobile ? 35 : 120;
 const dustGeo = new THREE.BufferGeometry();
 const dustPositions = new Float32Array(dustCount * 3);
 const dustVelocities = new Float32Array(dustCount * 3);
@@ -1447,7 +1447,7 @@ dustPoints.name = "dustMotes";
 dustPoints.frustumCulled = false;
 particleGroup.add(dustPoints);
 
-const fallingLeafCount = isMobile ? 18 : 40;
+const fallingLeafCount = isMobile ? 8 : 40;
 const leafQuadGeo = new THREE.PlaneGeometry(0.5, 0.5);
 const leafQuadMat = new THREE.MeshBasicNodeMaterial({
   transparent: true,
@@ -1800,7 +1800,7 @@ const ambientLight = new THREE.AmbientLight(0xffeedd, 0.5);
 scene.add(ambientLight);
 const mainLight = new THREE.DirectionalLight(0xfff5e0, 2.5);
 mainLight.position.set(6, 14, 5);
-mainLight.castShadow = true;
+mainLight.castShadow = !isMobile;
 mainLight.shadow.mapSize.width = isMobile ? 1024 : 2048;
 mainLight.shadow.mapSize.height = isMobile ? 1024 : 2048;
 mainLight.shadow.camera.near = 0.5;
@@ -1816,7 +1816,7 @@ mainLight.shadow.blurSamples = 16;
 scene.add(mainLight);
 const softShadowLight = new THREE.DirectionalLight(0xffeedd, 0.6);
 softShadowLight.position.set(-3, 8, 6);
-softShadowLight.castShadow = true;
+softShadowLight.castShadow = !isMobile;
 softShadowLight.shadow.mapSize.width = isMobile ? 256 : 512;
 softShadowLight.shadow.mapSize.height = isMobile ? 256 : 512;
 softShadowLight.shadow.camera.near = 0.5;
@@ -1841,14 +1841,18 @@ accentLight.position.set(4, 10, 4);
 scene.add(accentLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
+
 controls.enableZoom = false;
-controls.enableRotate = false; // ❌ Removido a pedido: não gira mais a câmera ao arrastar o mouse
+controls.enableRotate = false;
 controls.enablePan = false;
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
-controls.minDistance = 2;
-controls.maxDistance = 150; // ajustado para ficar consistente com o novo far da câmera
 controls.target.set(0, 6, 0);
+
+if (isMobile) {
+  controls.enabled = false;
+  renderer.domElement.style.touchAction = "pan-y";
+}
 
 // Post-processing
 let postProcessing = null,
@@ -1942,6 +1946,13 @@ try {
   postProcessing = null;
 }
 
+// No celular renderiza diretamente, sem pós-processamento pesado.
+if (isMobile) {
+  postProcessing = null;
+  aoPass = null;
+  ssrPass = null;
+  bloomPass = null;
+}
 const aoBaseSettings = { samples: 16, radius: 0.6 };
 const AO_NEAR_DIST = 3,
   AO_FAR_DIST = 8;
