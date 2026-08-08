@@ -842,7 +842,115 @@ nav.solid .nav-search-input::placeholder { color: rgba(10,14,26,0.4); }
   20%, 60% { outline: 3px solid var(--purple); outline-offset: 4px; }
 }
 
-@media(max-width:700px){
-  .nav-search-wrap.open .nav-search-input { width: 150px; }
-  .nav-search-results { right: -10px; width: calc(100vw - 48px); }
+
+@media (max-width: 700px) {
+  #mainNav {
+    min-height: 68px;
+    padding: 12px 14px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 40px 40px;
+    align-items: center;
+    gap: 4px;
+  }
+
+  #mainNav .nav-logo {
+    grid-column: 1;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin: 0;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  #mainNav .nav-search-wrap {
+    grid-column: 2;
+    position: relative !important;
+    width: 40px !important;
+    height: 40px;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible;
+    z-index: 501;
+  }
+
+  #mainNav .nav-search {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    color: #ffffff;
+  }
+
+  #mainNav.solid .nav-search {
+    color: var(--ink);
+  }
+
+  #mainNav .nav-search svg {
+    width: 20px;
+    height: 20px;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    stroke: currentColor;
+  }
+
+  #mainNav .nav-toggle {
+    grid-column: 3;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    display: flex !important;
+  }
+
+  /* A barra abre para o lado esquerdo, dentro do nav */
+  #mainNav .nav-search-input {
+    position: absolute !important;
+    top: 1px;
+    right: 42px;
+    width: 0 !important;
+    height: 38px;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none;
+    border-radius: 20px;
+    background: #ffffff;
+    color: var(--ink);
+    caret-color: var(--ink);
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  #mainNav .nav-search-wrap.open .nav-search-input {
+    width: clamp(82px, 28vw, 115px) !important;
+    padding: 7px 11px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    box-shadow: 0 5px 18px rgba(10, 14, 26, 0.2);
+  }
+
+  #mainNav .nav-search-input::placeholder {
+    color: rgba(10, 14, 26, 0.45);
+  }
+
+  #mainNav .nav-search-results {
+    position: absolute;
+    top: 50px;
+    right: -44px;
+    width: calc(100vw - 28px) !important;
+    max-width: 340px;
+    z-index: 600;
+  }
 }

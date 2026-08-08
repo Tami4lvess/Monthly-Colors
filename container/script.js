@@ -2257,6 +2257,7 @@ document.addEventListener("click", (e) => {
 // evitando o bug de duas bandeiras iguais aparecerem ao mesmo tempo.
 document.querySelectorAll(".lang-menu img").forEach((flag) => {
   flag.addEventListener("click", () => {
+    if (!menu.classList.contains("active")) return;
     const novoSrc = flag.getAttribute("src");
     const srcAtual = currentFlag.getAttribute("src");
 

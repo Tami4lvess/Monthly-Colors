@@ -824,9 +824,29 @@ img {
 }
 /* Exceção: as bandeiras do seletor de idioma precisam continuar clicáveis,
    senão o menu de troca de idioma para de responder ao clique. */
-#currentFlag,
+/* Bandeira atual continua clicável */
+#currentFlag {
+  pointer-events: auto;
+}
+
+/* Menu fechado não pode receber cliques */
+.lang-menu {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .lang-menu img {
-    pointer-events: auto;
+  pointer-events: none;
+}
+
+/* Somente o menu aberto pode receber cliques */
+.lang-menu.active {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.lang-menu.active img {
+  pointer-events: auto;
 }
 
 /* ===========================
