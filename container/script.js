@@ -1980,6 +1980,29 @@ let frameCount = 0,
   lastFpsTime = performance.now(),
   lastTime = performance.now();
 
+let firstFramePresented = false;
+function dismissLoadingScreen() {
+  const loadingScreen = document.getElementById("loading-screen");
+
+  if (!loadingScreen || loadingScreen.classList.contains("is-hidden")) {
+    return;
+  }
+
+  window.clearTimeout(window.loadingSafetyTimer);
+  loadingScreen.classList.add("is-complete");
+
+  window.setTimeout(() => {
+    loadingScreen.classList.add("is-hidden");
+    document.body.classList.remove("is-loading");
+
+    loadingScreen.addEventListener(
+      "transitionend",
+      () => loadingScreen.remove(),
+      { once: true },
+    );
+  }, 400);
+}
+
 // Controle de pausa do render loop. Quando pausado (modo ocioso,
 // aba em segundo plano, ou hero fora da viewport), o WebGPU/WebGL renderer
 // para de desenhar frames — o maior consumidor de GPU/CPU do site — sem
@@ -2026,6 +2049,12 @@ function animate() {
   updateParticles(dt);
   if (postProcessing) postProcessing.render();
   else renderer.render(scene, camera);
+
+  if (!firstFramePresented) {
+    firstFramePresented = true;
+    // Espera o navegador apresentar o quadro antes de revelar a cena.
+    requestAnimationFrame(dismissLoadingScreen);
+  }
 }
 renderer.setAnimationLoop(animate);
 if (!tabVisible) pauseRenderLoop();
@@ -2066,7 +2095,7 @@ if ("IntersectionObserver" in window) {
   heroObserver.observe(document.getElementById("hero"));
 }
 
-// ✅ CORRIGIDO: resize usa sceneContainer
+//  CORRIGIDO: resize usa sceneContainer
 // Agrupa chamadas de resize num único requestAnimationFrame — evita recalcular
 // câmera/renderer dezenas de vezes por segundo durante o arraste da janela.
 let resizeRAF = null;
