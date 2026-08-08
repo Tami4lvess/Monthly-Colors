@@ -18,9 +18,13 @@
     <a href="#">Jul</a><a href="#">Ago</a><a href="#">Set</a>
     <a href="#">Out</a><a href="#">Nov</a><a href="#">Dez</a>
   </div>
-  <button type="button" class="nav-search" onclick="alert('Busca em breve!')" aria-label="Buscar">
+  <div class="nav-search-wrap" id="navSearchWrap">
+  <button class="nav-search" id="navSearchBtn" aria-label="Buscar" aria-expanded="false">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-  </button>
+    </button>
+    <input type="text" class="nav-search-input" id="navSearchInput" placeholder="Buscar no site..." autocomplete="off">
+    <div class="nav-search-results" id="navSearchResults"></div>
+  </div>
   <button type="button" class="nav-toggle" id="navToggle" aria-label="Abrir menu de meses" aria-expanded="false" aria-controls="navMonths">
     <span></span><span></span><span></span>
   </button>
@@ -478,6 +482,169 @@
       navToggle.setAttribute('aria-expanded', 'false');
     });
   }
+
+  // ── Busca no header — varre o conteúdo da página e monta o índice sozinha ──
+function initNavSearch() {
+  const wrap = document.getElementById('navSearchWrap');
+  const btn = document.getElementById('navSearchBtn');
+  const input = document.getElementById('navSearchInput');
+  const results = document.getElementById('navSearchResults');
+  if (!wrap || !btn || !input || !results) return;
+
+  const SEARCHABLE_SELECTORS = ['.curio-title', '.camp-title', '.date-name', '.color-card h3', '.section-title'];
+  const CARD_SELECTOR = '.curio-card, .campaign-card, .date-card, .color-card, section';
+
+  // Pega os links dos OUTROS meses direto do menu (ignora o mês atual e os
+  // meses ainda sem página, que usam href="#") — assim não precisa adivinhar
+  // caminho de arquivo nenhum, usa exatamente o que já está no HTML.
+  const otherMonthLinks = Array.from(document.querySelectorAll('#navMonths a[href$=".html"]'))
+    .filter(a => !a.classList.contains('active'))
+    .map(a => a.getAttribute('href'));
+
+  function extractFrom(doc, file) {
+    const found = [];
+    SEARCHABLE_SELECTORS.forEach(sel => {
+      doc.querySelectorAll(sel).forEach(el => {
+        const card = el.closest(CARD_SELECTOR);
+        const desc = card ? card.querySelector('.curio-body, .camp-body, .date-desc, p') : null;
+        found.push({
+          title: el.textContent.trim(),
+          preview: desc ? desc.textContent.trim().slice(0, 90) : '',
+          file,                          // null = página atual
+          target: file ? null : card,    // só guarda o elemento de verdade se for a página atual
+        });
+      });
+    });
+    return found;
+  }
+
+  function monthLabel(file) {
+    const name = file.split('/').pop().replace('.html', '');
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
+
+  let index = null;
+  let indexLoading = null;
+
+  async function buildIndex() {
+    let all = extractFrom(document, null);
+    const fetched = await Promise.all(otherMonthLinks.map(async (file) => {
+      try {
+        const res = await fetch(file);
+        if (!res.ok) return [];
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return extractFrom(doc, file);
+      } catch (e) {
+        console.warn('Busca: não consegui carregar', file, e);
+        return [];
+      }
+    }));
+    fetched.forEach(list => { all = all.concat(list); });
+    return all;
+  }
+
+  function ensureIndex() {
+    if (index) return Promise.resolve(index);
+    if (!indexLoading) indexLoading = buildIndex().then(built => (index = built));
+    return indexLoading;
+  }
+
+  function openSearch() {
+    wrap.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    ensureIndex(); // já começa a carregar os outros meses em segundo plano
+    setTimeout(() => input.focus(), 200);
+  }
+  function closeSearch() {
+    wrap.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    input.value = '';
+    results.innerHTML = '';
+    results.classList.remove('has-results');
+  }
+  btn.addEventListener('click', () => wrap.classList.contains('open') ? closeSearch() : openSearch());
+  document.addEventListener('click', (e) => { if (!wrap.contains(e.target)) closeSearch(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSearch(); });
+
+  function highlightCard(card) {
+    if (card.classList.contains('curio-card') && typeof toggleCurio === 'function') toggleCurio(card);
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.classList.add('search-highlight');
+    setTimeout(() => card.classList.remove('search-highlight'), 1600);
+  }
+
+  function goToResult(match) {
+    if (match.file) {
+      sessionStorage.setItem('mc-search-target', match.title);
+      location.href = match.file;
+      return;
+    }
+    if (!match.target) return;
+    highlightCard(match.target);
+    closeSearch();
+  }
+
+  function renderResults(matches, query) {
+    if (!query) { results.innerHTML = ''; results.classList.remove('has-results'); return; }
+    if (matches.length === 0) {
+      results.innerHTML = `<div class="nav-search-empty">Nada encontrado para "${query}"</div>`;
+      results.classList.add('has-results');
+      return;
+    }
+    results.innerHTML = matches.slice(0, 6).map(() =>
+      `<button class="nav-search-item" type="button">
+         <span class="nav-search-item-title"></span>
+         <span class="nav-search-item-month"></span>
+         <span class="nav-search-item-preview"></span>
+       </button>`
+    ).join('');
+    const buttons = results.querySelectorAll('.nav-search-item');
+    buttons.forEach((b, i) => {
+      const m = matches[i];
+      b.querySelector('.nav-search-item-title').textContent = m.title;
+      const monthEl = b.querySelector('.nav-search-item-month');
+      if (m.file) monthEl.textContent = monthLabel(m.file); else monthEl.remove();
+      const prevEl = b.querySelector('.nav-search-item-preview');
+      if (m.preview) prevEl.textContent = m.preview + '…'; else prevEl.remove();
+      b.addEventListener('click', () => goToResult(m));
+    });
+    results.classList.add('has-results');
+  }
+
+  input.addEventListener('input', async () => {
+    const query = input.value.trim().toLowerCase();
+    if (!query) { renderResults([], ''); return; }
+    const idx = await ensureIndex();
+    if (input.value.trim().toLowerCase() !== query) return; // usuário já mudou o texto
+    const matches = idx.filter(item =>
+      item.title.toLowerCase().includes(query) || item.preview.toLowerCase().includes(query)
+    );
+    renderResults(matches, query);
+  });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const first = results.querySelector('.nav-search-item');
+      if (first) first.click();
+    }
+  });
+
+  // Se chegamos aqui vindo de um resultado de busca de OUTRO mês, acha o
+  // card certo pelo título e já destaca ele assim que a página carrega.
+  const wantedTitle = sessionStorage.getItem('mc-search-target');
+  if (wantedTitle) {
+    sessionStorage.removeItem('mc-search-target');
+    let found = null;
+    SEARCHABLE_SELECTORS.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        if (!found && el.textContent.trim() === wantedTitle) found = el;
+      });
+    });
+    const card = found ? found.closest(CARD_SELECTOR) : null;
+    if (card) setTimeout(() => highlightCard(card), 400);
+  }
+}
+initNavSearch();
 </script>
 
 </body>
