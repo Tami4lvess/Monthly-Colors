@@ -941,3 +941,106 @@ img {
     margin-bottom: 32px;
   }
 }
+
+/* ===========================
+   SOBRE O SITE
+=========================== */
+#sobre-site {
+  background: #083667;
+  padding: 100px 40px 120px;
+}
+
+.sobre-site-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.sobre-eyebrow {
+  font-family: "Instrument Sans", sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 22px;
+}
+
+.sobre-title {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: clamp(28px, 4.2vw, 48px);
+  line-height: 1.15;
+  color: #ffffff;
+  margin-bottom: 26px;
+}
+
+.sobre-desc {
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 560px;
+  margin: 0 auto 64px;
+}
+
+.sobre-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  text-align: left;
+}
+
+.sobre-pillar {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 32px 26px;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease, background 0.25s, border-color 0.25s;
+}
+.sobre-pillar.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.sobre-pillar:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.sobre-pillar i {
+  font-size: 20px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+
+.sobre-pillar h3 {
+  font-family: "Instrument Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.sobre-pillar p {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 780px) {
+  .sobre-pillars {
+    grid-template-columns: 1fr;
+  }
+  #sobre-site {
+    padding: 72px 24px 88px;
+  }
+}

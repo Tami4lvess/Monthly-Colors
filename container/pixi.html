@@ -53,7 +53,7 @@
     <section id="hero">
       <div id="canvas-container"></div>
 
-      <h1 class="title" id="title">Monthly colors</h1>
+      <h1 class="title" id="title">Monthly Colors</h1>
 
       <div id="variation-bar">
         <button type="button" class="morph-btn active" data-variation="0">Outono</button>
@@ -77,6 +77,36 @@
       <a href="#meses" class="scroll-down" aria-label="Ir para a seção de meses">
         <i class="fa-solid fa-angle-down"></i>
       </a>
+    </section>
+    
+ <!-- SOBRE O SITE -->
+    <section id="sobre-site">
+      <div class="sobre-site-inner">
+        <p class="sobre-eyebrow">O que é o Monthly Colors</p>
+        <h2 class="sobre-title">Cada mês tem uma cor,<br>uma história e um motivo<br>pra celebrar.</h2>
+        <p class="sobre-desc">
+          Aqui, o calendário vira uma experiência visual: cada um dos doze meses ganha sua própria paleta,
+          inspirada nas campanhas de conscientização, nas estações e nas datas que marcam aquele período no
+          Brasil. Escolha um mês abaixo e descubra mais!
+        </p>
+        <div class="sobre-pillars">
+          <div class="sobre-pillar fade-in-up">
+            <i class="fa-solid fa-palette"></i>
+            <h3>Cores &amp; Campanhas</h3>
+            <p>A cor e o significado por trás de cada campanha de conscientização do mês.</p>
+          </div>
+          <div class="sobre-pillar fade-in-up">
+            <i class="fa-solid fa-calendar-days"></i>
+            <h3>Datas Importantes</h3>
+            <p>Feriados, dias comemorativos e eventos pra você nunca mais esquecer.</p>
+          </div>
+          <div class="sobre-pillar fade-in-up">
+            <i class="fa-solid fa-moon"></i>
+            <h3>Fases da Lua</h3>
+            <p>Quando a lua estará cheia, nova, crescente ou minguante em cada mês.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- SEÇÃO MESES -->
@@ -449,7 +479,23 @@
 
     <div id="fps-counter">-- FPS</div>
     <div id="ui-panel"></div>
-
+    <script>
+      const sobrePillars = document.querySelectorAll('.sobre-pillar');
+      if (sobrePillars.length) {
+        const sobreObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry, i) => {
+              if (entry.isIntersecting) {
+                setTimeout(() => entry.target.classList.add('visible'), i * 120);
+                sobreObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.2 }
+        );
+        sobrePillars.forEach((el) => sobreObserver.observe(el));
+      }
+    </script>
     <script>
       // Evita prender o visitante na tela de carregamento caso WebGPU/WebGL
       // seja bloqueado ou alguma dependência externa não responda.
