@@ -43,39 +43,6 @@ function getMoonPhasesForMonth(year, month) {
   // Constante do ciclo lunar em dias
   const SYNODIC_MONTH = 29.53058867;
 
-  // Calcula o JDE (Julian Day) de uma lua nova "k" a partir de Meeus cap.49
-  function jdeNewMoon(k) {
-    const T = k / 1236.85;
-    const T2 = T * T;
-    const T3 = T2 * T;
-    const T4 = T3 * T;
-    let JDE = 2451550.09766 + SYNODIC_MONTH * k
-      + 0.00015437 * T2
-      - 0.000000150 * T3
-      + 0.00000000073 * T4;
-    // Correções principais
-    const M  = deg2rad(2.5534  + 29.1053567 * k - 0.0000014 * T2);
-    const Mp = deg2rad(201.5643 + 385.8169366 * k + 0.0107582 * T2 + 0.00001238 * T3 - 0.000000058 * T4);
-    const F  = deg2rad(160.7108 + 390.6702669 * k - 0.0016341 * T2 - 0.00000227 * T3 + 0.000000011 * T4);
-    const Om = deg2rad(124.7746 - 1.5637558 * k  + 0.0020672 * T2 + 0.00000215 * T3);
-    JDE += -0.40720 * Math.sin(Mp)
-           +0.17241 * Math.sin(M)
-           +0.01608 * Math.sin(2*Mp)
-           +0.01039 * Math.sin(2*F)
-           +0.00739 * Math.sin(Mp - M)
-           -0.00514 * Math.sin(Mp + M)
-           +0.00208 * Math.sin(2*M)
-           -0.00111 * Math.sin(Mp - 2*F)
-           -0.00057 * Math.sin(Mp + 2*F)
-           +0.00056 * Math.sin(2*Mp + M)
-           -0.00042 * Math.sin(3*Mp)
-           +0.00042 * Math.sin(M + 2*F)
-           +0.00038 * Math.sin(M - 2*F)
-           -0.00024 * Math.sin(2*Mp - M)
-           -0.00017 * Math.sin(Om)
-           -0.00007 * Math.sin(Mp + 2*M);
-    return JDE;
-  }
 
   // Calcula o JDE de um quarto (fase) a partir do JDE da lua nova mais próximo
   // phase: 0=nova, 0.25=crescente, 0.5=cheia, 0.75=minguante
@@ -184,48 +151,48 @@ function getMoonPhasesForMonth(year, month) {
 // ── Renderiza o painel de fases da lua automaticamente ───────────────────────
 (function renderMoonPanel() {
   const currentYear = new Date().getFullYear();
-  const phases = getMoonPhasesForMonth(currentYear, 2); // Fevereiro
+  const phases = getMoonPhasesForMonth(currentYear, 5); // Maio
 
-  // Atualiza o subtítulo "Fevereiro XXXX"
+  // Atualiza o subtítulo "Maio XXXX"
   const sub = document.querySelector('.moon-panel-sub');
-  if (sub) sub.textContent = `Fevereiro ${currentYear}`;
+  if (sub) sub.textContent = `Maio ${currentYear}`;
 
   // SVG templates para cada fase (reutiliza os SVGs originais)
   function moonSVG(type) {
     if (type === 'nova') return `
       <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
-        <defs><radialGradient id="ng1auto" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#2A3A4A"/><stop offset="100%" stop-color="#0D1520"/></radialGradient></defs>
-        <circle cx="32" cy="32" r="28" fill="url(#ng1auto)" stroke="#1E3A50" stroke-width="1.5"/>
+        <defs><radialGradient id="ng1auto" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#22243C"/><stop offset="100%" stop-color="#0B0C1A"/></radialGradient></defs>
+        <circle cx="32" cy="32" r="28" fill="url(#ng1auto)" stroke="#1B2A4A" stroke-width="1.5"/>
         <circle cx="26" cy="26" r="4" fill="rgba(255,255,255,0.04)"/>
         <circle cx="38" cy="36" r="3" fill="rgba(255,255,255,0.03)"/>
       </svg>`;
     if (type === 'crescente') return `
       <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
         <defs>
-          <radialGradient id="qcgauto" cx="60%" cy="35%" r="65%"><stop offset="0%" stop-color="#E8D5A0"/><stop offset="50%" stop-color="#C4A85A"/><stop offset="100%" stop-color="#8A6A20"/></radialGradient>
+          <radialGradient id="qcgauto" cx="60%" cy="35%" r="65%"><stop offset="0%" stop-color="#CDD7EC"/><stop offset="50%" stop-color="#8AAEDD"/><stop offset="100%" stop-color="#2E5590"/></radialGradient>
           <clipPath id="qc-clipauto"><rect x="32" y="4" width="28" height="56"/></clipPath>
         </defs>
-        <circle cx="32" cy="32" r="28" fill="#0D1520" stroke="#1E3A50" stroke-width="1"/>
+        <circle cx="32" cy="32" r="28" fill="#0B0C1A" stroke="#1B2A4A" stroke-width="1"/>
         <circle cx="32" cy="32" r="28" fill="url(#qcgauto)" clip-path="url(#qc-clipauto)"/>
-        <ellipse cx="32" cy="32" rx="8" ry="28" fill="#0D1520"/>
+        <ellipse cx="32" cy="32" rx="8" ry="28" fill="#0B0C1A"/>
       </svg>`;
     if (type === 'cheia') return `
       <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
-        <defs><radialGradient id="lcgauto" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#FFF5D6"/><stop offset="40%" stop-color="#E8C87A"/><stop offset="100%" stop-color="#A07A30"/></radialGradient></defs>
-        <circle cx="32" cy="32" r="26" fill="url(#lcgauto)" stroke="rgba(255,220,100,0.3)" stroke-width="1"/>
-        <circle cx="24" cy="22" r="5" fill="rgba(160,120,40,0.25)"/>
-        <circle cx="38" cy="30" r="3.5" fill="rgba(160,120,40,0.2)"/>
-        <circle cx="28" cy="38" r="4" fill="rgba(160,120,40,0.2)"/>
+        <defs><radialGradient id="lcgauto" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#F0F4FC"/><stop offset="40%" stop-color="#B9CCE8"/><stop offset="100%" stop-color="#5C7AA8"/></radialGradient></defs>
+        <circle cx="32" cy="32" r="26" fill="url(#lcgauto)" stroke="rgba(180,205,235,0.35)" stroke-width="1"/>
+        <circle cx="24" cy="22" r="5" fill="rgba(92,122,168,0.25)"/>
+        <circle cx="38" cy="30" r="3.5" fill="rgba(92,122,168,0.2)"/>
+        <circle cx="28" cy="38" r="4" fill="rgba(92,122,168,0.2)"/>
       </svg>`;
     return `
       <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
         <defs>
-          <radialGradient id="qmgauto" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#E8D5A0"/><stop offset="50%" stop-color="#C4A85A"/><stop offset="100%" stop-color="#8A6A20"/></radialGradient>
+          <radialGradient id="qmgauto" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#CDD7EC"/><stop offset="50%" stop-color="#8AAEDD"/><stop offset="100%" stop-color="#2E5590"/></radialGradient>
           <clipPath id="qm-clipauto"><rect x="4" y="4" width="28" height="56"/></clipPath>
         </defs>
-        <circle cx="32" cy="32" r="28" fill="#0D1520" stroke="#1E3A50" stroke-width="1"/>
+        <circle cx="32" cy="32" r="28" fill="#0B0C1A" stroke="#1B2A4A" stroke-width="1"/>
         <circle cx="32" cy="32" r="28" fill="url(#qmgauto)" clip-path="url(#qm-clipauto)"/>
-        <ellipse cx="32" cy="32" rx="8" ry="28" fill="#0D1520"/>
+        <ellipse cx="32" cy="32" rx="8" ry="28" fill="#0B0C1A"/>
       </svg>`;
   }
 
@@ -253,10 +220,10 @@ function getMoonPhasesForMonth(year, month) {
     const gcalLinks = document.querySelectorAll('.date-gcal');
     gcalLinks.forEach(link => {
       const onclick = link.getAttribute('onclick') || '';
-      if (onclick.includes('Lua da Neve')) {
+      if (onclick.includes('Lua das Flores')) {
         const d = String(fullMoon.day).padStart(2,'0');
         link.setAttribute('onclick',
-          `addToCalendar('${d}/02/${currentYear}','Lua da Neve - Lua Cheia de Fevereiro')`);
+          `addToCalendar('${d}/05/${currentYear}','Lua das Flores - Lua Cheia de Maio')`);
         const numEl = link.closest('.date-card')?.querySelector('.date-num');
         if (numEl) numEl.textContent = d;
       }

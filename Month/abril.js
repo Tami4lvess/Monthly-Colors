@@ -15,12 +15,20 @@ function toggleCurio(card) {
   if (!isActive) card.classList.add('active');
 }
 
+// ── Nav ────────────────────────────────────────────────────────────
+const paginaAtual = window.location.pathname.split("/").pop();
+
+document.querySelectorAll("#navMonths a").forEach((link) => {
+  const paginaDoLink = new URL(link.href).pathname.split("/").pop();
+
+  link.classList.toggle("active", paginaDoLink === paginaAtual);
+});
+
 // ── Google Agenda ────────────────────────────────────────────────────────────
 function addToCalendar(dateStr, title) {
   const parts = dateStr.split('/');
   const startDate = `${parts[2]}${parts[1].padStart(2,'0')}${parts[0].padStart(2,'0')}`;
-  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate}/${startDate}&details=${encodeURIComponent('Adicionado via Monthly Colors — monthlycolors.com')}`;
-  const toast = document.getElementById('gcalToast');
+  const url = `https://calendar.google.com/calendar/r/eventedit?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate}/${startDate}&details=${encodeURIComponent('Adicionado via Monthly Colors — monthlycolors.com')}`;  const toast = document.getElementById('gcalToast');
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2800);
   window.open(url, '_blank');

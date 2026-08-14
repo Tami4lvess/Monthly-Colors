@@ -2212,7 +2212,7 @@ function animateTitleIntro() {
     colorizeLetter(
       letter,
       colorOffset + index,
-      index * 390,
+      index * 210,
     );
   });
 
@@ -2229,7 +2229,41 @@ titleLetters.forEach((letter, index) => {
   });
 });
 
-window.setTimeout(animateTitleIntro, 650);
+let titleIntroStarted = false;
+
+function startTitleIntroWhenReady() {
+  if (titleIntroStarted) return;
+
+  titleIntroStarted = true;
+  window.setTimeout(animateTitleIntro, 180);
+}
+
+const titleLoadingScreen = document.getElementById("loading-screen");
+
+if (!titleLoadingScreen || titleLoadingScreen.classList.contains("is-hidden")) {
+  startTitleIntroWhenReady();
+} else {
+  const handleLoadingTransitionEnd = (event) => {
+    if (
+      event.target !== titleLoadingScreen ||
+      event.propertyName !== "opacity"
+    ) {
+      return;
+    }
+
+    titleLoadingScreen.removeEventListener(
+      "transitionend",
+      handleLoadingTransitionEnd
+    );
+
+    startTitleIntroWhenReady();
+  };
+
+  titleLoadingScreen.addEventListener(
+    "transitionend",
+    handleLoadingTransitionEnd
+  );
+}
 
 // Menu de idiomas
 const menu = document.getElementById("langMenu");
