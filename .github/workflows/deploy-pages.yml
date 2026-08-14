@@ -61,6 +61,14 @@ jobs:
             --exclude='_site/' \
             ./ _site/
 
+      - name: Atualizar versao do CSS e JavaScript
+        shell: bash
+        run: |
+          VERSION="${GITHUB_SHA::7}"
+
+          find _site -type f -name "*.html" -exec sed -i -E \
+            "s#((href|src)=[\"'](\.?\.?/)*[^\"':]+\.(css|js))(\?v=[^\"']*)?([\"'])#\1?v=${VERSION}\5#g" {} +
+
       - name: Enviar arquivos para publicacao
         uses: actions/upload-pages-artifact@v5
         with:
