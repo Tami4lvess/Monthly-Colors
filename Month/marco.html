@@ -493,8 +493,16 @@ function initNavSearch() {
   const results = document.getElementById('navSearchResults');
   if (!wrap || !btn || !input || !results) return;
 
-  const SEARCHABLE_SELECTORS = ['.curio-title', '.camp-title', '.date-name', '.color-card h3', '.section-title'];
-  const CARD_SELECTOR = '.curio-card, .campaign-card, .date-card, .color-card, section';
+  const SEARCHABLE_SELECTORS = [
+  '.curio-title',
+  '.camp-title',
+  '.date-name',
+  '.color-card h3',
+  '.section-title',
+  '.moon-panel-title',
+  '.moon-note-title'
+ ];
+  const CARD_SELECTOR = '.curio-card, .campaign-card, .date-card, .color-card, .moon-panel, section';
 
   // Pega os links dos OUTROS meses direto do menu (ignora o mês atual e os
   // meses ainda sem página, que usam href="#") — assim não precisa adivinhar
