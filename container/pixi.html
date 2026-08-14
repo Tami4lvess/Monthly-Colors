@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="is-loading">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -502,6 +502,7 @@
       window.loadingSafetyTimer = window.setTimeout(() => {
         const loadingScreen = document.getElementById("loading-screen");
         loadingScreen?.classList.add("is-hidden");
+        document.documentElement.classList.remove("is-loading");
         document.body.classList.remove("is-loading");
       }, 16000);
     </script>

@@ -22,8 +22,19 @@ body {
 html {
   overflow-y: scroll;
 }
+
+html.is-loading,
 body.is-loading {
-  overflow: hidden;
+  height: 100%;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+body.is-loading {
+  position: fixed;
+  inset: 0;
+  width: 100%;
 }
 
 .loading-screen {
@@ -865,7 +876,7 @@ img {
   }
 
   .title {
-    top: 35%;
+    top: 40%;
     left: 20px;
     right: 20px;
     font-size: clamp(30px, 10vw, 44px);

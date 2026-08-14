@@ -2004,6 +2004,7 @@ function dismissLoadingScreen() {
 
   window.setTimeout(() => {
     loadingScreen.classList.add("is-hidden");
+    document.documentElement.classList.remove("is-loading");
     document.body.classList.remove("is-loading");
 
     loadingScreen.addEventListener(

@@ -26,13 +26,37 @@ document.querySelectorAll("#navMonths a").forEach((link) => {
 
 // ── Google Agenda ────────────────────────────────────────────────────────────
 function addToCalendar(dateStr, title) {
-  const parts = dateStr.split('/');
-  const startDate = `${parts[2]}${parts[1].padStart(2,'0')}${parts[0].padStart(2,'0')}`;
-  const url = `https://calendar.google.com/calendar/r/eventedit?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate}/${startDate}&details=${encodeURIComponent('Adicionado via Monthly Colors — monthlycolors.com')}`;
-  const toast = document.getElementById('gcalToast');
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2800);
-  window.open(url, '_blank');
+  const [day, month, year] = dateStr.split("/").map(Number);
+
+  const start = new Date(Date.UTC(year, month - 1, day));
+  const end = new Date(Date.UTC(year, month - 1, day + 1));
+
+  const formatDate = (date) =>
+    `${date.getUTCFullYear()}${String(date.getUTCMonth() + 1).padStart(2, "0")}${String(date.getUTCDate()).padStart(2, "0")}`;
+
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: title,
+    dates: `${formatDate(start)}/${formatDate(end)}`,
+    details: "Adicionado via Monthly Colors — monthlycolors.com",
+    ctz: "America/Sao_Paulo"
+  });
+
+  const url = `https://calendar.google.com/calendar/r/eventedit?${params.toString()}`;
+  const toast = document.getElementById("gcalToast");
+
+  toast?.classList.add("show");
+  setTimeout(() => toast?.classList.remove("show"), 2800);
+
+  const isMobile = window.matchMedia(
+    "(max-width: 820px), (pointer: coarse)"
+  ).matches;
+
+  if (isMobile) {
+    window.location.assign(url);
+  } else {
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
 }
 
 // ── Algoritmo de Fases da Lua (Jean Meeus) ───────────────────────────────────
