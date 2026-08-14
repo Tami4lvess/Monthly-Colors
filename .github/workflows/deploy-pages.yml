@@ -61,22 +61,6 @@ jobs:
             --exclude='_site/' \
             ./ _site/
 
-          cat > _site/index.html <<'EOF'
-          <!doctype html>
-          <html lang="pt-BR">
-            <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <meta http-equiv="refresh" content="0; url=./container/pixi.html?v=3">
-              <title>Monthly Colors</title>
-            </head>
-            <body>
-              <p>Abrindo o site...</p>
-              <script>window.location.replace('./container/pixi.html?v=3');</script>
-            </body>
-          </html>
-          EOF
-
       - name: Enviar arquivos para publicacao
         uses: actions/upload-pages-artifact@v5
         with:
