@@ -19,18 +19,12 @@ body {
 }
 
 /* ===== TELA DE CARREGAMENTO ===== */
-html {
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
-
 html.is-loading {
   height: 100%;
   overflow-y: scroll !important;
   overscroll-behavior: none;
   touch-action: none;
   background: #ffffff;
-  scrollbar-color: transparent #ffffff;
 }
 
 html.is-loading::-webkit-scrollbar-track,
@@ -666,12 +660,7 @@ footer {
 /* ===== DEBUG ===== */
 #ui-panel,
 #fps-counter {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  width: 0;
-  height: 0;
-  overflow: hidden;
+  display: none;
 }
 /* SOBRE NÓS pagina */
 /* HEADER */
@@ -798,7 +787,8 @@ h1 {
 .icons {
   position: relative;
   top: 10px;
-  right: 40px;
+  width: 100%;
+  padding-right: 40px;
   display: flex;
   justify-content: end;
   align-items: center;
