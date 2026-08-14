@@ -67,7 +67,7 @@ jobs:
           VERSION="${GITHUB_SHA::7}"
 
           find _site -type f -name "*.html" -exec sed -i -E \
-            "s#((href|src)=[\"'](\.?\.?/)*[^\"':]+\.(css|js))(\?v=[^\"']*)?([\"'])#\1?v=${VERSION}\5#g" {} +
+            "s#((href|src)=[\"'](\.?\.?/)*[^\"':]+\.(css|js))(\?v=[^\"']*)?([\"'])#\1?v=${VERSION}\6#g" {} +
 
       - name: Enviar arquivos para publicacao
         uses: actions/upload-pages-artifact@v5
