@@ -1,41 +1,166 @@
-/* MOBILE COMPARTILHADO ENTRE OS MESES */
-@media (max-width: 700px) {
-  nav,
-  nav.solid {
-    min-height: 60px;
-    padding: 10px 16px;
+/* RESPONSIVIDADE COMPARTILHADA ENTRE TODOS OS MESES */
+
+/* O menu compacto entra antes que logo, meses e busca comecem a se sobrepor. */
+@media (max-width: 1100px) {
+  #mainNav,
+  #mainNav.solid {
+    min-height: 68px;
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 40px 40px;
+    align-items: center;
+    gap: 4px;
   }
 
-  .nav-logo {
-    font-size: 1.15rem;
+  #mainNav .nav-logo {
+    grid-column: 1;
+    display: block;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
   }
 
-  /* Retira a busca que estava separando os elementos */
-  .nav-search {
-    display: none;
-  }
-
-  .nav-toggle {
-    display: flex;
+  #mainNav .nav-search-wrap {
+    grid-column: 2;
+    position: relative;
     width: 40px;
     height: 40px;
-    margin-left: auto;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    z-index: 501;
   }
 
-  .nav-months {
+  #mainNav .nav-search {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+  }
+
+  #mainNav.solid .nav-search {
+    color: var(--ink);
+  }
+
+  #mainNav .nav-search svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+    stroke: currentColor;
+  }
+
+  #mainNav .nav-toggle {
+    grid-column: 3;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    display: flex;
+  }
+
+  #mainNav .nav-months {
+    position: absolute;
     top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    background: var(--deep-purple);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    transform: translateY(-8px);
+    transition:
+      max-height 0.35s ease,
+      opacity 0.25s ease,
+      transform 0.25s ease,
+      visibility 0.25s;
   }
 
-  .nav-months.open {
-    max-height: calc(100svh - 60px);
+  #mainNav.solid .nav-months {
+    background: var(--parch);
+  }
+
+  #mainNav .nav-months.open {
+    max-height: calc(100svh - 68px);
     overflow-y: auto;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 
-  /* Hero do mês mais baixo e organizado */
+  #mainNav .nav-months a {
+    width: 100%;
+    padding: 14px 22px;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.82rem;
+  }
+
+  #mainNav.solid .nav-months a {
+    border-bottom-color: rgba(10, 14, 26, 0.07);
+  }
+
+  /* A busca abre sobre a área do logo sem empurrar os outros botões. */
+  #mainNav .nav-search-input {
+    position: absolute;
+    top: 1px;
+    right: 42px;
+    width: 0;
+    height: 38px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 20px;
+    background: #ffffff;
+    color: var(--ink);
+    caret-color: var(--ink);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  #mainNav .nav-search-wrap.open .nav-search-input {
+    width: clamp(100px, 30vw, 220px);
+    padding: 7px 12px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    box-shadow: 0 5px 18px rgba(10, 14, 26, 0.2);
+  }
+
+  #mainNav .nav-search-input::placeholder {
+    color: rgba(10, 14, 26, 0.45);
+  }
+
+  #mainNav .nav-search-results {
+    position: absolute;
+    top: 50px;
+    right: -44px;
+    width: min(340px, calc(100vw - 28px));
+    z-index: 600;
+  }
+}
+
+/* Ajustes do conteúdo principal apenas para celulares. */
+@media (max-width: 700px) {
   .hero {
     min-height: 82svh;
     justify-content: center;
-    padding-top: 60px;
+    padding-top: 68px;
   }
 
   .hero-content {
@@ -52,7 +177,6 @@
     letter-spacing: 0.2em;
   }
 
-  /* Faz FEVEREIRO caber sem cortar */
   .hero-t1 {
     width: 100%;
     max-width: 100%;
@@ -79,7 +203,6 @@
     font-size: 0.76rem;
   }
 
-  /* Remove elementos grandes e decorativos no celular */
   .hero-bg-number,
   .hero-ghost-word,
   .hero-scroll-hint {

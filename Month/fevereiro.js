@@ -19,6 +19,11 @@ function toggleCurio(card) {
 const paginaAtual = window.location.pathname.split("/").pop();
 
 document.querySelectorAll("#navMonths a").forEach((link) => {
+  if (link.getAttribute("href") === "#") {
+    link.classList.remove("active");
+    return;
+  }
+
   const paginaDoLink = new URL(link.href).pathname.split("/").pop();
 
   link.classList.toggle("active", paginaDoLink === paginaAtual);
