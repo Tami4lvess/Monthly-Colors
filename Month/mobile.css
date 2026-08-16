@@ -1,5 +1,21 @@
 /* RESPONSIVIDADE COMPARTILHADA ENTRE TODOS OS MESES */
 
+/* Meses ainda sem página são texto, não links clicáveis. */
+#navMonths .nav-disabled {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 3px;
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+  cursor: default;
+}
+
+#mainNav.solid #navMonths .nav-disabled {
+  color: rgba(10, 14, 26, 0.3);
+}
+
 /* O menu compacto entra antes que logo, meses e busca comecem a se sobrepor. */
 @media (max-width: 1100px) {
   #mainNav,
@@ -110,7 +126,20 @@
     font-size: 0.82rem;
   }
 
+  #mainNav .nav-months .nav-disabled {
+    display: block;
+    width: 100%;
+    padding: 14px 22px;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.82rem;
+  }
+
   #mainNav.solid .nav-months a {
+    border-bottom-color: rgba(10, 14, 26, 0.07);
+  }
+
+  #mainNav.solid .nav-months .nav-disabled {
     border-bottom-color: rgba(10, 14, 26, 0.07);
   }
 
