@@ -6,9 +6,9 @@
   --parch:       #FAF5EA;
   --cream:       #F3EBDD;
   --deep-purple: #2B143A;
-  --purple:      #8A4FA3;
-  --purple-mid:  #B06BC3;
-  --purple-lt:   #D9B4E5;
+  --purple:      #A66CC7;
+  --purple-mid:  #C18ADB;
+  --purple-lt:   #E2C3EE;
   --orange:      #C99724;
   --orange-mid:  #E3B84F;
   --orange-lt:   #F3D788;
@@ -820,3 +820,32 @@ nav.solid .nav-search-input::placeholder { color: rgba(10,14,26,0.4); }
 }
 
 
+
+
+/* Ajustes solicitados: somente elementos decorativos do header. */
+.hero-bg-number {
+  display: none !important;
+  animation: none;
+}
+
+.hero-lines::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.10) 25%,
+    rgba(255,255,255,0.18) 55%,
+    rgba(255,255,255,0.08) 80%,
+    transparent
+  );
+}
+
+.hero-lines::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.07) 30%,
+    rgba(255,255,255,0.13) 55%,
+    rgba(255,255,255,0.06) 75%,
+    transparent
+  );
+}

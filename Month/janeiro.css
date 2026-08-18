@@ -822,3 +822,32 @@ nav.solid .nav-search-input::placeholder { color: rgba(10,14,26,0.4); }
 }
 
 
+
+
+/* Ajustes solicitados: somente elementos decorativos do header. */
+.hero-bg-number {
+  display: none !important;
+  animation: none;
+}
+
+.hero-lines::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.10) 25%,
+    rgba(255,255,255,0.18) 55%,
+    rgba(255,255,255,0.08) 80%,
+    transparent
+  );
+}
+
+.hero-lines::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.07) 30%,
+    rgba(255,255,255,0.13) 55%,
+    rgba(255,255,255,0.06) 75%,
+    transparent
+  );
+}

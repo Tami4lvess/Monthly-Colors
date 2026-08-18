@@ -815,3 +815,41 @@ nav.solid .nav-search-input::placeholder { color: rgba(10,14,26,0.4); }
 .nav-search-item-title { font-size: 0.86rem; font-weight: 600; color: var(--ink); }
 .nav-search-item-preview { font-size: 0.75rem; color: var(--muted); }
 .nav-search-empty { padding: 16px; font-size: 0.82rem; color: var(--muted); text-align: center; }
+
+
+/* Ajustes solicitados: somente elementos decorativos do header. */
+.hero-bg-number {
+  display: none !important;
+  animation: none;
+}
+
+.hero-lines::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.10) 25%,
+    rgba(255,255,255,0.18) 55%,
+    rgba(255,255,255,0.08) 80%,
+    transparent
+  );
+}
+
+.hero-lines::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.07) 30%,
+    rgba(255,255,255,0.13) 55%,
+    rgba(255,255,255,0.06) 75%,
+    transparent
+  );
+}
+
+/* Abril: brilho verde atrás do título mais escuro e proporcional. */
+.hero-accent2 {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(17,91,55,0.22) 0%,
+    transparent 65%
+  );
+}
