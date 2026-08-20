@@ -324,7 +324,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
 
 .color-swatch {
   width: 44px; height: 44px; border-radius: 12px; margin-bottom: 20px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 14px rgba(10, 45, 30, 0.08);
 }
 .color-card h3 {
   font-family: 'Bebas Neue', sans-serif;
@@ -709,9 +709,20 @@ footer p { font-size: 0.7rem; color: rgba(138,174,221,0.28); letter-spacing: 0.0
 .campaigns-intro { font-size: 0.92rem; color: #565470; max-width: 640px; line-height: 1.7; margin-bottom: 44px; }
 .section-title-compact { font-size: clamp(1.6rem, 4vw, 2.6rem); }
 .calendar-note { font-size: 0.88rem; color: #565470; margin-top: 8px; }
-.swatch-primary { background: linear-gradient(135deg, #041C3A, #35A06B); }
-.swatch-secondary { background: linear-gradient(135deg, #0B5FA8, #2E86D9); }
-.swatch-accent { background: linear-gradient(135deg, #1F7A4C, #9BE0BE); }
+/* Abril Azul */
+.swatch-primary {
+  background: linear-gradient(135deg, #2388D1, #8DCAF2);
+}
+
+/* Abril Verde — segurança do trabalho */
+.swatch-secondary {
+  background: linear-gradient(135deg, #35A85F, #8DDBA6);
+}
+
+/* Verde-claro */
+.swatch-accent {
+  background: linear-gradient(135deg, #72C990, #C3EED0);
+}
 .date-card-primary { border-top: 3px solid #0B5FA8; }
 .date-card-secondary { border-top: 3px solid #1F7A4C; }
 .date-card-tertiary { border-top: 3px solid #2E86D9; }

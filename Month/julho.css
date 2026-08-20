@@ -320,7 +320,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
 }
 .color-card.roxo-card::after  { background: linear-gradient(90deg, var(--deep-purple), var(--purple-mid)); }
 .color-card.laranja-card::after { background: linear-gradient(90deg, var(--orange), var(--orange-mid)); }
-.color-card.roxo2-card::after { background: linear-gradient(90deg, var(--purple), #8DC58E); }
+.color-card.roxo2-card::after { background: linear-gradient(90deg, #C49325, #F1D171); }
 
 .color-swatch {
   width: 44px; height: 44px; border-radius: 12px; margin-bottom: 20px;
@@ -710,7 +710,9 @@ footer p { font-size: 0.7rem; color: rgba(214,224,190,0.25); letter-spacing: 0.0
 .calendar-note { font-size: 0.88rem; color: #52645B; margin-top: 8px; }
 .swatch-primary { background: linear-gradient(135deg, #082D2A, #2F7D4A); }
 .swatch-secondary { background: linear-gradient(135deg, #D6A300, #E8BD2E); }
-.swatch-accent { background: linear-gradient(135deg, #2F7D4A, #DEC969); }
+.swatch-accent {
+  background: linear-gradient(135deg, #C49325, #F1D171);
+}
 .date-card-primary { border-top: 3px solid #2F7D4A; }
 .date-card-secondary { border-top: 3px solid #D6A300; }
 .date-num-primary { color: #2F7D4A; }

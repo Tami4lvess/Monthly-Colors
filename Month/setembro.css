@@ -124,12 +124,26 @@ nav.solid .nav-toggle span { background: var(--ink); }
 /* linhas diagonais sutis, inspiradas em caules e raios de sol */
 .hero::after {
   content: '';
-  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+
   background-image:
-    repeating-linear-gradient(-48deg, transparent 0px, transparent 44px,
-      rgba(221,181,54,0.055) 44px, rgba(221,181,54,0.055) 45px),
-    repeating-linear-gradient(52deg, transparent 0px, transparent 80px,
-      rgba(110,155,105,0.055) 80px, rgba(110,155,105,0.055) 81px);
+    repeating-linear-gradient(
+      -48deg,
+      transparent 0px,
+      transparent 44px,
+      rgba(11, 95, 168, 0.08) 44px,
+      rgba(11, 95, 168, 0.08) 45px
+    ),
+    repeating-linear-gradient(
+      52deg,
+      transparent 0px,
+      transparent 80px,
+      rgba(31, 122, 76, 0.08) 80px,
+      rgba(31, 122, 76, 0.08) 81px
+    );
 }
 
 /* brilho amarelo no topo */

@@ -101,14 +101,27 @@ nav.solid .nav-toggle span { background: var(--ink); }
 /* riscos diagonais sutis, evocando vento de outono */
 .hero::after {
   content: '';
-  position: absolute; inset: 0; pointer-events: none; z-index: 1;
-  background-image:
-    repeating-linear-gradient(-48deg, transparent 0px, transparent 44px,
-      rgba(27,58,107,0.05) 44px, rgba(27,58,107,0.05) 45px),
-    repeating-linear-gradient(52deg, transparent 0px, transparent 80px,
-      rgba(122,79,176,0.05) 80px, rgba(122,79,176,0.05) 81px);
-}
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
 
+  background-image:
+    repeating-linear-gradient(
+      -48deg,
+      transparent 0px,
+      transparent 44px,
+      rgba(11, 95, 168, 0.08) 44px,
+      rgba(11, 95, 168, 0.08) 45px
+    ),
+    repeating-linear-gradient(
+      52deg,
+      transparent 0px,
+      transparent 80px,
+      rgba(31, 122, 76, 0.08) 80px,
+      rgba(31, 122, 76, 0.08) 81px
+    );
+}
 /* glow azul-marinho topo-direita */
 .hero-accent {
   position: absolute; top: -15%; right: -8%;

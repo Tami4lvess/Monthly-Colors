@@ -95,7 +95,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
   min-height: 100vh;
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-end;
-  background: linear-gradient(155deg, #0C0318 0%, #2D0A5A 45%, #1A0535 100%);
+  background: linear-gradient(155deg, #14091E 0%, #2B1538 45%, #24102F 100%);
 }
 
 /* confetti-like diagonal marks */
@@ -104,19 +104,19 @@ nav.solid .nav-toggle span { background: var(--ink); }
   position: absolute; inset: 0; pointer-events: none; z-index: 1;
   background-image:
     repeating-linear-gradient(-48deg, transparent 0px, transparent 44px,
-      rgba(212,86,10,0.04) 44px, rgba(212,86,10,0.04) 45px),
+      rgba(226,195,238,0.028) 44px, rgba(226,195,238,0.028) 45px),
     repeating-linear-gradient(52deg, transparent 0px, transparent 80px,
-      rgba(107,47,160,0.04) 80px, rgba(107,47,160,0.04) 81px);
+      rgba(226,195,238,0.028) 80px, rgba(226,195,238,0.028) 81px);
 }
 
-/* orange warm glow top-right */
+/* brilho lilás suave no topo-direito */
 .hero-accent {
   position: absolute; top: -15%; right: -8%;
   width: 70vw; height: 70vw; max-width: 900px; max-height: 900px;
   border-radius: 50%; pointer-events: none; z-index: 1;
   background: radial-gradient(circle at 40% 35%,
-    rgba(212,86,10,0.25) 0%,
-    rgba(155,80,208,0.15) 40%,
+    rgba(166,108,199,0.20) 0%,
+    rgba(193,138,219,0.10) 40%,
     transparent 70%);
 }
 
@@ -126,7 +126,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
   width: 55vw; height: 55vw; max-width: 700px; max-height: 700px;
   border-radius: 50%; pointer-events: none; z-index: 1;
   background: radial-gradient(circle at 50% 50%,
-    rgba(107,47,160,0.3) 0%,
+    rgba(107,47,160,0.20) 0%,
     transparent 65%);
 }
 
@@ -140,7 +140,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
   font-size: clamp(18vw, 22vw, 340px);
   line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 1.5px rgba(245,176,122,0.11);
+  -webkit-text-stroke: 1.5px rgba(226,195,238,0.16);
   white-space: nowrap;
   pointer-events: none; -webkit-user-select: none; user-select: none; z-index: 2;
   animation: ghostDrift 22s ease-in-out infinite alternate;
@@ -152,6 +152,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
 
 /* ── BIG ITALIC NUMBER ── */
 .hero-bg-number {
+  display: none;
   position: absolute;
   top: 50%; right: 2%;
   transform: translateY(-48%);
@@ -177,13 +178,13 @@ nav.solid .nav-toggle span { background: var(--ink); }
   content: '';
   position: absolute; left: 0; right: 0; bottom: 24%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(245,176,122,0.18) 25%, rgba(245,176,122,0.28) 55%, rgba(245,176,122,0.12) 80%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(226,195,238,0.18) 25%, rgba(226,195,238,0.28) 55%, rgba(226,195,238,0.12) 80%, transparent);
 }
 .hero-lines::after {
   content: '';
   position: absolute; left: 0; right: 0; bottom: 44%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(195,160,232,0.12) 30%, rgba(195,160,232,0.2) 55%, rgba(195,160,232,0.1) 75%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(195,160,232,0.13) 30%, rgba(195,160,232,0.22) 55%, rgba(195,160,232,0.11) 75%, transparent);
 }
 
 /* ── CONTENT ── */
@@ -279,7 +280,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
 }
 
 /* ── WAVE ─────────────────────────────────────────────────────────────────── */
-.wave-divider { margin-top: -2px; background: #1A0535; line-height: 0; }
+.wave-divider { margin-top: -2px; background: #24102F; line-height: 0; }
 .wave-divider svg { display: block; }
 
 /* ── SECTION LABELS ──────────────────────────────────────────────────────── */
@@ -820,42 +821,3 @@ nav.solid .nav-search-input::placeholder { color: rgba(10,14,26,0.4); }
 }
 
 
-
-
-/* Ajustes solicitados: somente elementos decorativos do header. */
-.hero-bg-number {
-  display: none !important;
-  animation: none;
-}
-
-.hero-lines::before {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.10) 25%,
-    rgba(255,255,255,0.18) 55%,
-    rgba(255,255,255,0.08) 80%,
-    transparent
-  );
-}
-
-.hero-lines::after {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.07) 30%,
-    rgba(255,255,255,0.13) 55%,
-    rgba(255,255,255,0.06) 75%,
-    transparent
-  );
-}
-
-/* Fevereiro: remove o tom vermelho/rosa do brilho superior. */
-.hero-accent {
-  background: radial-gradient(
-    circle at 40% 35%,
-    rgba(232,122,48,0.22) 0%,
-    rgba(232,122,48,0.08) 45%,
-    transparent 70%
-  );
-}

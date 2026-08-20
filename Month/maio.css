@@ -324,7 +324,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
 
 .color-swatch {
   width: 44px; height: 44px; border-radius: 12px; margin-bottom: 20px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 14px rgba(95, 65, 10, 0.08);
 }
 .color-card h3 {
   font-family: 'Bebas Neue', sans-serif;
@@ -709,9 +709,20 @@ footer p { font-size: 0.7rem; color: rgba(240,214,138,0.28); letter-spacing: 0.0
 .campaigns-intro { font-size: 0.92rem; color: #6B5A42; max-width: 640px; line-height: 1.7; margin-bottom: 44px; }
 .section-title-compact { font-size: clamp(1.6rem, 4vw, 2.6rem); }
 .calendar-note { font-size: 0.88rem; color: #6B5A42; margin-top: 8px; }
-.swatch-primary { background: linear-gradient(135deg, #2B1608, #E07A3D); }
-.swatch-secondary { background: linear-gradient(135deg, #C98A0A, #E0A82E); }
-.swatch-accent { background: linear-gradient(135deg, #C4551C, #F2B98A); }
+/* Amarelo */
+.swatch-primary {
+  background: linear-gradient(135deg, #E4B400, #FFD84D);
+}
+
+/* Laranja */
+.swatch-secondary {
+  background: linear-gradient(135deg, #D85D20, #F39A5C);
+}
+
+/* Amarelo-claro */
+.swatch-accent {
+  background: linear-gradient(135deg, #F2CE55, #FFF0A8);
+}
 .date-card-primary { border-top: 3px solid #C98A0A; }
 .date-card-secondary { border-top: 3px solid #C4551C; }
 .date-card-tertiary { border-top: 3px solid #E0A82E; }

@@ -101,12 +101,26 @@ nav.solid .nav-toggle span { background: var(--ink); }
 /* riscos diagonais sutis, evocando vento de outono */
 .hero::after {
   content: '';
-  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+
   background-image:
-    repeating-linear-gradient(-48deg, transparent 0px, transparent 44px,
-      rgba(26,58,92,0.05) 44px, rgba(26,58,92,0.05) 45px),
-    repeating-linear-gradient(52deg, transparent 0px, transparent 80px,
-      rgba(107,63,160,0.05) 80px, rgba(107,63,160,0.05) 81px);
+    repeating-linear-gradient(
+      -48deg,
+      transparent 0px,
+      transparent 44px,
+      rgba(11, 95, 168, 0.06) 44px,
+      rgba(11, 95, 168, 0.06) 45px
+    ),
+    repeating-linear-gradient(
+      52deg,
+      transparent 0px,
+      transparent 80px,
+      rgba(31, 122, 76, 0.06) 80px,
+      rgba(31, 122, 76, 0.06) 81px
+    );
 }
 
 /* glow azul topo-direita */
