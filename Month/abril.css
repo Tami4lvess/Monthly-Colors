@@ -95,10 +95,15 @@ nav.solid .nav-toggle span { background: var(--ink); }
   min-height: 100vh;
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-end;
-  background: linear-gradient(155deg, #030B14 0%, #041C3A 45%, #06182E 100%);
+  background: linear-gradient(
+  155deg,
+  #061A12 0%,
+  #0D3523 45%,
+  #1A5033 100%
+);
 }
 
-/* riscos diagonais sutis, evocando vento de outono */
+/* riscos diagonais sutis, evocando vento de outono 
 .hero::after {
   content: '';
   position: absolute; inset: 0; pointer-events: none; z-index: 1;
@@ -108,16 +113,18 @@ nav.solid .nav-toggle span { background: var(--ink); }
     repeating-linear-gradient(52deg, transparent 0px, transparent 80px,
       rgba(31,122,76,0.05) 80px, rgba(31,122,76,0.05) 81px);
 }
-
+*/
 /* glow azul topo-direita */
 .hero-accent {
   position: absolute; top: -15%; right: -8%;
   width: 70vw; height: 70vw; max-width: 900px; max-height: 900px;
   border-radius: 50%; pointer-events: none; z-index: 1;
-  background: radial-gradient(circle at 40% 35%,
-    rgba(11,95,168,0.3) 0%,
-    rgba(31,122,76,0.16) 40%,
-    transparent 70%);
+  background: radial-gradient(
+  circle at 40% 35%,
+  rgba(70, 160, 105, 0.12) 0%,
+  rgba(31, 122, 76, 0.06) 40%,
+  transparent 70%
+);
 }
 
 /* glow verde baixo-esquerda */
@@ -125,9 +132,13 @@ nav.solid .nav-toggle span { background: var(--ink); }
   position: absolute; bottom: -20%; left: -10%;
   width: 55vw; height: 55vw; max-width: 700px; max-height: 700px;
   border-radius: 50%; pointer-events: none; z-index: 1;
-  background: radial-gradient(circle at 50% 50%,
-    rgba(31,122,76,0.32) 0%,
-    transparent 65%);
+  .hero-accent2 {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(35, 125, 75, 0.10) 0%,
+    transparent 65%
+  );
+}
 }
 
 /* ── GHOST TEXT LAYER — "ABRIL" abrangendo a largura total ── */
@@ -279,8 +290,15 @@ nav.solid .nav-toggle span { background: var(--ink); }
 }
 
 /* ── WAVE ─────────────────────────────────────────────────────────────────── */
-.wave-divider { margin-top: -2px; background: #06182E; line-height: 0; }
+.wave-divider {
+  margin-top: -2px;
+  background: #1A5033;
+  line-height: 0;
+}
 .wave-divider svg { display: block; }
+.wave-divider svg path {
+  fill: var(--cream) !important;
+}
 
 /* ── SECTION LABELS ──────────────────────────────────────────────────────── */
 .section-label {

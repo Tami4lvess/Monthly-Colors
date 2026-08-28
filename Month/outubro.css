@@ -2,7 +2,9 @@
 
 /* ── TOKENS — paleta única de outubro ───────────────────────────────────── */
 :root {
-  --ink: #321721; --parch: #FFF0F5; --cream: #FADDE8;
+  --ink: #3A2430;
+  --parch: #FFF4F8;
+  --cream: #FBE5EE;
   --deep-purple: #3A1023; --purple: #D93F7B; --purple-mid: #EA72A1; --purple-lt: #F8B2CC;
   --orange: #678675; --orange-mid: #88AA95; --orange-lt: #C4D9CB;
   --gold: #B85A83; --gold-lt: #E9A2BD; --muted: #765260; --muted-lt: #D9B1C0; --white: #FFFFFF;
@@ -142,12 +144,21 @@ nav.solid .nav-toggle span { background: var(--ink); }
 /* ── HERO ─────────────────────────────────────────────────────────────────── */
 .hero {
   min-height: 100vh;
-  position: relative; overflow: hidden;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  background: linear-gradient(155deg, #1F0A14 0%, #3A1023 48%, #581C37 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  background: linear-gradient(
+    155deg,
+    #1F0A14 0%,
+    #3A1023 48%,
+    #581C37 100%
+  );
 }
 
-/* linhas diagonais sutis, inspiradas em caules e raios de sol */
+/* linhas diagonais sutis, inspiradas em caules e raios de sol
 .hero::after {
   content: '';
   position: absolute;
@@ -171,6 +182,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
       rgba(31, 122, 76, 0.08) 81px
     );
 }
+*/
 
 /* brilho amarelo no topo */
 .hero-accent {
@@ -342,9 +354,15 @@ nav.solid .nav-toggle span { background: var(--ink); }
 }
 
 /* ── WAVE ─────────────────────────────────────────────────────────────────── */
-.wave-divider { margin-top: -2px; background: #581C37; line-height: 0; }
+.wave-divider {
+  margin-top: -2px;
+  background: #581C37;
+  line-height: 0;
+}
 .wave-divider svg { display: block; }
-
+.wave-divider svg path {
+  fill: var(--cream) !important;
+}
 /* ── SECTION LABELS ──────────────────────────────────────────────────────── */
 .section-label {
   display: inline-flex; align-items: center; gap: 10px;
@@ -499,6 +517,9 @@ nav.solid .nav-toggle span { background: var(--ink); }
 .stat-label { font-size: 0.6rem; color: rgba(241,183,202,0.5); margin-top: 6px; letter-spacing: 0.12em; text-transform: uppercase; }
 @media(max-width:640px){ .meaning-inner{ grid-template-columns:1fr; gap:44px; } }
 .clouds-svg { position: absolute; bottom: -2px; left: 0; right: 0; width: 100%; display: block; }
+.clouds-svg path {
+  fill: var(--cream) !important;
+}
 
 /* ── DATES ───────────────────────────────────────────────────────────────── */
 .dates-section {
@@ -549,7 +570,12 @@ nav.solid .nav-toggle span { background: var(--ink); }
 }
 .date-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--purple), var(--orange));
+  background: linear-gradient(
+  155deg,
+  #1F0A14 0%,
+  #3A1023 48%,
+  #581C37 100%
+);
 }
 .date-num {
   font-family: 'Bebas Neue', sans-serif;

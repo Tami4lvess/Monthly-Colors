@@ -95,10 +95,15 @@ nav.solid .nav-toggle span { background: var(--ink); }
   min-height: 100vh;
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-end;
-  background: linear-gradient(155deg, #140A03 0%, #2B1608 45%, #24130A 100%);
+  background: linear-gradient(
+  155deg,
+  #211600 0%,
+  #543B04 45%,
+  #80600B 100%
+);
 }
 
-/* riscos diagonais sutis, evocando vento de outono */
+/* riscos diagonais sutis, evocando vento de outono 
 .hero::after {
   content: '';
   position: absolute; inset: 0; pointer-events: none; z-index: 1;
@@ -108,7 +113,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
     repeating-linear-gradient(52deg, transparent 0px, transparent 80px,
       rgba(196,85,28,0.05) 80px, rgba(196,85,28,0.05) 81px);
 }
-
+*/
 /* glow amarelo topo-direita */
 .hero-accent {
   position: absolute; top: -15%; right: -8%;
@@ -279,8 +284,11 @@ nav.solid .nav-toggle span { background: var(--ink); }
 }
 
 /* ── WAVE ─────────────────────────────────────────────────────────────────── */
-.wave-divider { margin-top: -2px; background: #24130A; line-height: 0; }
+.wave-divider { margin-top: -2px; background: #80600B; line-height: 0; }
 .wave-divider svg { display: block; }
+.wave-divider svg path {
+  fill: var(--cream) !important;
+}
 
 /* ── SECTION LABELS ──────────────────────────────────────────────────────── */
 .section-label {
@@ -626,7 +634,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
 .moon-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .moon-label { font-size: 0.56rem; color: rgba(240,214,138,0.48); letter-spacing: 0.14em; text-transform: uppercase; }
 .moon-date { font-family: 'Cormorant Garamond', serif; font-size: 0.86rem; color: rgba(240,214,138,0.78); font-style: italic; }
-.moon-svg { filter: drop-shadow(0 0 10px rgba(196,85,28,0.25)); }
+.moon-svg {   filter: drop-shadow(0 0 10px rgba(201, 138, 10, 0.30)); }
 
 /* ── FOOTER ──────────────────────────────────────────────────────────────── */
 footer {

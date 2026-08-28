@@ -98,7 +98,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
   background: linear-gradient(155deg, #031D22 0%, #082D2A 45%, #0A2438 100%);
 }
 
-/* confetti-like diagonal marks */
+/* confetti-like diagonal marks 
 .hero::after {
   content: '';
   position: absolute; inset: 0; pointer-events: none; z-index: 1;
@@ -108,7 +108,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
     repeating-linear-gradient(52deg, transparent 0px, transparent 80px,
       rgba(47,125,74,0.04) 80px, rgba(47,125,74,0.04) 81px);
 }
-
+*/
 /* orange warm glow top-right */
 .hero-accent {
   position: absolute; top: -15%; right: -8%;

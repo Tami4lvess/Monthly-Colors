@@ -98,7 +98,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
   background: linear-gradient(155deg, #120D12 0%, #22151A 45%, #2C1820 100%);
 }
 
-/* riscos diagonais sutis, evocando bandeirinhas e luzes de arraial */
+/* riscos diagonais sutis, evocando bandeirinhas e luzes de arraial 
 .hero::after {
   content: '';
   position: absolute; inset: 0; pointer-events: none; z-index: 1;
@@ -108,7 +108,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
     repeating-linear-gradient(52deg, transparent 0px, transparent 80px,
       rgba(163,67,67,0.05) 80px, rgba(163,67,67,0.05) 81px);
 }
-
+*/
 /* glow laranja topo-direita */
 .hero-accent {
   position: absolute; top: -15%; right: -8%;
@@ -281,6 +281,9 @@ nav.solid .nav-toggle span { background: var(--ink); }
 /* ── WAVE ─────────────────────────────────────────────────────────────────── */
 .wave-divider { margin-top: -2px; background: #2C1820; line-height: 0; }
 .wave-divider svg { display: block; }
+.wave-divider svg path {
+  fill: var(--cream) !important;
+}
 
 /* ── SECTION LABELS ──────────────────────────────────────────────────────── */
 .section-label {

@@ -3,8 +3,8 @@
 /* ── TOKENS — paleta única de setembro ───────────────────────────────────── */
 :root {
   --ink:         #1B2118;
-  --parch:       #F8F3E7;
-  --cream:       #EAF0DD;
+  --parch: #FFF9E8;
+  --cream: #F7ECC7;
   --deep-purple: #132019;
   --purple:      #C89A16;      /* amarelo principal — Setembro Amarelo */
   --purple-mid:  #DDB536;
@@ -116,12 +116,20 @@ nav.solid .nav-toggle span { background: var(--ink); }
 /* ── HERO ─────────────────────────────────────────────────────────────────── */
 .hero {
   min-height: 100vh;
-  position: relative; overflow: hidden;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  background: linear-gradient(155deg, #0B1710 0%, #132019 48%, #223729 100%);
-}
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 
-/* linhas diagonais sutis, inspiradas em caules e raios de sol */
+  background: linear-gradient(
+    155deg,
+    #120D01 0%,
+    #322402 48%,
+    #563F06 100%
+  );
+}
+/* linhas diagonais sutis, inspiradas em caules e raios de sol 
 .hero::after {
   content: '';
   position: absolute;
@@ -145,16 +153,19 @@ nav.solid .nav-toggle span { background: var(--ink); }
       rgba(31, 122, 76, 0.08) 81px
     );
 }
+*/
 
 /* brilho amarelo no topo */
 .hero-accent {
   position: absolute; top: -15%; right: -8%;
   width: 70vw; height: 70vw; max-width: 900px; max-height: 900px;
   border-radius: 50%; pointer-events: none; z-index: 1;
-  background: radial-gradient(circle at 40% 35%,
-    rgba(221,181,54,0.28) 0%,
-    rgba(110,155,105,0.16) 40%,
-    transparent 70%);
+  background: radial-gradient(
+  circle at 40% 35%,
+  rgba(226, 178, 35, 0.08) 0%,
+  rgba(180, 128, 12, 0.03) 38%,
+  transparent 65%
+);
 }
 
 /* brilho verde na base */
@@ -162,9 +173,11 @@ nav.solid .nav-toggle span { background: var(--ink); }
   position: absolute; bottom: -20%; left: -10%;
   width: 55vw; height: 55vw; max-width: 700px; max-height: 700px;
   border-radius: 50%; pointer-events: none; z-index: 1;
-  background: radial-gradient(circle at 50% 50%,
-    rgba(79,122,87,0.3) 0%,
-    transparent 65%);
+  background: radial-gradient(
+  circle at 50% 50%,
+  rgba(171, 116, 10, 0.04) 0%,
+  transparent 60%
+);
 }
 
 /* ── GHOST TEXT LAYER — "SETEMBRO" abrangendo a largura total ── */
@@ -316,8 +329,15 @@ nav.solid .nav-toggle span { background: var(--ink); }
 }
 
 /* ── WAVE ─────────────────────────────────────────────────────────────────── */
-.wave-divider { margin-top: -2px; background: #223729; line-height: 0; }
+.wave-divider {
+  margin-top: -2px;
+  background: #563F06;
+  line-height: 0;
+}
 .wave-divider svg { display: block; }
+.wave-divider svg path {
+  fill: var(--cream) !important;
+}
 
 /* ── SECTION LABELS ──────────────────────────────────────────────────────── */
 .section-label {
@@ -473,6 +493,9 @@ nav.solid .nav-toggle span { background: var(--ink); }
 .stat-label { font-size: 0.6rem; color: rgba(240,216,137,0.5); margin-top: 6px; letter-spacing: 0.12em; text-transform: uppercase; }
 @media(max-width:640px){ .meaning-inner{ grid-template-columns:1fr; gap:44px; } }
 .clouds-svg { position: absolute; bottom: -2px; left: 0; right: 0; width: 100%; display: block; }
+.clouds-svg path {
+  fill: var(--cream) !important;
+}
 
 /* ── DATES ───────────────────────────────────────────────────────────────── */
 .dates-section {

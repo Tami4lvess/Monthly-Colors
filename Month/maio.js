@@ -188,42 +188,105 @@ function getMoonPhasesForMonth(year, month) {
 
   // SVG templates para cada fase (reutiliza os SVGs originais)
   function moonSVG(type) {
-    if (type === 'nova') return `
-      <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
-        <defs><radialGradient id="ng1auto" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#22243C"/><stop offset="100%" stop-color="#0B0C1A"/></radialGradient></defs>
-        <circle cx="32" cy="32" r="28" fill="url(#ng1auto)" stroke="#1B2A4A" stroke-width="1.5"/>
-        <circle cx="26" cy="26" r="4" fill="rgba(255,255,255,0.04)"/>
-        <circle cx="38" cy="36" r="3" fill="rgba(255,255,255,0.03)"/>
-      </svg>`;
-    if (type === 'crescente') return `
-      <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
-        <defs>
-          <radialGradient id="qcgauto" cx="60%" cy="35%" r="65%"><stop offset="0%" stop-color="#CDD7EC"/><stop offset="50%" stop-color="#8AAEDD"/><stop offset="100%" stop-color="#2E5590"/></radialGradient>
-          <clipPath id="qc-clipauto"><rect x="32" y="4" width="28" height="56"/></clipPath>
-        </defs>
-        <circle cx="32" cy="32" r="28" fill="#0B0C1A" stroke="#1B2A4A" stroke-width="1"/>
-        <circle cx="32" cy="32" r="28" fill="url(#qcgauto)" clip-path="url(#qc-clipauto)"/>
-        <ellipse cx="32" cy="32" rx="8" ry="28" fill="#0B0C1A"/>
-      </svg>`;
-    if (type === 'cheia') return `
-      <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
-        <defs><radialGradient id="lcgauto" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#F0F4FC"/><stop offset="40%" stop-color="#B9CCE8"/><stop offset="100%" stop-color="#5C7AA8"/></radialGradient></defs>
-        <circle cx="32" cy="32" r="26" fill="url(#lcgauto)" stroke="rgba(180,205,235,0.35)" stroke-width="1"/>
-        <circle cx="24" cy="22" r="5" fill="rgba(92,122,168,0.25)"/>
-        <circle cx="38" cy="30" r="3.5" fill="rgba(92,122,168,0.2)"/>
-        <circle cx="28" cy="38" r="4" fill="rgba(92,122,168,0.2)"/>
-      </svg>`;
-    return `
-      <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
-        <defs>
-          <radialGradient id="qmgauto" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#CDD7EC"/><stop offset="50%" stop-color="#8AAEDD"/><stop offset="100%" stop-color="#2E5590"/></radialGradient>
-          <clipPath id="qm-clipauto"><rect x="4" y="4" width="28" height="56"/></clipPath>
-        </defs>
-        <circle cx="32" cy="32" r="28" fill="#0B0C1A" stroke="#1B2A4A" stroke-width="1"/>
-        <circle cx="32" cy="32" r="28" fill="url(#qmgauto)" clip-path="url(#qm-clipauto)"/>
-        <ellipse cx="32" cy="32" rx="8" ry="28" fill="#0B0C1A"/>
-      </svg>`;
-  }
+  if (type === 'nova') return `
+    <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
+      <defs>
+        <radialGradient id="ng1auto" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stop-color="#49350A"/>
+          <stop offset="100%" stop-color="#171005"/>
+        </radialGradient>
+      </defs>
+
+      <circle
+        cx="32"
+        cy="32"
+        r="28"
+        fill="url(#ng1auto)"
+        stroke="#80600B"
+        stroke-width="1.5"
+      />
+
+      <circle cx="26" cy="26" r="4" fill="rgba(255,225,110,0.06)"/>
+      <circle cx="38" cy="36" r="3" fill="rgba(255,225,110,0.04)"/>
+    </svg>`;
+
+  if (type === 'crescente') return `
+    <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
+      <defs>
+        <radialGradient id="qcgauto" cx="60%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#FFF0A3"/>
+          <stop offset="50%" stop-color="#E5B932"/>
+          <stop offset="100%" stop-color="#A87508"/>
+        </radialGradient>
+
+        <clipPath id="qc-clipauto">
+          <rect x="32" y="4" width="28" height="56"/>
+        </clipPath>
+      </defs>
+
+      <circle cx="32" cy="32" r="28"
+        fill="#171005"
+        stroke="#80600B"
+        stroke-width="1"
+      />
+
+      <circle cx="32" cy="32" r="28"
+        fill="url(#qcgauto)"
+        clip-path="url(#qc-clipauto)"
+      />
+
+      <ellipse cx="32" cy="32" rx="8" ry="28" fill="#171005"/>
+    </svg>`;
+
+  if (type === 'cheia') return `
+    <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
+      <defs>
+        <radialGradient id="lcgauto" cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#FFF4B8"/>
+          <stop offset="40%" stop-color="#E8C34C"/>
+          <stop offset="100%" stop-color="#B17D0B"/>
+        </radialGradient>
+      </defs>
+
+      <circle cx="32" cy="32" r="26"
+        fill="url(#lcgauto)"
+        stroke="rgba(232,195,76,0.45)"
+        stroke-width="1"
+      />
+
+      <circle cx="24" cy="22" r="5" fill="rgba(145,97,5,0.25)"/>
+      <circle cx="38" cy="30" r="3.5" fill="rgba(145,97,5,0.20)"/>
+      <circle cx="28" cy="38" r="4" fill="rgba(145,97,5,0.20)"/>
+    </svg>`;
+
+  return `
+    <svg class="moon-svg" width="64" height="64" viewBox="0 0 64 64">
+      <defs>
+        <radialGradient id="qmgauto" cx="40%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#FFF0A3"/>
+          <stop offset="50%" stop-color="#E5B932"/>
+          <stop offset="100%" stop-color="#A87508"/>
+        </radialGradient>
+
+        <clipPath id="qm-clipauto">
+          <rect x="4" y="4" width="28" height="56"/>
+        </clipPath>
+      </defs>
+
+      <circle cx="32" cy="32" r="28"
+        fill="#171005"
+        stroke="#80600B"
+        stroke-width="1"
+      />
+
+      <circle cx="32" cy="32" r="28"
+        fill="url(#qmgauto)"
+        clip-path="url(#qm-clipauto)"
+      />
+
+      <ellipse cx="32" cy="32" rx="8" ry="28" fill="#171005"/>
+    </svg>`;
+}
 
   const ptMonths = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 

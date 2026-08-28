@@ -110,7 +110,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
   background: linear-gradient(155deg, #08101F 0%, #0D1730 48%, #1B2744 100%);
 }
 
-/* linhas diagonais sutis, inspiradas em caules e raios de sol */
+/* linhas diagonais sutis, inspiradas em caules e raios de sol 
 .hero::after {
   content: '';
   position: absolute;
@@ -134,7 +134,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
       rgba(31, 122, 76, 0.08) 81px
     );
 }
-
+*/
 /* brilho amarelo no topo */
 .hero-accent {
   position: absolute; top: -15%; right: -8%;
@@ -307,6 +307,9 @@ nav.solid .nav-toggle span { background: var(--ink); }
 /* ── WAVE ─────────────────────────────────────────────────────────────────── */
 .wave-divider { margin-top: -2px; background: #1B2744; line-height: 0; }
 .wave-divider svg { display: block; }
+.wave-divider svg path {
+  fill: var(--cream) !important;
+}
 
 /* ── SECTION LABELS ──────────────────────────────────────────────────────── */
 .section-label {

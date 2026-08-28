@@ -3,8 +3,8 @@
 /* ── TOKENS — paleta única de agosto: lilás, dourado e inverno ──────────── */
 :root {
   --ink:         #1D1424;
-  --parch:       #FAF5EA;
-  --cream:       #F3EBDD;
+  --parch: #FBF6FD;
+  --cream: #F1E5F7;
   --deep-purple: #2B143A;
   --purple:      #A66CC7;
   --purple-mid:  #C18ADB;
@@ -98,7 +98,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
   background: linear-gradient(155deg, #160C24 0%, #2B143A 45%, #3B2148 100%);
 }
 
-/* confetti-like diagonal marks */
+/* confetti-like diagonal marks 
 .hero::after {
   content: '';
   position: absolute; inset: 0; pointer-events: none; z-index: 1;
@@ -108,7 +108,7 @@ nav.solid .nav-toggle span { background: var(--ink); }
     repeating-linear-gradient(52deg, transparent 0px, transparent 80px,
       rgba(138,79,163,0.04) 80px, rgba(138,79,163,0.04) 81px);
 }
-
+*/
 /* orange warm glow top-right */
 .hero-accent {
   position: absolute; top: -15%; right: -8%;
@@ -281,6 +281,9 @@ nav.solid .nav-toggle span { background: var(--ink); }
 /* ── WAVE ─────────────────────────────────────────────────────────────────── */
 .wave-divider { margin-top: -2px; background: #3B2148; line-height: 0; }
 .wave-divider svg { display: block; }
+.wave-divider svg path {
+  fill: var(--cream) !important;
+}
 
 /* ── SECTION LABELS ──────────────────────────────────────────────────────── */
 .section-label {
@@ -436,6 +439,9 @@ nav.solid .nav-toggle span { background: var(--ink); }
 .stat-label { font-size: 0.6rem; color: rgba(224,203,219,0.45); margin-top: 6px; letter-spacing: 0.12em; text-transform: uppercase; }
 @media(max-width:640px){ .meaning-inner{ grid-template-columns:1fr; gap:44px; } }
 .clouds-svg { position: absolute; bottom: -2px; left: 0; right: 0; width: 100%; display: block; }
+.clouds-svg path {
+  fill: var(--cream) !important;
+}
 
 /* ── DATES ───────────────────────────────────────────────────────────────── */
 .dates-section {
