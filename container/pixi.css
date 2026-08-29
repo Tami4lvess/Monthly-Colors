@@ -927,12 +927,13 @@ img {
     bottom: 16px;
     width: calc(100% - 32px);
     justify-content: center;
-    gap: 2px;
+    gap: 0;
   }
 
   .morph-btn {
-    padding: 9px 13px;
-    font-size: 0.8rem;
+    padding: 7px 9px;
+    font-size: 0.72rem;
+    white-space: nowrap;
   }
 
   /* Seta para descer */

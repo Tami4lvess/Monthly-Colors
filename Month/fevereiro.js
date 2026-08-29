@@ -47,7 +47,7 @@ function addToCalendar(dateStr, title) {
     ctz: "America/Sao_Paulo"
   });
 
-  const url = `https://calendar.google.com/calendar/r/eventedit?${params.toString()}`;
+  const url = `https://calendar.google.com/calendar/render?${params.toString()}`;
   const toast = document.getElementById("gcalToast");
 
   toast?.classList.add("show");
@@ -63,7 +63,6 @@ function addToCalendar(dateStr, title) {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 }
-
 // ── Algoritmo de Fases da Lua (Jean Meeus) ───────────────────────────────────
 // Retorna as 4 fases principais (nova, quarto crescente, cheia, minguante)
 // de um dado mês/ano como objetos Date com datas reais e precisas.

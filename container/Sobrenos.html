@@ -569,13 +569,13 @@ img {
       let dpr = 1;
 
       function createParticles() {
-        const amount = Math.max(34, Math.min(72, Math.floor((width * height) / 18000)));
+        const amount = Math.max(48, Math.min(96, Math.floor((width * height) / 12000)));
         particles = Array.from({ length: amount }, (_, index) => ({
           x: Math.random() * width,
           y: Math.random() * height,
           vx: (Math.random() - 0.5) * 0.22,
           vy: (Math.random() - 0.5) * 0.22,
-          radius: 1.2 + Math.random() * 1.8,
+          radius: 1.6 + Math.random() * 2.1,
           warm: index % 3 === 0
         }));
       }
@@ -628,8 +628,8 @@ img {
               ctx.beginPath();
               ctx.moveTo(particle.x, particle.y);
               ctx.lineTo(other.x, other.y);
-              ctx.strokeStyle = `rgba(196, 92, 46, ${0.13 * (1 - distance / 115)})`;
-              ctx.lineWidth = 0.7;
+              ctx.strokeStyle = `rgba(196, 92, 46, ${0.18 * (1 - distance / 115)})`;
+              ctx.lineWidth = 0.85;
               ctx.stroke();
             }
           }
@@ -637,8 +637,8 @@ img {
           ctx.beginPath();
           ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
           ctx.fillStyle = particle.warm
-            ? 'rgba(196, 92, 46, 0.58)'
-            : 'rgba(107, 95, 84, 0.44)';
+            ? 'rgba(196, 92, 46, 0.72)'
+            : 'rgba(107, 95, 84, 0.58)';
           ctx.fill();
         }
 

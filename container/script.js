@@ -449,7 +449,7 @@ function buildInstancedMeshes() {
 let currentVariation = 0;
 const VARIATION_COUNT = 3;
 const VARIATION_NAMES = ["Autumn Maple", "Snowy Pine", "Cherry Blossom"];
-const VARIATION_BLOOM = [0.5, 0.15, 0.25];
+const VARIATION_BLOOM = [0.5, 0.15, 0.25, 0.4];
 let isMorphing = false;
 const morphDuration = 1.8;
 
@@ -1274,6 +1274,167 @@ function generateCherryBlossomOffsets() {
 }
 variationData[2] = generateCherryBlossomOffsets();
 
+function generateSummerOffsets() {
+  const snap = new Map();
+  const dummy = new THREE.Object3D();
+  const mat4 = new THREE.Matrix4();
+  const tmpColor = new THREE.Color();
+  // Folhagem cheia e viçosa, verde profundo de verão, com folhas mais
+  // claras "batidas de sol" salpicadas pela copa para dar luz entre as
+  // sombras — sem neve, sem flor caindo, só o pico da estação.
+  const summerLeaf = [
+    "#2d6a1f",
+    "#3a7d28",
+    "#256118",
+    "#438a30",
+    "#1f5a15",
+    "#4f9635",
+    "#347522",
+  ];
+  const summerLeafSunkissed = ["#8fae2e", "#a8c93f", "#7fa028"];
+  const summerFruit = ["#c9302c", "#e04030", "#d4501f", "#b82820"];
+  const summerTrunk = ["#6b4423", "#7a5230", "#5c3a1c", "#8a5c34"];
+  const summerGrass = ["#4a9e30", "#5cb03e", "#3d8a28", "#69bd4a"];
+  const summerGrassDry = ["#c9a227", "#d4b23a", "#b8941f"];
+  const summerRock = ["#c9a876", "#b89860", "#d4b888", "#a8875a"];
+  voxels.forEach((im) => {
+    const data = instanceData.get(im);
+    if (!data) return;
+    const count = im.count;
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+    const origPositions = data.origPositions;
+    const cat = meshCategory(im);
+    for (let i = 0; i < count; i++) {
+      const ox = origPositions[i * 3],
+        oy = origPositions[i * 3 + 1],
+        oz = origPositions[i * 3 + 2];
+      let cr, cg, cb;
+      if (im.instanceColor) {
+        im.getColorAt(i, tmpColor);
+        cr = tmpColor.r;
+        cg = tmpColor.g;
+        cb = tmpColor.b;
+      } else {
+        cr = im.material.color.r;
+        cg = im.material.color.g;
+        cb = im.material.color.b;
+      }
+      let nx = ox,
+        ny = oy,
+        nz = oz;
+      if (cat === "leaf") {
+        const relY = (oy - 14) / 12;
+        // Copa cheia, arredondada, se abrindo pro sol — mais fechada que a
+        // sakura (que "chora" pra baixo), mais densa que o outono.
+        nx = ox * 1.15;
+        nz = oz * 1.15;
+        ny = oy + relY * 0.3;
+        nx += (Math.random() - 0.5) * 0.25;
+        ny += (Math.random() - 0.5) * 0.2;
+        nz += (Math.random() - 0.5) * 0.25;
+        if (Math.random() < 0.16) {
+          const sc = new THREE.Color(pickRandom(summerLeafSunkissed));
+          cr = sc.r;
+          cg = sc.g;
+          cb = sc.b;
+        } else {
+          const lc = new THREE.Color(pickRandom(summerLeaf));
+          cr = lc.r;
+          cg = lc.g;
+          cb = lc.b;
+        }
+      } else if (cat === "trunk") {
+        nx = ox * 0.95 + (Math.random() - 0.5) * 0.15;
+        nz = oz * 0.95 + (Math.random() - 0.5) * 0.15;
+        const tc = new THREE.Color(pickRandom(summerTrunk));
+        cr = tc.r;
+        cg = tc.g;
+        cb = tc.b;
+      } else if (cat === "grass") {
+        const gc = new THREE.Color(
+          pickRandom(Math.random() < 0.25 ? summerGrassDry : summerGrass),
+        );
+        cr = gc.r;
+        cg = gc.g;
+        cb = gc.b;
+      } else if (cat === "rock") {
+        const rc = new THREE.Color(pickRandom(summerRock));
+        cr = rc.r;
+        cg = rc.g;
+        cb = rc.b;
+      } else if (cat === "flower") {
+        // Reaproveita as posições de flor da primavera para pequenos
+        // frutos vermelhos maduros — a árvore de verão dá fruto.
+        const fc = new THREE.Color(pickRandom(summerFruit));
+        cr = fc.r;
+        cg = fc.g;
+        cb = fc.b;
+      } else if (cat === "underside") {
+        const uc = new THREE.Color(pickRandom(dirtColors));
+        cr = uc.r;
+        cg = uc.g;
+        cb = uc.b;
+      }
+      positions[i * 3] = nx;
+      positions[i * 3 + 1] = ny;
+      positions[i * 3 + 2] = nz;
+      colors[i * 3] = cr;
+      colors[i * 3 + 1] = cg;
+      colors[i * 3 + 2] = cb;
+    }
+    snap.set(im, { positions, colors });
+  });
+  return snap;
+}
+variationData[3] = generateSummerOffsets();
+
+// A árvore agora nasce direto na variação "Verão" (a que fica ativa por
+// padrão no botão), em vez de nascer no Outono (posição 0) e só trocar
+// quando o usuário clicasse. Como isso roda antes do primeiro frame,
+// aplica a posição/cor final sem nenhuma animação de transição.
+function applyVariationInstant(variation) {
+  const toSnap = variationData[variation];
+  const dummy = new THREE.Object3D();
+  const mat4tmp = new THREE.Matrix4();
+  const tmpColor = new THREE.Color();
+  voxels.forEach((im) => {
+    const data = instanceData.get(im);
+    const toData = toSnap.get(im);
+    if (!data || !toData) return;
+    const count = data.count;
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3;
+      const nx = toData.positions[i3],
+        ny = toData.positions[i3 + 1],
+        nz = toData.positions[i3 + 2];
+      data.origPositions[i3] = nx;
+      data.origPositions[i3 + 1] = ny;
+      data.origPositions[i3 + 2] = nz;
+      const offX = data.offsets[i3],
+        offY = data.offsets[i3 + 1],
+        offZ = data.offsets[i3 + 2];
+      im.getMatrixAt(i, mat4tmp);
+      mat4tmp.decompose(dummy.position, dummy.quaternion, dummy.scale);
+      dummy.position.set(nx + offX, ny + offY, nz + offZ);
+      dummy.updateMatrix();
+      im.setMatrixAt(i, dummy.matrix);
+      if (im.instanceColor) {
+        tmpColor.setRGB(
+          toData.colors[i3],
+          toData.colors[i3 + 1],
+          toData.colors[i3 + 2],
+        );
+        im.setColorAt(i, tmpColor);
+      }
+    }
+    im.instanceMatrix.needsUpdate = true;
+    if (im.instanceColor) im.instanceColor.needsUpdate = true;
+  });
+  currentVariation = variation;
+}
+applyVariationInstant(3);
+
 let morphStartTime = 0,
   morphFrom = 0,
   morphTo = 0;
@@ -1471,6 +1632,7 @@ const leafParticleColors = [
   ["#e63c2e", "#d4452f", "#f05a3a", "#ff6b45", "#f5a623", "#ff8c42"],
   ["#1a4a2a", "#224e30", "#2a5a38", "#1e4828", "#164020", "#2e6e3e"],
   ["#ffb7c5", "#ff97b0", "#ffc8d6", "#fff0f5", "#ffd0db"],
+  ["#3a7d28", "#4f9635", "#2d6a1f", "#69bd4a", "#8fae2e"],
 ];
 
 function resetLeaf(i) {

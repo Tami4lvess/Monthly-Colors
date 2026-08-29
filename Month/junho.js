@@ -47,7 +47,7 @@ function addToCalendar(dateStr, title) {
     ctz: "America/Sao_Paulo"
   });
 
-  const url = `https://calendar.google.com/calendar/r/eventedit?${params.toString()}`;
+  const url = `https://calendar.google.com/calendar/render?${params.toString()}`;
   const toast = document.getElementById("gcalToast");
 
   toast?.classList.add("show");
