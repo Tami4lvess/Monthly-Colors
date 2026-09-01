@@ -1,0 +1,325 @@
+/* Sistema de idiomas compartilhado do Monthly Colors */
+[data-language-selector] {
+  font-family: "Inter", "DM Sans", sans-serif;
+  gap: 4px;
+}
+
+[data-language-selector] .lang-btn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transform: none !important;
+}
+
+[data-language-selector] #downarrow {
+  position: static !important;
+  display: inline-block;
+  margin: 0;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+
+[data-language-selector] #downarrow.rotate {
+  transform: rotate(180deg);
+}
+
+.mc-language-selector {
+  position: fixed;
+  top: 18px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 7px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(22, 22, 28, 0.62);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+[data-language-selector] #currentFlag {
+  width: 36px;
+  height: 24px;
+  display: block;
+  flex: 0 0 36px;
+  object-fit: cover;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+[data-language-selector] .lang-btn {
+  color: #fff;
+}
+
+[data-language-selector] .lang-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 178px;
+  min-width: 178px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  border: 1px solid rgba(20, 20, 25, 0.08);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 14px 38px rgba(20, 20, 30, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-7px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+[data-language-selector] .lang-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+[data-language-selector] .lang-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #282830;
+  font: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+[data-language-selector] .lang-option:hover,
+[data-language-selector] .lang-option.is-selected {
+  background: rgba(75, 80, 110, 0.1);
+}
+
+[data-language-selector] .lang-option:hover {
+  transform: translateX(2px);
+}
+
+[data-language-selector] .lang-option img {
+  width: 36px;
+  height: 24px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex: 0 0 36px;
+}
+
+[data-language-selector] .lang-option span {
+  pointer-events: none;
+}
+
+/* O tradutor dos meses fica invisível: o usuário utiliza apenas o seletor do site. */
+#google_translate_element {
+  position: fixed !important;
+  top: 0 !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+.goog-te-menu-frame,
+iframe.skiptranslate {
+  display: none !important;
+}
+
+html,
+body {
+  top: 0 !important;
+}
+
+body > .skiptranslate {
+  display: none !important;
+}
+
+.goog-text-highlight {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Alinhamento do seletor original da página principal */
+#hero .icons {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 48px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 22px;
+}
+
+#hero .icons .sobre {
+  position: static;
+  margin: 0;
+}
+
+#hero .icons [data-language-selector] {
+  position: relative;
+  top: auto;
+  right: auto;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#hero .icons [data-language-selector] .lang-btn {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 50%;
+}
+
+#hero .icons [data-language-selector] .lang-btn:hover,
+#hero .icons [data-language-selector] .lang-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  outline: none;
+}
+
+#hero .icons [data-language-selector] #downarrow {
+  color: #fff;
+  font-size: 17px;
+}
+
+.current-flag-frame,
+.option-flag-frame {
+  position: relative;
+  width: 48px;
+  height: 32px;
+  flex: 0 0 48px;
+  display: block;
+  overflow: hidden;
+  border-radius: 6px;
+  background: transparent;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
+}
+
+#hero .current-flag-frame #currentFlag,
+#hero .option-flag-frame img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  display: block;
+  object-fit: cover;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  transform: translate(-50%, -50%);
+}
+
+/* Os PNGs do Brasil e dos EUA possuem transparências internas diferentes. */
+#hero .current-flag-frame[data-current-language="pt-BR"] #currentFlag,
+#hero .lang-option[data-lang="pt-BR"] .option-flag-frame img {
+  width: 123%;
+  height: auto;
+}
+
+#hero .current-flag-frame[data-current-language="en"] #currentFlag,
+#hero .lang-option[data-lang="en"] .option-flag-frame img {
+  width: 144%;
+  height: auto;
+}
+
+/* A moldura anima; a imagem interna fica livre para manter seu recorte. */
+.current-flag-frame.mc-flag-swap-out {
+  animation: mcFlagSwapOut 110ms ease forwards;
+}
+
+.current-flag-frame.mc-flag-swap-in {
+  animation: mcFlagSwapIn 180ms ease-out;
+}
+
+@keyframes mcFlagSwapOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes mcFlagSwapIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+#hero [data-language-selector] .lang-menu {
+  top: calc(100% + 8px);
+  right: 0;
+  width: 212px;
+  min-width: 212px;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 14px;
+}
+
+#hero [data-language-selector] .lang-option {
+  min-height: 48px;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 9px;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 700px) {
+  #hero .icons {
+    top: max(14px, env(safe-area-inset-top));
+    height: 46px;
+    padding: 0 16px;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  #hero .icons .sobre {
+    left: auto;
+    top: auto;
+    padding: 9px 12px;
+    font-size: 0.82rem;
+  }
+
+  #hero .icons [data-language-selector] {
+    top: auto;
+    right: auto;
+  }
+
+  #hero [data-language-selector] .lang-menu {
+    top: calc(100% + 7px);
+    right: 0;
+  }
+}

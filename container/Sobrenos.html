@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sobre nós — Monthly Colors</title>
+  <title data-i18n="about.pageTitle">Sobre nós — Monthly Colors</title>
+  <link rel="stylesheet" href="./language.css?v=4">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -505,7 +506,7 @@ img {
       <!-- COLUNA ESQUERDA: FOTO -->
       <div class="col-foto">
         <div class="foto-wrap">
-          <img src="../assets/foto.jpeg" alt="Tamires e Lucas">
+          <img src="../assets/foto.jpeg" alt="Tamires e Lucas" data-i18n-alt="about.photoAlt">
         </div>
         <div class="foto-badge">
           <div class="foto-badge-dot"></div>
@@ -516,11 +517,11 @@ img {
 
       <!-- COLUNA DIREITA: TEXTO -->
       <div class="col-texto">
-        <span class="label-secao">Sobre nós</span>
+        <span class="label-secao" data-i18n="about.sectionLabel">Sobre nós</span>
 
-        <h1 class="titulo">Duas ideias,<br>um projeto <em>cheio de cor.</em></h1>
+        <h1 class="titulo" data-i18n-html="about.title">Duas ideias,<br>um projeto <em>cheio de cor.</em></h1>
 
-        <p class="descricao">
+        <p class="descricao" data-i18n-html="about.description">
           Somos <strong>Tamires</strong> e <strong>Lucas</strong>, estudantes do curso
           técnico em Desenvolvimento de Sistemas, em Campinas. Criamos o
           <strong>Monthly Colors</strong> como projeto de TCC para reunir, de forma
@@ -536,17 +537,17 @@ img {
 
         <div class="cards-row">
           <div class="mini-card">
-            <div class="mc-label">Formação</div>
+            <div class="mc-label" data-i18n="about.educationLabel">Formação</div>
             <div class="mc-val">DS</div>
-            <div class="mc-sub">Desenvolvimento de Sistemas</div>
+            <div class="mc-sub" data-i18n="about.educationText">Desenvolvimento de Sistemas</div>
           </div>
           <div class="mini-card">
-            <div class="mc-label">Projeto</div>
+            <div class="mc-label" data-i18n="about.projectLabel">Projeto</div>
             <div class="mc-val">TCC 2026</div>
             <div class="mc-sub">Monthly Colors</div>
           </div>
           <div class="mini-card">
-            <div class="mc-label">Cidade</div>
+            <div class="mc-label" data-i18n="about.cityLabel">Cidade</div>
             <div class="mc-val">Campinas</div>
             <div class="mc-sub">São Paulo</div>
           </div>
@@ -557,7 +558,7 @@ img {
 
     </div>
   </div>
-
+  <script src="./language.js?v=4"></script>
   <script>
     (() => {
       const canvas = document.getElementById('particle-canvas');

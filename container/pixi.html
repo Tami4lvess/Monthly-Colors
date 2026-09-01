@@ -16,6 +16,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     >
     <link rel="stylesheet" href="pixi.css">
+    <link rel="stylesheet" href="./language.css?v=4">
     <title>Monthly Colors</title>
 
     <script type="importmap">
@@ -45,7 +46,7 @@
       <span class="loading-bar-fill"></span>
     </div>
 
-    <p class="loading-text">Carregando...</p>
+    <p class="loading-text" data-i18n="common.loading">Carregando...</p>
   </div>
 </div>
 
@@ -56,26 +57,38 @@
       <h1 class="title" id="title">Monthly Colors</h1>
 
       <div id="variation-bar">
-        <button type="button" class="morph-btn active" data-variation="3">Verão</button>
-        <button type="button" class="morph-btn" data-variation="0">Outono</button>
-        <button type="button" class="morph-btn" data-variation="1">Inverno</button>
-        <button type="button" class="morph-btn" data-variation="2">Primavera</button>
+        <button type="button" class="morph-btn active" data-variation="3" data-i18n="season.summer">Verão</button>
+        <button type="button" class="morph-btn" data-variation="0" data-i18n="season.autumn">Outono</button>
+        <button type="button" class="morph-btn" data-variation="1" data-i18n="season.winter">Inverno</button>
+        <button type="button" class="morph-btn" data-variation="2" data-i18n="season.spring">Primavera</button>
       </div>
 
       <div class="icons">
-        <a href="../container/Sobrenos.html" class="sobre">Sobre nós</a>
-        <div class="lang-icon">
-          <img src="../assets/brazilico.png" width="50" id="currentFlag" alt="Português do Brasil" draggable="false">
-          <button type="button" class="lang-btn" aria-label="Selecionar idioma">
+        <a href="../container/Sobrenos.html" class="sobre" data-i18n="nav.about">Sobre nós</a>
+        <div class="lang-icon" data-language-selector>
+          <span class="current-flag-frame" data-current-language="pt-BR">
+            <img src="../assets/brazilico.png" id="currentFlag" alt="Português do Brasil" draggable="false">
+          </span>
+          <button type="button" class="lang-btn" aria-label="Selecionar idioma" data-i18n-aria-label="language.select">
             <i class="fa-solid fa-angle-down" id="downarrow"></i>
           </button>
-          <div class="lang-menu" id="langMenu">
-            <img src="../assets/brazilico.png" alt="Português do Brasil" draggable="false">
-            <img src="../assets/bandeira-estados-unidos.png" alt="Inglês dos Estados Unidos" draggable="false">
+          <div class="lang-menu" id="langMenu" role="menu">
+            <button type="button" class="lang-option" data-lang="pt-BR" data-flag="../assets/brazilico.png" role="menuitem">
+              <span class="option-flag-frame"><img src="../assets/brazilico.png" alt="" draggable="false"></span><span>Português</span>
+            </button>
+            <button type="button" class="lang-option" data-lang="en" data-flag="../assets/bandeira-estados-unidos.png" role="menuitem">
+              <span class="option-flag-frame"><img src="../assets/bandeira-estados-unidos.png" alt="" draggable="false"></span><span>English</span>
+            </button>
+            <button type="button" class="lang-option" data-lang="fr" data-flag="../assets/frança.png" role="menuitem">
+              <span class="option-flag-frame"><img src="../assets/frança.png" alt="" draggable="false"></span><span>Français</span>
+            </button>
+            <button type="button" class="lang-option" data-lang="es" data-flag="../assets/espanha.png" role="menuitem">
+              <span class="option-flag-frame"><img src="../assets/espanha.png" alt="" draggable="false"></span><span>Español</span>
+            </button>
           </div>
         </div>
       </div>
-      <a href="#meses" class="scroll-down" aria-label="Ir para a seção de meses">
+      <a href="#meses" class="scroll-down" aria-label="Ir para a seção de meses" data-i18n-aria-label="nav.goMonths">
         <i class="fa-solid fa-angle-down"></i>
       </a>
     </section>
@@ -83,9 +96,9 @@
  <!-- SOBRE O SITE -->
     <section id="sobre-site">
       <div class="sobre-site-inner">
-        <p class="sobre-eyebrow">O que é o Monthly Colors</p>
-        <h2 class="sobre-title">Cada mês tem uma cor,<br>uma história e um motivo<br>pra celebrar.</h2>
-        <p class="sobre-desc">
+        <p class="sobre-eyebrow" data-i18n="home.eyebrow">O que é o Monthly Colors</p>
+        <h2 class="sobre-title" data-i18n-html="home.title">Cada mês tem uma cor,<br>uma história e um motivo<br>pra celebrar.</h2>
+        <p class="sobre-desc" data-i18n="home.description">
           Aqui, o calendário vira uma experiência visual: cada um dos doze meses ganha sua própria paleta,
           inspirada nas campanhas de conscientização, nas estações e nas datas que marcam aquele período no
           Brasil. Escolha um mês abaixo e descubra mais!
@@ -93,18 +106,18 @@
         <div class="sobre-pillars">
           <div class="sobre-pillar fade-in-up">
             <i class="fa-solid fa-palette"></i>
-            <h3>Cores &amp; Campanhas</h3>
-            <p>A cor e o significado por trás de cada campanha de conscientização do mês.</p>
+            <h3 data-i18n="home.colorsTitle">Cores &amp; Campanhas</h3>
+            <p data-i18n="home.colorsText">A cor e o significado por trás de cada campanha de conscientização do mês.</p>
           </div>
           <div class="sobre-pillar fade-in-up">
             <i class="fa-solid fa-calendar-days"></i>
-            <h3>Datas Importantes</h3>
-            <p>Feriados, dias comemorativos e eventos pra você nunca mais esquecer.</p>
+            <h3 data-i18n="home.datesTitle">Datas Importantes</h3>
+            <p data-i18n="home.datesText">Feriados, dias comemorativos e eventos pra você nunca mais esquecer.</p>
           </div>
           <div class="sobre-pillar fade-in-up">
             <i class="fa-solid fa-moon"></i>
-            <h3>Fases da Lua</h3>
-            <p>Quando a lua estará cheia, nova, crescente ou minguante em cada mês.</p>
+            <h3 data-i18n="home.moonTitle">Fases da Lua</h3>
+            <p data-i18n="home.moonText">Quando a lua estará cheia, nova, crescente ou minguante em cada mês.</p>
           </div>
         </div>
       </div>
@@ -112,11 +125,11 @@
 
     <!-- SEÇÃO MESES -->
     <section id="meses">
-      <p class="sinalizacao">Navegue pelos meses</p>
+      <p class="sinalizacao" data-i18n="home.browseMonths">Navegue pelos meses</p>
 
       <div class="container-meses">
         <a href="../Month/janeiro.html" class="mes" id="mes-1">
-          <p>Janeiro</p>
+          <p data-i18n="month.january">Janeiro</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -143,7 +156,7 @@
           </svg>
         </a>
         <a href="../Month/fevereiro.html" class="mes" id="mes-2">
-          <p>Fevereiro</p>
+          <p data-i18n="month.february">Fevereiro</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -170,7 +183,7 @@
           </svg>
         </a>
         <a href="../Month/marco.html" class="mes" id="mes-3">
-          <p>Março</p>
+          <p data-i18n="month.march">Março</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -197,7 +210,7 @@
           </svg>
         </a>
         <a href="../Month/abril.html" class="mes" id="mes-4">
-          <p>Abril</p>
+          <p data-i18n="month.april">Abril</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -224,7 +237,7 @@
           </svg>
         </a>
         <a href="../Month/maio.html" class="mes" id="mes-5">
-          <p>Maio</p>
+          <p data-i18n="month.may">Maio</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -251,7 +264,7 @@
           </svg>
         </a>
         <a href="../Month/junho.html" class="mes" id="mes-6">
-          <p>Junho</p>
+          <p data-i18n="month.june">Junho</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -286,7 +299,7 @@
 
       <div class="container-meses">
         <a href="../Month/julho.html" class="mes" id="mes-7">
-          <p>Julho</p>
+          <p data-i18n="month.july">Julho</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -313,7 +326,7 @@
           </svg>
         </a>
         <a href="../Month/agosto.html" class="mes" id="mes-8">
-          <p>Agosto</p>
+          <p data-i18n="month.august">Agosto</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -340,7 +353,7 @@
           </svg>
         </a>
         <a href="../Month/setembro.html" class="mes" id="mes-9">
-          <p>Setembro</p>
+          <p data-i18n="month.september">Setembro</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -367,7 +380,7 @@
           </svg>
         </a>
         <a href="../Month/outubro.html" class="mes" id="mes-10">
-          <p>Outubro</p>
+          <p data-i18n="month.october">Outubro</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -394,7 +407,7 @@
           </svg>
         </a>
         <a href="../Month/novembro.html" class="mes" id="mes-11">
-          <p>Novembro</p>
+          <p data-i18n="month.november">Novembro</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -421,7 +434,7 @@
           </svg>
         </a>
         <a href="../Month/dezembro.html" class="mes" id="mes-12">
-          <p>Dezembro</p>
+          <p data-i18n="month.december">Dezembro</p>
           <svg
             class="border-svg"
             viewBox="0 0 460 280"
@@ -471,7 +484,7 @@
             </a>
           </li>
         </ul>
-        <p>
+        <p data-i18n="footer.project">
           Projeto TCC 2026 - Desenvolvido por Lucas Cruz e Tamires Alves -
           Monthly Colors
         </p>
@@ -504,6 +517,7 @@
         document.body.classList.remove("is-loading");
       }, 16000);
     </script>
+    <script src="./language.js?v=4"></script>
     <script type="module" src="./script.js"></script>
   </body>
 </html>
