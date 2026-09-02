@@ -866,16 +866,13 @@ img {
 =========================== */
 @media (max-width: 700px) {
   #hero {
-    height: 78svh;
-    min-height: 480px;
-    max-height: 680px;
+    height: 88svh;
   }
 
   #canvas-container,
   #canvas-container canvas {
     touch-action: pan-y !important;
   }
-
   .title {
     top: 40%;
     left: 20px;
