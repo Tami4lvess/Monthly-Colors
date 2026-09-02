@@ -245,21 +245,39 @@
   }
 }
 
-/* Remove o azul dos elementos nas páginas dos meses */
-a,
-button,
-input,
-select,
-textarea,
-[role="button"] {
+/* Remove o destaque azul ao tocar em qualquer elemento no celular */
+*,
+*::before,
+*::after {
   -webkit-tap-highlight-color: transparent !important;
 }
 
-a:focus,
-a:active,
-button:focus,
-button:active,
-[role="button"]:focus,
-[role="button"]:active {
-  outline: none !important;
+@media (hover: none) and (pointer: coarse) {
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  label,
+  [role="button"],
+  [tabindex] {
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  a:focus,
+  a:focus-visible,
+  a:active,
+  button:focus,
+  button:focus-visible,
+  button:active,
+  input:focus,
+  select:focus,
+  textarea:focus,
+  [role="button"]:focus,
+  [role="button"]:focus-visible,
+  [role="button"]:active,
+  [tabindex]:focus,
+  [tabindex]:active {
+    outline: none !important;
+  }
 }
