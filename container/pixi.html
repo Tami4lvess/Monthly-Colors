@@ -29,6 +29,41 @@
         }
       }
     </script>
+
+    <style>
+      #sobre-site {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .sobre-meses-divider {
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        bottom: -1px;
+        left: 0;
+        height: 72px;
+        color: #739bc7;
+        line-height: 0;
+        pointer-events: none;
+      }
+
+      .sobre-meses-divider svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .sobre-meses-divider path {
+        fill: currentColor;
+      }
+
+      @media (max-width: 780px) {
+        .sobre-meses-divider {
+          height: 52px;
+        }
+      }
+    </style>
   </head>
 
   <body class="is-loading">
@@ -96,12 +131,11 @@
  <!-- SOBRE O SITE -->
     <section id="sobre-site">
       <div class="sobre-site-inner">
-        <p class="sobre-eyebrow" data-i18n="home.eyebrow">O que é o Monthly Colors</p>
+        <p class="sobre-eyebrow" data-i18n="home.eyebrow">O que é o Monthly Colors?</p>
         <h2 class="sobre-title" data-i18n-html="home.title">Cada mês tem uma cor,<br>uma história e um motivo<br>pra celebrar.</h2>
         <p class="sobre-desc" data-i18n="home.description">
-          Aqui, o calendário vira uma experiência visual: cada um dos doze meses ganha sua própria paleta,
-          inspirada nas campanhas de conscientização, nas estações e nas datas que marcam aquele período no
-          Brasil. Escolha um mês abaixo e descubra mais!
+          O calendário reúne muito mais do que números e feriados. Ao longo do ano, cada mês carrega cores, símbolos, campanhas, acontecimentos e tradições que fazem parte do cotidiano, mas cujos significados nem sempre são conhecidos. Nesta página, essas informações são organizadas de maneira visual para explicar de onde surgem essas associações, por que determinados temas ganham destaque em cada período e como elementos culturais e naturais ajudam a construir a identidade de cada mês. Basta escolher uma das opções abaixo para iniciar a exploração e conhecer, de forma clara e agradável, os detalhes que tornam cada etapa do ano única.
+
         </p>
         <div class="sobre-pillars">
           <div class="sobre-pillar fade-in-up">
@@ -120,6 +154,12 @@
             <p data-i18n="home.moonText">Quando a lua estará cheia, nova, crescente ou minguante em cada mês.</p>
           </div>
         </div>
+      </div>
+
+      <div class="sobre-meses-divider" aria-hidden="true">
+        <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,58 C180,18 340,82 520,50 C700,18 860,76 1040,42 C1200,12 1340,42 1440,24 L1440,90 L0,90 Z" />
+        </svg>
       </div>
     </section>
 
@@ -517,7 +557,7 @@
         document.body.classList.remove("is-loading");
       }, 16000);
     </script>
-    <script src="./language.js?v=5"></script>
+    <script src="./language.js?v=7"></script>
     <script type="module" src="./script.js"></script>
   </body>
 </html>
