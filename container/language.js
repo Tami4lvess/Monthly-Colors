@@ -610,6 +610,7 @@
 
     applyTranslations(language);
     applyMonthLocalFallback(language);
+    document.documentElement.dataset.mcLanguageReady = "true";
     updateSelector(language, Boolean(options.animate));
     closeMenu();
 

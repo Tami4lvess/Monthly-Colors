@@ -1,5 +1,16 @@
 /* RESPONSIVIDADE COMPARTILHADA ENTRE TODOS OS MESES */
 
+/* Evita que o nome do mês apareça no idioma anterior durante a inicialização. */
+body[data-month-page] .hero-title-wrap,
+body[data-month-page] .hero-ghost-word {
+  visibility: hidden;
+}
+
+html[data-mc-language-ready="true"] body[data-month-page] .hero-title-wrap,
+html[data-mc-language-ready="true"] body[data-month-page] .hero-ghost-word {
+  visibility: visible;
+}
+
 /* Meses ainda sem página são texto, não links clicáveis. */
 #navMonths .nav-disabled {
   display: inline-block;
@@ -245,39 +256,29 @@
   }
 }
 
-/* Remove o destaque azul ao tocar em qualquer elemento no celular */
-*,
-*::before,
-*::after {
-  -webkit-tap-highlight-color: transparent !important;
-}
-
-@media (hover: none) and (pointer: coarse) {
-  a,
-  button,
-  input,
-  select,
-  textarea,
-  label,
-  [role="button"],
-  [tabindex] {
-    -webkit-tap-highlight-color: transparent !important;
+/* Mantém as quatro fases centralizadas e impede a quebra desequilibrada 3 + 1. */
+@media (min-width: 481px) and (max-width: 900px) {
+  .moon-panel .moons-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    gap: 16px 8px;
   }
 
-  a:focus,
-  a:focus-visible,
-  a:active,
-  button:focus,
-  button:focus-visible,
-  button:active,
-  input:focus,
-  select:focus,
-  textarea:focus,
-  [role="button"]:focus,
-  [role="button"]:focus-visible,
-  [role="button"]:active,
-  [tabindex]:focus,
-  [tabindex]:active {
-    outline: none !important;
+  .moon-panel .moon-item {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .moon-panel .moons-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 22px 12px;
+  }
+
+  .moon-panel .moon-item {
+    min-width: 0;
   }
 }

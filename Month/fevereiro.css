@@ -134,8 +134,10 @@ nav.solid .nav-toggle span { background: var(--ink); }
 .hero-ghost-word {
   position: absolute;
   bottom: -3%;
-  left: 50%;
-  transform: translateX(-48%);
+  left: 0;
+  width: 100%;
+  text-align: center;
+  transform: translateY(0);
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(18vw, 22vw, 340px);
   line-height: 1;
@@ -146,8 +148,8 @@ nav.solid .nav-toggle span { background: var(--ink); }
   animation: ghostDrift 22s ease-in-out infinite alternate;
 }
 @keyframes ghostDrift {
-  0%   { transform: translateX(-48%) translateY(0);     opacity: 0.7; }
-  100% { transform: translateX(-48%) translateY(-16px);  opacity: 1;  }
+  0%   { transform: translateY(0); opacity: 0.7; }
+  100% { transform: translateY(-16px); opacity: 1; }
 }
 
 /* ── BIG ITALIC NUMBER ── */
@@ -828,3 +830,4 @@ nav.solid .nav-search-input::placeholder { color: rgba(10,14,26,0.4); }
   0%, 100% { outline: 3px solid transparent; outline-offset: 4px; }
   20%, 60% { outline: 3px solid var(--purple); outline-offset: 4px; }
 }
+
