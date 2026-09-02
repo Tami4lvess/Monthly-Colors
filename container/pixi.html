@@ -497,7 +497,7 @@
           (entries) => {
             entries.forEach((entry, i) => {
               if (entry.isIntersecting) {
-                setTimeout(() => entry.target.classList.add('visible'), i * 120);
+                setTimeout(() => entry.target.classList.add('visible'), i * 40);
                 sobreObserver.unobserve(entry.target);
               }
             });
