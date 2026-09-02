@@ -1057,3 +1057,27 @@ img {
     padding: 72px 24px 88px;
   }
 }
+
+/* Remove o azul dos cartões dos meses no container principal */
+.mes,
+.mes *,
+.mes::before,
+.mes::after {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.mes:focus,
+.mes:focus-visible,
+.mes:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .mes:hover,
+  .mes:active,
+  .mes:focus {
+    transform: translateZ(0);
+    background: #5a82b0;
+  }
+}
