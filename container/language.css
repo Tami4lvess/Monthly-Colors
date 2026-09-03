@@ -1,5 +1,36 @@
 /* Sistema de idiomas compartilhado do Monthly Colors */
 
+/*
+ * Remove o retângulo azul exibido pelos navegadores móveis ao tocar
+ * em links, botões, logos, cards e campos interativos.
+ */
+html,
+body,
+body * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none), (pointer: coarse) {
+  a:focus,
+  button:focus,
+  input:focus,
+  select:focus,
+  textarea:focus,
+  [role="button"]:focus,
+  [tabindex]:focus,
+  [onclick]:focus {
+    outline: none;
+  }
+}
+
+/* Mantém o foco visível para quem navega com teclado no computador. */
+@media (hover: hover) and (pointer: fine) {
+  :where(a, button, input, select, textarea, [role="button"], [tabindex]):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+}
+
 [data-language-selector] {
   font-family: "Inter", "DM Sans", sans-serif;
   gap: 4px;
