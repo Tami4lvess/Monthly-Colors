@@ -39,6 +39,7 @@
       "language.select": "Selecionar idioma",
       "nav.about": "Sobre nós",
       "nav.goMonths": "Ir para a seção de meses",
+      "nav.backTop": "Voltar ao início",
       "season.summer": "Verão",
       "season.autumn": "Outono",
       "season.winter": "Inverno",
@@ -93,6 +94,7 @@
       "language.select": "Select language",
       "nav.about": "About us",
       "nav.goMonths": "Go to the months section",
+      "nav.backTop": "Back to the top",
       "season.summer": "Summer",
       "season.autumn": "Autumn",
       "season.winter": "Winter",
@@ -147,6 +149,7 @@
       "language.select": "Sélectionner la langue",
       "nav.about": "À propos de nous",
       "nav.goMonths": "Aller à la section des mois",
+      "nav.backTop": "Retour en haut",
       "season.summer": "Été",
       "season.autumn": "Automne",
       "season.winter": "Hiver",
@@ -201,6 +204,7 @@
       "language.select": "Seleccionar idioma",
       "nav.about": "Sobre nosotros",
       "nav.goMonths": "Ir a la sección de meses",
+      "nav.backTop": "Volver al inicio",
       "season.summer": "Verano",
       "season.autumn": "Otoño",
       "season.winter": "Invierno",
@@ -654,6 +658,35 @@
     });
   }
 
+  function initializeFooterBackToTop() {
+    const createButton = () => {
+      const footer = document.querySelector("footer");
+      if (!footer || footer.querySelector(".mc-footer-top")) return;
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "mc-footer-top";
+      button.dataset.i18nAriaLabel = "nav.backTop";
+      button.setAttribute("aria-label", translateKey("nav.backTop", getStoredLanguage()));
+      button.innerHTML = `
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 15l6-6 6 6" />
+        </svg>`;
+
+      button.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      footer.appendChild(button);
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", createButton, { once: true });
+    } else {
+      createButton();
+    }
+  }
+
   window.MonthlyColorsI18n = {
     setLanguage,
     getLanguage: getStoredLanguage,
@@ -669,6 +702,7 @@
 
   migrateToLocalTranslations();
   initializeSelector();
+  initializeFooterBackToTop();
   setLanguage(getStoredLanguage());
   localizeCalendarEvents();
   if (document.readyState === "loading") {

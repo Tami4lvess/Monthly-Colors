@@ -1,5 +1,26 @@
 /* RESPONSIVIDADE COMPARTILHADA ENTRE TODOS OS MESES */
 
+/* Centraliza a palavra decorativa sem depender da largura da tradução. */
+.hero-ghost-word {
+  left: 0;
+  right: 0;
+  width: 100%;
+  text-align: center;
+  transform: translateY(0);
+}
+
+@keyframes ghostDrift {
+  0% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translateY(-16px);
+    opacity: 1;
+  }
+}
+
 /* Evita que o nome do mês apareça no idioma anterior durante a inicialização. */
 body[data-month-page] .hero-title-wrap,
 body[data-month-page] .hero-ghost-word {

@@ -914,10 +914,10 @@ nav.solid .nav-search-input::placeholder { color: rgba(29,23,21,0.4); }
     position: absolute !important;
     top: 1px;
     right: 42px;
-    width: 0 !important;
+    width: 0;
     height: 38px;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 0;
     border: none;
   }
 }

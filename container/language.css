@@ -1,4 +1,5 @@
 /* Sistema de idiomas compartilhado do Monthly Colors */
+
 [data-language-selector] {
   font-family: "Inter", "DM Sans", sans-serif;
   gap: 4px;
@@ -298,6 +299,44 @@ body > .skiptranslate {
 }
 
 @media (max-width: 700px) {
+  footer {
+    position: relative;
+  }
+
+  .mc-footer-top {
+    position: absolute;
+    top: 28px;
+    left: max(16px, env(safe-area-inset-left));
+    z-index: 3;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--orange-lt, #6f675c);
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+  }
+
+  .mc-footer-top svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .mc-footer-top:active {
+    transform: translateY(-2px);
+  }
+
   #hero .icons {
     top: max(14px, env(safe-area-inset-top));
     height: 46px;
@@ -321,5 +360,11 @@ body > .skiptranslate {
   #hero [data-language-selector] .lang-menu {
     top: calc(100% + 7px);
     right: 0;
+  }
+}
+
+@media (min-width: 701px) {
+  .mc-footer-top {
+    display: none;
   }
 }
