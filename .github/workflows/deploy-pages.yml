@@ -73,6 +73,18 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+          
+      - name: Verificar versoes geradas
+        shell: bash
+        run: |
+          VERSION="${GITHUB_SHA::7}"
+
+          if ! grep -R -q "?v=${VERSION}" _site --include="*.html"; then
+            echo "Erro: nenhuma versao automatica foi encontrada."
+            exit 1
+          fi
+
+          echo "Arquivos publicados com a versao ${VERSION}"
 
   publicar:
     name: Publicar no GitHub Pages

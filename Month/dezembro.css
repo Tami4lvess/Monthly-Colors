@@ -223,6 +223,12 @@ nav.solid .nav-toggle span { background: var(--ink); }
   animation: slideUpFade 0.85s cubic-bezier(.16,1,.3,1) both;
   animation-delay: 0.05s;
 }
+
+/* Preserva o acento de DÉCEMBRE sem encostar na linha acima do título. */
+html[lang="fr"] .hero-title-wrap {
+  transform: translateY(18px);
+}
+
 .hero-t2 {
   display: block;
   font-family: 'Cormorant Garamond', serif;
