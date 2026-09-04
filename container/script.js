@@ -24,48 +24,43 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
-// Dynamic import for GTAO and SSR (addons may fail in some environments)
+// No celular estes efeitos sao desativados, portanto nao precisamos baixar
+// nem preparar os quatro modulos de pos-processamento.
+const isMobile =
+  window.matchMedia("(max-width: 820px)").matches ||
+  window.matchMedia("(pointer: coarse)").matches;
+
+// No desktop, baixa todos os modulos simultaneamente para reduzir o tempo
+// total de preparacao sem alterar a aparencia final da cena.
 let ao, denoise, ssrModule, bloomModule;
-try {
-  const gtaoMod = await import("three/addons/tsl/display/GTAONode.js");
-  ao = gtaoMod.ao;
-  console.log("GTAO module loaded successfully");
-} catch (e) {
-  console.warn("GTAO addon module not available:", e.message);
-}
-try {
-  const denoiseMod = await import("three/addons/tsl/display/DenoiseNode.js");
-  denoise = denoiseMod.denoise;
-  console.log("Denoise module loaded successfully");
-} catch (e) {
-  console.warn(
-    "Denoise addon module not available, will use AO without denoising:",
-    e.message,
-  );
-}
-try {
-  ssrModule = await import("three/addons/tsl/display/SSRNode.js");
-  console.log("SSR module loaded successfully");
-} catch (e) {
-  console.warn("SSR addon module not available:", e.message);
-}
-try {
-  bloomModule = await import("three/addons/tsl/display/BloomNode.js");
-  console.log("Bloom module loaded successfully");
-} catch (e) {
-  console.warn("Bloom addon module not available:", e.message);
+if (!isMobile) {
+  const moduleResults = await Promise.allSettled([
+    import("three/addons/tsl/display/GTAONode.js"),
+    import("three/addons/tsl/display/DenoiseNode.js"),
+    import("three/addons/tsl/display/SSRNode.js"),
+    import("three/addons/tsl/display/BloomNode.js"),
+  ]);
+
+  const [gtaoResult, denoiseResult, ssrResult, bloomResult] = moduleResults;
+
+  if (gtaoResult.status === "fulfilled") ao = gtaoResult.value.ao;
+  else console.warn("GTAO addon module not available:", gtaoResult.reason);
+
+  if (denoiseResult.status === "fulfilled") {
+    denoise = denoiseResult.value.denoise;
+  } else {
+    console.warn("Denoise addon module not available:", denoiseResult.reason);
+  }
+
+  if (ssrResult.status === "fulfilled") ssrModule = ssrResult.value;
+  else console.warn("SSR addon module not available:", ssrResult.reason);
+
+  if (bloomResult.status === "fulfilled") bloomModule = bloomResult.value;
+  else console.warn("Bloom addon module not available:", bloomResult.reason);
 }
 
 // Scene setup
 const scene = new THREE.Scene();
-
-// ⚡ Detecção de dispositivo leve: telas pequenas e/ou touch (sem mouse fino)
-// rodam em GPUs bem mais fracas que desktop, então usamos isso para cortar
-// os efeitos mais caros (AO, SSR, sombras em alta resolução, MSAA) e manter
-// a animação fluida no celular.
-const isMobile =
-  window.matchMedia("(max-width: 820px)").matches ||
-  window.matchMedia("(pointer: coarse)").matches;
 
 //  CORRIGIDO: aponta para o container correto no HTML
 const sceneContainer = document.getElementById("canvas-container");
@@ -2153,7 +2148,12 @@ let frameCount = 0,
   lastFpsTime = performance.now(),
   lastTime = performance.now();
 
-let firstFramePresented = false;
+// A primeira chamada de render pode apenas iniciar a compilacao dos shaders.
+// Mantemos o loading visivel ate a cena produzir alguns quadros completos.
+const requiredReadyFrames = isMobile ? 2 : 3;
+let readyFrameCount = 0;
+let loadingReleaseStarted = false;
+
 function dismissLoadingScreen() {
   const loadingScreen = document.getElementById("loading-screen");
 
@@ -2175,6 +2175,28 @@ function dismissLoadingScreen() {
       { once: true },
     );
   }, 400);
+}
+
+async function releaseLoadingAfterGpuIsReady() {
+  if (loadingReleaseStarted) return;
+  loadingReleaseStarted = true;
+
+  try {
+    // No WebGPU, espera a placa concluir os comandos enviados. No fallback
+    // WebGL essa fila nao existe, entao seguimos normalmente.
+    const gpuQueue = renderer.backend?.device?.queue;
+    if (typeof gpuQueue?.onSubmittedWorkDone === "function") {
+      await gpuQueue.onSubmittedWorkDone();
+    }
+  } catch (error) {
+    console.warn("Nao foi possivel aguardar a fila da GPU:", error);
+  }
+
+  // Dois frames permitem que o navegador apresente o canvas pronto antes
+  // de iniciar o fade da camada de carregamento.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(dismissLoadingScreen);
+  });
 }
 
 // Controle de pausa do render loop. Quando pausado (modo ocioso,
@@ -2224,10 +2246,18 @@ function animate() {
   if (postProcessing) postProcessing.render();
   else renderer.render(scene, camera);
 
-  if (!firstFramePresented) {
-    firstFramePresented = true;
-    // Espera o navegador apresentar o quadro antes de revelar a cena.
-    requestAnimationFrame(dismissLoadingScreen);
+  if (!loadingReleaseStarted) {
+    const drawCalls = renderer.info?.render?.calls ?? 0;
+
+    if (drawCalls > 0) {
+      readyFrameCount++;
+    } else {
+      readyFrameCount = 0;
+    }
+
+    if (readyFrameCount >= requiredReadyFrames) {
+      void releaseLoadingAfterGpuIsReady();
+    }
   }
 }
 renderer.setAnimationLoop(animate);
@@ -2375,7 +2405,7 @@ function animateTitleIntro() {
     colorizeLetter(
       letter,
       colorOffset + index,
-      index * 210,
+      index * 110,
     );
   });
 
@@ -2427,4 +2457,3 @@ if (!titleLoadingScreen || titleLoadingScreen.classList.contains("is-hidden")) {
     handleLoadingTransitionEnd
   );
 }
-
