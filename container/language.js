@@ -607,6 +607,30 @@
     document.getElementById("downarrow")?.classList.remove("rotate");
   }
 
+  let monthHeaderFontsPromise;
+
+  function revealMonthHeaderWhenReady() {
+    const root = document.documentElement;
+
+    if (!isMonthPage || !document.fonts?.load) {
+      root.dataset.mcLanguageReady = "true";
+      return;
+    }
+
+    if (!monthHeaderFontsPromise) {
+      monthHeaderFontsPromise = Promise.all([
+        document.fonts.load('400 16px "Bebas Neue"'),
+        document.fonts.load('italic 300 16px "Cormorant Garamond"'),
+      ]).catch(() => []);
+    }
+
+    monthHeaderFontsPromise.then(() => {
+      window.requestAnimationFrame(() => {
+        root.dataset.mcLanguageReady = "true";
+      });
+    });
+  }
+
   function setLanguage(language, options = {}) {
     if (!SUPPORTED_LANGUAGES.includes(language)) language = "pt-BR";
 
@@ -614,7 +638,7 @@
 
     applyTranslations(language);
     applyMonthLocalFallback(language);
-    document.documentElement.dataset.mcLanguageReady = "true";
+    revealMonthHeaderWhenReady();
     updateSelector(language, Boolean(options.animate));
     closeMenu();
 

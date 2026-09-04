@@ -162,25 +162,21 @@ function getMoonPhasesForMonth(year, month) {
 
   function deg2rad(d) { return d * Math.PI / 180; }
 
-  // Converte JDE para Date UTC
+  // Converte o JDE (Tempo Terrestre) para um instante UTC.
   function jdeToDate(jde) {
-    const z = Math.floor(jde + 0.5);
-    const f = (jde + 0.5) - z;
-    let a = z;
-    if (z >= 2299161) {
-      const alpha = Math.floor((z - 1867216.25) / 36524.25);
-      a = z + 1 + alpha - Math.floor(alpha / 4);
-    }
-    const b = a + 1524;
-    const c = Math.floor((b - 122.1) / 365.25);
-    const d = Math.floor(365.25 * c);
-    const e = Math.floor((b - d) / 30.6001);
-    const day   = b - d - Math.floor(30.6001 * e) + f;
-    const month = e < 14 ? e - 1 : e - 13;
-    const yr    = month > 2 ? c - 4716 : c - 4715;
-    const dayInt = Math.floor(day);
-    const hourFrac = (day - dayInt) * 24;
-    return new Date(Date.UTC(yr, month - 1, dayInt, Math.round(hourFrac)));
+    const t = year - 2000;
+    const deltaTSeconds = 62.92 + 0.32217 * t + 0.005589 * t * t;
+    return new Date((jde - 2440587.5) * 86400000 - deltaTSeconds * 1000);
+  }
+
+  const brazilDateFormatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Sao_Paulo', year: 'numeric', month: 'numeric', day: 'numeric',
+  });
+  function getBrazilDateParts(date) {
+    const values = Object.fromEntries(brazilDateFormatter.formatToParts(date)
+      .filter(part => part.type !== 'literal')
+      .map(part => [part.type, Number(part.value)]));
+    return { year: values.year, month: values.month, day: values.day };
   }
 
   // Estima k inicial para o início do mês
@@ -199,8 +195,9 @@ function getMoonPhasesForMonth(year, month) {
     for (const p of phases) {
       const jde  = jdeForPhase(approxK + dk, p.phase);
       const date = jdeToDate(jde);
-      if (date.getUTCFullYear() === year && date.getUTCMonth() === month - 1) {
-        result.push({ ...p, date, day: date.getUTCDate() });
+      const brazilDate = getBrazilDateParts(date);
+      if (brazilDate.year === year && brazilDate.month === month) {
+        result.push({ ...p, date, day: brazilDate.day, month: brazilDate.month });
       }
     }
   }
@@ -266,7 +263,7 @@ function getMoonPhasesForMonth(year, month) {
     <div class="moon-item">
       ${moonSVG(p.icon)}
       <span class="moon-label">${p.label}</span>
-      <span class="moon-date">${p.day} ${ptMonths[p.date.getUTCMonth()]}</span>
+      <span class="moon-date">${p.day} ${ptMonths[p.month - 1]}</span>
     </div>
   `).join('');
 

@@ -27,9 +27,21 @@ body[data-month-page] .hero-ghost-word {
   visibility: hidden;
 }
 
+body[data-month-page] .hero-t1,
+body[data-month-page] .hero-t2,
+body[data-month-page] .hero-ghost-word {
+  animation-play-state: paused;
+}
+
 html[data-mc-language-ready="true"] body[data-month-page] .hero-title-wrap,
 html[data-mc-language-ready="true"] body[data-month-page] .hero-ghost-word {
   visibility: visible;
+}
+
+html[data-mc-language-ready="true"] body[data-month-page] .hero-t1,
+html[data-mc-language-ready="true"] body[data-month-page] .hero-t2,
+html[data-mc-language-ready="true"] body[data-month-page] .hero-ghost-word {
+  animation-play-state: running;
 }
 
 /* Meses ainda sem página são texto, não links clicáveis. */
