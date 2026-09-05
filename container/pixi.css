@@ -52,8 +52,24 @@ body.is-loading {
   opacity: 1;
   visibility: visible;
   transition:
-    opacity 0.65s ease,
+    opacity 0.35s ease,
     visibility 0s linear 0s;
+}
+
+/* Em uma volta durante a mesma sessão, a interface não fica bloqueada
+   enquanto a cena WebGPU/WebGL é reconstruída. */
+html.is-return-visit body.is-loading {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: auto;
+  touch-action: auto;
+}
+
+html.is-return-visit .loading-screen {
+  display: none;
 }
 
 .loading-content {
@@ -98,7 +114,7 @@ body.is-loading {
   );
   background-size: 200% 100%;
   animation:
-    loadingFill 7s cubic-bezier(0.2, 0.7, 0.3, 1) forwards,
+    loadingFill 3s cubic-bezier(0.2, 0.7, 0.3, 1) forwards,
     loadingColors 2.5s linear infinite;
   transition: transform 0.35s ease;
 }
@@ -123,8 +139,8 @@ body.is-loading {
   visibility: hidden;
   pointer-events: none;
   transition:
-    opacity 0.65s ease,
-    visibility 0s linear 0.65s;
+    opacity 0.22s ease,
+    visibility 0s linear 0.22s;
 }
 
 @keyframes loadingFill {
@@ -164,6 +180,7 @@ body.is-loading {
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  background: linear-gradient(180deg, #a9afbf 0%, #7583a0 48%, #34476d 100%);
 }
 
 #canvas-container {
