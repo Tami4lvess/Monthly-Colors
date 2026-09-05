@@ -22,32 +22,50 @@ import {
   roughness,
 } from "three/tsl";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
-const isMobile =
-  window.matchMedia("(max-width: 820px)").matches ||
-  window.matchMedia("(pointer: coarse)").matches;
-
+// Dynamic import for GTAO and SSR (addons may fail in some environments)
 let ao, denoise, ssrModule, bloomModule;
-
-// Os módulos são baixados em paralelo, mas todos ficam definidos antes da
-// criação do pipeline. Isso mantém o comportamento estável da versão original.
-const postProcessingModuleResults = await Promise.allSettled([
-  import("three/addons/tsl/display/GTAONode.js"),
-  import("three/addons/tsl/display/DenoiseNode.js"),
-  import("three/addons/tsl/display/SSRNode.js"),
-  import("three/addons/tsl/display/BloomNode.js"),
-]);
-
-const [gtaoResult, denoiseResult, ssrResult, bloomResult] =
-  postProcessingModuleResults;
-if (gtaoResult.status === "fulfilled") ao = gtaoResult.value.ao;
-if (denoiseResult.status === "fulfilled") denoise = denoiseResult.value.denoise;
-if (ssrResult.status === "fulfilled") ssrModule = ssrResult.value;
-if (bloomResult.status === "fulfilled") bloomModule = bloomResult.value;
+try {
+  const gtaoMod = await import("three/addons/tsl/display/GTAONode.js");
+  ao = gtaoMod.ao;
+  console.log("GTAO module loaded successfully");
+} catch (e) {
+  console.warn("GTAO addon module not available:", e.message);
+}
+try {
+  const denoiseMod = await import("three/addons/tsl/display/DenoiseNode.js");
+  denoise = denoiseMod.denoise;
+  console.log("Denoise module loaded successfully");
+} catch (e) {
+  console.warn(
+    "Denoise addon module not available, will use AO without denoising:",
+    e.message,
+  );
+}
+try {
+  ssrModule = await import("three/addons/tsl/display/SSRNode.js");
+  console.log("SSR module loaded successfully");
+} catch (e) {
+  console.warn("SSR addon module not available:", e.message);
+}
+try {
+  bloomModule = await import("three/addons/tsl/display/BloomNode.js");
+  console.log("Bloom module loaded successfully");
+} catch (e) {
+  console.warn("Bloom addon module not available:", e.message);
+}
 
 // Scene setup
 const scene = new THREE.Scene();
+
+// ⚡ Detecção de dispositivo leve: telas pequenas e/ou touch (sem mouse fino)
+// rodam em GPUs bem mais fracas que desktop, então usamos isso para cortar
+// os efeitos mais caros (AO, SSR, sombras em alta resolução, MSAA) e manter
+// a animação fluida no celular.
+const isMobile =
+  window.matchMedia("(max-width: 820px)").matches ||
+  window.matchMedia("(pointer: coarse)").matches;
 
 //  CORRIGIDO: aponta para o container correto no HTML
 const sceneContainer = document.getElementById("canvas-container");
@@ -78,9 +96,7 @@ applyViewOffset();
 
 let renderer;
 try {
-  renderer = new THREE.WebGPURenderer({
-    antialias: !isMobile,
-  });
+  renderer = new THREE.WebGPURenderer({ antialias: !isMobile });
   renderer.setSize(containerW(), containerH());
   renderer.setPixelRatio(
     isMobile ? 1 : Math.min(window.devicePixelRatio, 1.5),
@@ -107,7 +123,7 @@ try {
   );
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
-  renderer.shadowMap.enabled = !isMobile;
+  renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = isMobile
     ? THREE.PCFShadowMap
     : THREE.VSMShadowMap;
@@ -164,39 +180,27 @@ function createSkyEnvironment() {
 }
 createSkyEnvironment();
 
-// Mantém o ambiente procedural da primeira imagem e melhora o HDR depois, sem
-// bloquear nem reconstruir o pipeline principal da árvore.
-const hdrLoader = new HDRLoader();
-const loadHdr = () => {
-  hdrLoader.load(
-    "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/kloofendal_48d_partly_cloudy_puresky_1k.hdr",
-    (texture) => {
-      texture.mapping = THREE.EquirectangularReflectionMapping;
-      const previousEnvironment = scene.environment;
-      const previousBackground = scene.background;
-      scene.environment = texture;
-      scene.background = texture;
-      scene.backgroundBlurriness = 0.25;
-      scene.backgroundIntensity = 0.8;
-      if (previousEnvironment?.dispose) previousEnvironment.dispose();
-      if (
-        previousBackground !== previousEnvironment &&
-        previousBackground?.dispose
-      ) {
-        previousBackground.dispose();
-      }
-      console.log("HDR environment loaded");
-    },
-    undefined,
-    (error) => console.warn("HDR environment not available:", error),
-  );
-};
-
-if ("requestIdleCallback" in window) {
-  window.requestIdleCallback(loadHdr, { timeout: 3000 });
-} else {
-  window.setTimeout(loadHdr, 300);
-}
+// Lazy-load HDR for higher quality (non-blocking, replaces procedural env when ready)
+const rgbeLoader = new RGBELoader();
+requestIdleCallback(
+  () => {
+    rgbeLoader.load(
+      "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/kloofendal_48d_partly_cloudy_puresky_1k.hdr",
+      (texture) => {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        if (scene.environment) scene.environment.dispose();
+        if (scene.background && scene.background.isTexture)
+          scene.background.dispose();
+        scene.environment = texture;
+        scene.background = texture;
+        scene.backgroundBlurriness = 0.25;
+        scene.backgroundIntensity = 0.8;
+        console.log("HDR environment loaded (deferred)");
+      },
+    );
+  },
+  { timeout: 3000 },
+);
 
 // Shared geometry — use lower-poly boxes (1 segment each)
 const voxelSize = 1.0;
@@ -1157,6 +1161,8 @@ function generateSnowyPineOffsets() {
   });
   return snap;
 }
+variationData[1] = generateSnowyPineOffsets();
+
 function generateCherryBlossomOffsets() {
   const snap = new Map();
   const dummy = new THREE.Object3D();
@@ -1266,6 +1272,8 @@ function generateCherryBlossomOffsets() {
   });
   return snap;
 }
+variationData[2] = generateCherryBlossomOffsets();
+
 function generateSummerOffsets() {
   const snap = new Map();
   const dummy = new THREE.Object3D();
@@ -1381,21 +1389,6 @@ function generateSummerOffsets() {
 }
 variationData[3] = generateSummerOffsets();
 
-// Inverno e primavera exigem duas varreduras completas por todos os cubos.
-// Elas agora são calculadas somente no primeiro clique nesses botões, em vez
-// de atrasarem a abertura da página mesmo quando o visitante não as usa.
-function ensureVariationData(variation) {
-  if (variationData[variation]) return variationData[variation];
-
-  if (variation === 1) {
-    variationData[variation] = generateSnowyPineOffsets();
-  } else if (variation === 2) {
-    variationData[variation] = generateCherryBlossomOffsets();
-  }
-
-  return variationData[variation];
-}
-
 // A árvore agora nasce direto na variação "Verão" (a que fica ativa por
 // padrão no botão), em vez de nascer no Outono (posição 0) e só trocar
 // quando o usuário clicasse. Como isso roda antes do primeiro frame,
@@ -1482,7 +1475,6 @@ function snapshotCurrentState() {
 function startMorph(toVariation) {
   if (isMorphing && morphTo === toVariation) return;
   if (currentVariation === toVariation && !isMorphing) return;
-  ensureVariationData(toVariation);
   const current = snapshotCurrentState();
   morphBasePositions = current.posMap;
   morphBaseColors = current.colMap;
@@ -1490,6 +1482,10 @@ function startMorph(toVariation) {
   morphTo = toVariation;
   morphStartTime = performance.now();
   isMorphing = true;
+  // Uma troca de variação precisa reativar o render caso a cena esteja
+  // pausada por inatividade, para que o morph seja concluído normalmente.
+  lastUserActivityTime = performance.now();
+  if (idleModeActive) exitIdleMode();
 }
 
 function updateMorph() {
@@ -1788,6 +1784,7 @@ window.addEventListener(
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     lastMouseMoveTime = performance.now();
     mouseActive = true;
+    registerActivity();
   },
   { passive: true },
 );
@@ -1796,6 +1793,59 @@ window.addEventListener("mouseleave", () => {
   mouse.y = 9999;
   mouseActive = false;
 });
+
+// === MODO OCIOSO ===========================================================
+// Depois de IDLE_TIMEOUT segundos sem interação dentro do hero, o loop do
+// Three.js é pausado. O canvas preserva o último quadro renderizado, então a
+// árvore continua visível sem depender de vídeo e sem consumir GPU desenhando
+// quadros que o usuário não está observando. Qualquer nova interação retoma o
+// loop imediatamente.
+const IDLE_TIMEOUT = 9;
+let idleModeActive = false;
+let renderLoopPaused = false;
+let lastUserActivityTime = performance.now();
+
+function enterIdleMode() {
+  if (idleModeActive) return;
+  idleModeActive = true;
+  pauseRenderLoop();
+}
+
+function exitIdleMode() {
+  if (!idleModeActive) return;
+  idleModeActive = false;
+  resumeRenderLoop();
+}
+
+function registerActivity() {
+  lastUserActivityTime = performance.now();
+  if (idleModeActive) exitIdleMode();
+}
+
+// Cliques e toques só reativam a cena quando acontecem dentro do hero.
+// O movimento do mouse já é tratado pelo listener da repulsão acima, evitando
+// calcular getBoundingClientRect() duas vezes para cada evento de mousemove.
+function registerActivityIfInsideHero(e) {
+  const rect = sceneContainer.getBoundingClientRect();
+  if (e.clientY >= rect.top && e.clientY <= rect.bottom) {
+    registerActivity();
+  }
+}
+window.addEventListener("pointerdown", registerActivityIfInsideHero, {
+  passive: true,
+});
+window.addEventListener("touchstart", registerActivityIfInsideHero, {
+  passive: true,
+});
+document.querySelectorAll(".morph-btn").forEach((btn) => {
+  btn.addEventListener("pointerenter", registerActivity);
+});
+
+function updateIdleWatcher() {
+  if (idleModeActive) return;
+  const idleFor = (performance.now() - lastUserActivityTime) / 1000;
+  if (idleFor >= IDLE_TIMEOUT) enterIdleMode();
+}
 
 const _hitPoint = new THREE.Vector3(),
   _dir = new THREE.Vector3(),
@@ -2058,8 +2108,7 @@ try {
   postProcessing = null;
 }
 
-// A versão estável sempre renderizou o mobile diretamente. Manter esse caminho
-// evita que o pipeline de pós-processamento produza um canvas vazio no celular.
+// No celular renderiza diretamente, sem pós-processamento pesado.
 if (isMobile) {
   postProcessing = null;
   aoPass = null;
@@ -2105,11 +2154,10 @@ let frameCount = 0,
   lastTime = performance.now();
 
 let firstFramePresented = false;
-
 function dismissLoadingScreen() {
   const loadingScreen = document.getElementById("loading-screen");
 
-  if (!loadingScreen) {
+  if (!loadingScreen || loadingScreen.classList.contains("is-hidden")) {
     return;
   }
 
@@ -2121,17 +2169,37 @@ function dismissLoadingScreen() {
     document.documentElement.classList.remove("is-loading");
     document.body.classList.remove("is-loading");
 
+    loadingScreen.addEventListener(
+      "transitionend",
+      () => loadingScreen.remove(),
+      { once: true },
+    );
   }, 400);
 }
 
-function showLoadingScreen() {
-  const loadingScreen = document.getElementById("loading-screen");
-  if (!loadingScreen) return;
+// Controle de pausa do render loop. Quando pausado (modo ocioso,
+// aba em segundo plano, ou hero fora da viewport), o WebGPU/WebGL renderer
+// para de desenhar frames — o maior consumidor de GPU/CPU do site — sem
+// destruir a cena, então a volta é instantânea e sem flicker.
+let tabVisible = document.visibilityState === "visible";
+let heroInView = true;
 
-  loadingScreen.classList.remove("is-hidden", "is-complete");
-  document.documentElement.classList.add("is-loading");
-  document.body.classList.add("is-loading");
-  firstFramePresented = false;
+function shouldRender() {
+  return tabVisible && heroInView && !idleModeActive;
+}
+
+function pauseRenderLoop() {
+  if (renderLoopPaused) return;
+  renderLoopPaused = true;
+  renderer.setAnimationLoop(null);
+}
+
+function resumeRenderLoop() {
+  if (!renderLoopPaused) return;
+  if (!shouldRender()) return; // ainda há outro motivo para ficar pausado
+  renderLoopPaused = false;
+  lastTime = performance.now();
+  renderer.setAnimationLoop(animate);
 }
 
 function animate() {
@@ -2147,6 +2215,7 @@ function animate() {
     frameCount = 0;
     lastFpsTime = now;
   }
+  updateIdleWatcher();
   controls.update();
   updateAdaptiveQuality();
   updateMorph();
@@ -2157,21 +2226,48 @@ function animate() {
 
   if (!firstFramePresented) {
     firstFramePresented = true;
-    // Mesmo fluxo da versão estável: mantém a tela por cima do primeiro quadro
-    // e só inicia a retirada no ciclo seguinte de pintura do navegador.
+    // Espera o navegador apresentar o quadro antes de revelar a cena.
     requestAnimationFrame(dismissLoadingScreen);
   }
 }
 renderer.setAnimationLoop(animate);
+if (!tabVisible) pauseRenderLoop();
 
-// Mantém o loader no histórico: ao voltar de um mês pelo navegador, ele cobre
-// o canvas até que a cena preservada produza novamente dois quadros completos.
-window.addEventListener("pagehide", () => {
-  showLoadingScreen();
+// Pausa tudo quando a aba não está visível (troca de aba, minimizado etc.).
+document.addEventListener("visibilitychange", () => {
+  tabVisible = document.visibilityState === "visible";
+  if (!tabVisible) {
+    pauseRenderLoop();
+  } else if (heroInView) {
+    resumeRenderLoop();
+  }
 });
-window.addEventListener("pageshow", (event) => {
-  if (event.persisted) showLoadingScreen();
+
+// Também cobre o congelamento/restauração da página pelo navegador (bfcache).
+window.addEventListener("pagehide", pauseRenderLoop);
+window.addEventListener("pageshow", () => {
+  tabVisible = document.visibilityState === "visible";
+  resumeRenderLoop();
 });
+
+// Pausa quando o hero saiu da viewport (usuário rolou a página para baixo);
+// volta a renderizar só quando o hero estiver visível de novo.
+if ("IntersectionObserver" in window) {
+  const heroObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        heroInView = entry.isIntersecting;
+        if (!heroInView) {
+          pauseRenderLoop();
+        } else if (tabVisible) {
+          resumeRenderLoop();
+        }
+      });
+    },
+    { threshold: 0.01 },
+  );
+  heroObserver.observe(document.getElementById("hero"));
+}
 
 //  CORRIGIDO: resize usa sceneContainer
 // Agrupa chamadas de resize num único requestAnimationFrame — evita recalcular
@@ -2307,10 +2403,7 @@ function startTitleIntroWhenReady() {
 
 const titleLoadingScreen = document.getElementById("loading-screen");
 
-if (
-  !titleLoadingScreen ||
-  titleLoadingScreen.classList.contains("is-hidden")
-) {
+if (!titleLoadingScreen || titleLoadingScreen.classList.contains("is-hidden")) {
   startTitleIntroWhenReady();
 } else {
   const handleLoadingTransitionEnd = (event) => {
@@ -2334,3 +2427,4 @@ if (
     handleLoadingTransitionEnd
   );
 }
+
